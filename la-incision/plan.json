@@ -136,7 +136,7 @@
       "usa_en": "Element «Alex»",
       "como": "Imagen con referencia de rostro o personaje: sube elements/alex-rostro.jpg.",
       "prompt": "Character reference sheet of the young man in the reference image: a 22-year-old Mexican man with brown skin, short black hair with faded sides, a thin mustache and light stubble, tired eyes with dark circles, slim build. Three views side by side in one image: front, three-quarter and profile, neutral expression, wearing a plain heather-gray crew-neck t-shirt, neutral gray studio background, soft even lighting. Photorealistic, detailed skin texture, the same face in all three views.",
-      "notas": "Crea el Element «Alex» con el recorte + esta hoja. Si la cara de frente no se parece, genera varias y quédate con la más fiel al perfil."
+      "notas": "Úsala con el recorte como referencia de Alex (Element en Kling, ingrediente en Flow). Si la cara de frente no se parece, genera varias y quédate con la más fiel al perfil."
     },
     {
       "id": "K1",
@@ -228,6 +228,97 @@
     {"despues_de": "1C", "id": "Negro", "titulo": "Corte a negro en silencio", "uso": 1},
     {"despues_de": "6C", "id": "Título", "titulo": "«LA INCISIÓN» sobre negro", "uso": 4}
   ],
+  "omni": {
+    "flujo": [
+      "Abre la app de Gemini o Google Flow y elige Gemini Omni, en formato 16:9.",
+      "En la app de Gemini abre un chat nuevo, adjunta los recortes de elements/ y pega el prompt maestro. En Flow no hace falta.",
+      "Genera los keyframes K0–K10 con Gemini (imágenes), adjuntando las referencias en el orden de cada prompt, y descárgalos.",
+      "Genera los planos en orden: adjunta las imágenes de «Adjunta», en ese orden, y pega el prompt de Omni.",
+      "Si una toma sale casi bien, pide un arreglo rápido en lugar de regenerarla.",
+      "Descarga cada toma con su ID (1A.mp4, 1B.mp4…) y arma el corte con herramientas/armar_corte.py o en CapCut."
+    ],
+    "ajustes": [
+      [
+        "Dónde",
+        "App de Gemini (crear video con Gemini Omni) o Google Flow con el modelo Gemini Omni Flash. Necesitas Google AI Plus, Pro o Ultra."
+      ],
+      [
+        "Formato",
+        "16:9."
+      ],
+      [
+        "Duración",
+        "3, 5 o 10 s por clip, según «Clip». Omni puede extender hasta 40 s, pero aquí cada plano cabe en un clip."
+      ],
+      [
+        "Primer cuadro",
+        "Adjunta primero la imagen que indica «Adjunta»: el prompt le dice a Omni que es el cuadro inicial exacto. En Flow: «Frames to Video» → «+ Add start frame»."
+      ],
+      [
+        "Último cuadro",
+        "Solo en 2B (ref. 01 → K2). En Flow: «+ Add end frame»."
+      ],
+      [
+        "Personajes",
+        "Adjunta el recorte de Alex o de la figura como referencia. En Flow, créalos como ingredientes (hasta 3 por prompt)."
+      ],
+      [
+        "Audio",
+        "Omni genera el sonido junto con la imagen. Cada prompt ya trae su audio y los diálogos en español, sin música: la música va en la edición."
+      ],
+      [
+        "Arreglos",
+        "Si una toma sale casi bien, no la regeneres: pide un solo cambio por mensaje."
+      ],
+      [
+        "Límites",
+        "Tu plan tiene un límite diario de videos. Con 20 planos y reintentos puede tomarte más de un día."
+      ]
+    ],
+    "prompt_maestro": "Vamos a producir, plano por plano, un cortometraje de terror de 1:50 llamado «La Incisión». Formato 16:9, look cinematográfico fotorrealista: lente de 35 mm, poca profundidad de campo y grano de película.\n\nHistoria: Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su antebrazo izquierdo una incisión con suturas perfectas: no fue un sueño.\n\nPersonajes:\n- Alex: 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y ojeras. En la cena usa una polo blanca con rayas grises; de noche y en el desayuno, una playera gris lisa. La primera imagen adjunta es su rostro.\n- Su familia: mamá (unos 50 años, blusa estampada), papá (unos 55, bigote, camisa a cuadros) y hermana (unos 19, playera rosa).\n- Las tres figuras: altísimas y delgadas, de tela negra desgarrada, cabello negro largo y máscaras blancas de porcelana con cuencas negras. Nunca caminan: se deslizan. Nunca hacen ruido. La segunda imagen adjunta es una de ellas.\n\nReglas para cada video:\n1. Te mandaré cada plano con su ID (1A, 1B…), su duración y su prompt en inglés. Genera solo ese plano y espera el siguiente.\n2. Las imágenes que adjunte van en el orden que dice el prompt: la primera es el cuadro inicial exacto; las demás son referencias de personaje.\n3. Sigue el prompt al pie de la letra: una sola acción por plano y cámara fija cuando lo pida.\n4. Sin subtítulos ni texto en pantalla. Diálogos en español con acento mexicano y labios sincronizados. Sin música.\n5. Mantén a Alex, la familia y las figuras idénticos en todos los planos.\n6. Si te pido un cambio, cambia solo eso y deja todo lo demás igual.\n\nSi entendiste, responde solo «Listo».",
+    "arreglos": [
+      [
+        "Se movió la cámara",
+        "Deja todo igual, pero la cámara no debe moverse en absoluto."
+      ],
+      [
+        "El movimiento es muy rápido",
+        "Deja todo igual y haz el movimiento el doble de lento."
+      ],
+      [
+        "Salió texto o subtítulos",
+        "Deja todo igual y quita todo el texto y los subtítulos."
+      ],
+      [
+        "Cambió la cara de Alex",
+        "Deja todo igual, pero la cara de Alex debe ser idéntica a la imagen de referencia."
+      ],
+      [
+        "Quedó muy iluminado",
+        "Deja todo igual, pero más oscuro: solo luz de luna azul y fría por la ventana."
+      ],
+      [
+        "Las figuras caminan",
+        "Deja todo igual, pero las figuras no mueven las piernas: se deslizan flotando."
+      ],
+      [
+        "Salió el brazo derecho",
+        "Deja todo igual, pero tiene que ser el antebrazo izquierdo."
+      ],
+      [
+        "Metió música",
+        "Deja todo igual y quita la música; deja solo el sonido ambiente."
+      ],
+      [
+        "La voz no suena mexicana",
+        "Deja todo igual y que la voz tenga un acento mexicano natural."
+      ],
+      [
+        "Repitió el diálogo",
+        "Deja todo igual y que diga la línea una sola vez."
+      ]
+    ]
+  },
   "escenas": [
     {
       "num": 1,
@@ -250,6 +341,7 @@
           "accion": "La familia platica y se pasa los platos; Alex, inmóvil, mira el celular. La cámara se acerca despacio y el foco pasa de la familia a su cara.",
           "prompt": "Slow cinematic dolly-in on a lively Mexican family dinner at night. The mother talks animatedly and gestures with her hands, the father smiles while cutting his chicken, and the sister laughs and reaches for the tortilla basket. Only the young man in the striped polo shirt in the foreground stays completely still, head down, staring at the phone in his hand, his face lit by the cold glow of the screen. As the camera drifts toward him, the focus slowly shifts from the family to his face, and the family softens into warm, blurry bokeh. Warm tungsten light from a hanging lamp, terracotta walls, framed family photos. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
           "negativo": "base",
+          "audio_omni": "Audio: lively family chatter in Mexican Spanish and clinking cutlery; as the camera reaches the young man, the voices become muffled, as if heard underwater, under a low hum. No music.",
           "audio": "Audio: lively family chatter in Mexican Spanish, clinking cutlery and plates, a radio playing softly in the kitchen. The voices become muffled as the camera gets closer to the young man.",
           "notas": "En la ref. 04 el celular está sobre la mesa y el guion dice «debajo». No cambia la historia; si te importa, corrígelo en el keyframe."
         },
@@ -265,6 +357,7 @@
           "accion": "Vemos el chat por los ojos de Alex. El pulgar desliza, las manos tiemblan y las letras se desenfocan un instante. La voz de la madre entra amortiguada.",
           "prompt": "First-person POV of a young man holding a smartphone with both hands at a family dinner table at night. His thumb slowly scrolls the chat on the screen. His hands tremble slightly with tension and the phone rises and falls gently with his breathing. For a moment the focus drifts and the text on the screen softens, as if his eyes lose focus from stress, then it sharpens again. In the background the family keeps eating and talking, completely out of focus in warm bokeh. Warm tungsten light from a hanging lamp. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
           "negativo": "base",
+          "audio_omni": "Audio: the family chatter is muffled, as if heard underwater, under a low hum. Then a warm middle-aged Mexican woman's voice off-screen, growing clearer, says in Spanish: \"...y entonces le dije a tu tía que no íbamos a poder ir el domingo. ¿Alex? ¿Me estás escuchando, mijo?\" No music.",
           "audio": "Audio: family chatter and cutlery heard muffled, as if underwater, under a low hum. Then a warm middle-aged Mexican woman's voice off-screen, growing clearer, says in Spanish: \"...y entonces le dije a tu tía que no íbamos a poder ir el domingo. ¿Alex? ¿Me estás escuchando, mijo?\"",
           "notas": "Ruta rápida: usa la ref. 03 tal cual (el texto puede deformarse un poco). Ruta pro: genera desde K1 (pantalla verde) y en la edición pon una grabación real del chat que empiece en «Todo está bien» y baje hasta la pelea."
         },
@@ -279,6 +372,8 @@
           "accion": "Alex bloquea el celular, levanta la vista y finge media sonrisa: «Sí, ma. Todo bien.» La sonrisa se le borra en cuanto dejan de mirarlo.",
           "prompt": "Medium close-up of Alex, a tired 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a white and gray striped polo shirt, sitting at a family dinner table at night. He quickly locks his phone and the screen goes dark. He looks up toward his mother off-screen, forces a small, unconvincing half-smile and says quietly: \"Sí, ma. Todo bien.\" A moment later the smile fades and his eyes drop again, empty and exhausted. Warm tungsten light, the family dinner blurred in the background. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
           "negativo": "base",
+          "audio_omni": "Audio: his voice is tired and flat, in Mexican Spanish, and he says the line only once. Muffled family chatter continues in the background. No music.",
+          "notas_omni": "Omni sincroniza los labios con la voz. Si no suena mexicana o repite la línea, usa los arreglos rápidos.",
           "audio": "Audio: Alex speaks in Mexican Spanish with a tired, flat voice. Muffled family chatter continues in the background.",
           "notas": "Si no usas audio nativo, genera sin sonido y aplica después el Lip Sync de Kling con la voz grabada."
         }
@@ -305,7 +400,8 @@
           "accion": "Penumbra y silencio. Las sombras de los rincones se estiran de forma antinatural. Alex parpadea, pesado.",
           "prompt": "Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. The streetlight outside the window flickers faintly. No people in the room. Cold blue moonlight through the window, deep black shadows, the red digital clock as the only warm light. Photorealistic horror film look, low-key lighting, heavy film grain.",
           "negativo": "noche",
-          "notas": "El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en Kling."
+          "audio_omni": "Audio: heavy silence, slow calm breathing close to the camera, the soft hum of the ceiling fan, a distant dog barking once and the house creaking. No music.",
+          "notas": "El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en el generador."
         },
         {
           "id": "2B",
@@ -319,7 +415,9 @@
           "accion": "La oscuridad de la esquina se espesa y de ella salen tres figuras altas con máscara blanca. Se quedan quietas, observándolo.",
           "prompt": "Static first-person POV from a bed in a dark bedroom at night. The camera does not move. In the far corner, between the half-open door and the dresser, the darkness slowly thickens and takes shape: three tall, thin figures emerge from the shadows one by one and stand perfectly still, silently facing the bed. They have long bodies of tattered black cloth, long black hair and smooth white porcelain masks. Once they appear, they do not move at all. Cold blue moonlight, deep black shadows, photorealistic horror film look, low-key lighting, heavy film grain.",
           "negativo": "figuras",
-          "notas": "Único plano con fotograma inicial y final: Kling interpola la aparición. Por eso K2 se hace sobre la ref. 01, con el mismo encuadre."
+          "audio_omni": "Audio: near silence and slow breathing; as the figures appear, a deep low drone slowly rises and a faint high-pitched ringing begins. The figures make no sound. No music.",
+          "notas_omni": "En la app de Gemini adjunta primero la ref. 01 y luego K2. En Flow usa «Frames to Video» con los dos cuadros.",
+          "notas": "Único plano con fotograma inicial y final: la IA interpola la aparición. Por eso K2 se hace sobre la ref. 01, con el mismo encuadre."
         },
         {
           "id": "2C",
@@ -333,6 +431,7 @@
           "accion": "Inserto del rostro de Alex: el cuerpo no responde, solo los ojos se mueven. Parálisis del sueño.",
           "prompt": "Close-up of Alex, a 22-year-old Mexican man with brown skin, lying on his back in bed in the dark, lit only by cold blue moonlight. His body is completely frozen; only his eyes move, darting from side to side in terror. His breathing becomes fast and shallow, a drop of sweat runs down his temple, and his fingers twitch, but his body cannot move. Photorealistic horror film look, low-key lighting, heavy film grain, shallow depth of field.",
           "negativo": "noche",
+          "audio_omni": "Audio: fast, shallow, panicked breathing through the nose, a racing heartbeat and a high-pitched ringing. No music.",
           "notas": "Opcional. Rompe el POV del guion, pero le pone cara al terror. Va entre 2B y 2D."
         },
         {
@@ -346,6 +445,7 @@
           "accion": "Las figuras se deslizan hacia la cama sin caminar. La imagen tiembla (él lucha) y se oscurece mientras se le cierran los ojos.",
           "prompt": "Static first-person POV from a bed, lying down and unable to move. Three tall shadowy figures with smooth white porcelain masks stand in the dark bedroom, watching. Very slowly they begin to glide toward the bed without moving their legs, as if floating, their masks fixed on the camera. The camera trembles slightly, as if the viewer is desperately trying to move but cannot. The edges of the image slowly darken and blur as the eyelids grow heavy, until the image fades almost completely to black. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "figuras",
+          "audio_omni": "Audio: the deep drone keeps rising, the breathing becomes strained and desperate and the ringing grows louder, then everything fades into silence as the image goes dark. No music.",
           "notas": "Si la imagen no llega a negro, termina el fundido en la edición."
         }
       ]
@@ -371,6 +471,7 @@
           "accion": "Los ojos se abren de golpe: las tres máscaras flotan a centímetros de su cara. La del centro ladea la cabeza.",
           "prompt": "First-person POV lying on the back in bed, looking straight up at the dark ceiling. Three smooth white porcelain masks with hollow black eyes lean over the viewer only a few centimeters from the camera, their long black hair hanging down toward the lens. They are perfectly still and staring; only their hair sways slightly. Very slowly, the middle mask tilts its head to one side. The camera trembles subtly, as if the viewer is struggling but cannot move. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "figuras",
+          "audio_omni": "Audio: a sharp gasp at the first frame, then a loud heartbeat and an intense high-pitched ringing. The masks make no sound. No music.",
           "notas": "Entra desde negro, con los ojos abriéndose de golpe (3 o 4 cuadros) y una inhalación brusca."
         },
         {
@@ -384,6 +485,8 @@
           "accion": "Intenta gritar: abre la boca y no sale nada. Solo tiembla.",
           "prompt": "Extreme close-up of Alex's face as he lies on his back in bed in cold blue moonlight, completely paralyzed. He tries to scream: his mouth opens wide but no sound comes out, the tendons in his neck tighten, his wide eyes fill with tears and his face trembles with effort, but his head does not move. Photorealistic horror film look, low-key lighting, heavy film grain.",
           "negativo": "noche",
+          "audio_omni": "Audio: no scream at all, only a choked, airless rasp, a pounding heartbeat and the high-pitched ringing. No music.",
+          "notas_omni": "Omni siempre genera sonido. El prompt pide un grito mudo; si se oye un grito, pide que lo quite.",
           "notas": "Genéralo sin audio: el silencio es el efecto."
         },
         {
@@ -397,6 +500,7 @@
           "accion": "Una extremidad larga y oscura se acerca a su antebrazo izquierdo y, justo antes de tocarlo, corte a blanco.",
           "prompt": "Close-up of a young man's left forearm lying still on a dark bed sheet, palm up, in cold blue moonlight. From the darkness at the top of the frame, a long, thin, unnaturally jointed black hand with very long fingers slowly reaches toward the inside of the forearm. The forearm trembles slightly but cannot pull away. The fingertips stop a few millimeters above the skin. Slow, tense movement, deep black shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "noche",
+          "audio_omni": "Audio: a slow, dry creaking of joints, like knuckles cracking, over the heartbeat and the ringing. No music.",
           "notas": "Corta justo antes del contacto y entra directo el flash blanco de 4A."
         }
       ]
@@ -422,7 +526,8 @@
           "accion": "Tras un destello de luz, la familia de su infancia ríe en un parque soleado, en cámara lenta. Paz absoluta.",
           "prompt": "Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs and gently rocks the little girl in the yellow dress in her arms, the mother hugs them and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.",
           "negativo": "recuerdo",
-          "notas": "Entra con un flash blanco de 4 a 6 cuadros. Si Kling exagera el movimiento, añade «subtle movement» al prompt."
+          "audio_omni": "Audio: the ringing disappears; warm, echoing laughter of children and adults, birds singing, a gentle breeze and a woman softly humming a lullaby.",
+          "notas": "Entra con un flash blanco de 4 a 6 cuadros. Si el movimiento sale exagerado, añade «subtle movement» al prompt."
         }
       ]
     },
@@ -447,7 +552,8 @@
           "accion": "El recuerdo se congela y se rompe como cristal hacia la oscuridad.",
           "prompt": "The image of the happy family in the sunny park freezes like a photograph. Thin cracks spread across the entire picture like breaking glass, then it shatters into hundreds of sharp shards that fall away in slow motion into complete darkness. Glinting glass edges, cinematic, photorealistic.",
           "negativo": "base",
-          "notas": "Inicio: exporta el último cuadro de 4A. Alternativa sin Kling: el efecto de vidrio roto de CapCut sobre el final de 4A."
+          "audio_omni": "Audio: glass cracking and shattering with a long reverberant tail, and the high-pitched ringing returns. No music.",
+          "notas": "Inicio: exporta el último cuadro de 4A. Alternativa: el efecto de vidrio roto de CapCut sobre el final de 4A."
         },
         {
           "id": "5B",
@@ -461,6 +567,7 @@
           "accion": "Flash: una máscara blanca ladea la cabeza de forma antinatural.",
           "prompt": "Fast push-in toward the central figure's smooth white porcelain mask in a dark bedroom until the mask fills the frame. The mask slowly and unnaturally tilts its head sideways, almost ninety degrees, still staring at the camera. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "figuras",
+          "audio_omni": "Audio: a sharp distorted hit and a glitchy crackle. No music.",
           "notas": "Solo usarás 1 s. Genera 5 s y quédate con el instante más raro del ladeo."
         },
         {
@@ -474,6 +581,7 @@
           "accion": "Flash: el techo gira violentamente.",
           "prompt": "First-person POV looking up at a dark bedroom ceiling with a ceiling fan. The camera suddenly spins fast and violently around its axis; the ceiling and the fan whirl in circles with heavy motion blur, and the white masks at the edges smear into streaks of pale light. Disorienting and chaotic. Cold blue moonlight, photorealistic horror film look, heavy film grain.",
           "negativo": "figuras",
+          "audio_omni": "Audio: a violent whoosh and a distorted rumble. No music.",
           "notas": "Solo usarás 1 s."
         },
         {
@@ -487,6 +595,7 @@
           "accion": "Flash: la mano oscura se retira; Alex cierra el puño y recupera el brazo.",
           "prompt": "Close-up of a young man's left forearm lying on a dark bed sheet in cold blue moonlight. The long black shadowy hand quickly pulls back into the darkness and disappears. The fingers twitch, then the hand clenches into a tight fist and the whole arm jerks upward, out of the frame. Sudden, fast movement, photorealistic horror film look, heavy film grain.",
           "negativo": "noche",
+          "audio_omni": "Audio: a sharp impact as the arm jerks free and a short gasp. No music.",
           "notas": "Solo usarás 1 s: el instante del puño."
         },
         {
@@ -500,6 +609,7 @@
           "accion": "Alex se incorpora de golpe, empapado en sudor frío, jadeando.",
           "prompt": "Medium shot of Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lying on his back in bed in a dark bedroom. Suddenly he sits bolt upright, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "noche",
+          "audio_omni": "Audio: a huge, desperate gasp for air, then heavy, ragged breathing and the creak of the bed. No music.",
           "notas": "Si tarda en incorporarse, acelera el clip en la edición."
         },
         {
@@ -513,6 +623,7 @@
           "accion": "Mira alrededor: la esquina donde estaban las figuras está vacía. Solo la luz de la luna. Silencio.",
           "prompt": "First-person POV from a bed in a dark bedroom, breathing heavily. The camera rises slightly as if sitting up, slowly pushes in toward the dark corner between the half-open door and the dresser, which is completely empty, then pans nervously to the right toward the window. The room is empty and silent; only cold moonlight comes in through the window. Subtle handheld movement, low-key lighting, photorealistic horror film look, heavy film grain.",
           "negativo": "noche",
+          "audio_omni": "Audio: only his heavy breathing slowly calming down, and deep silence in the room. No music.",
           "notas": "Sin música aquí: solo respiración y silencio."
         }
       ]
@@ -538,7 +649,8 @@
           "accion": "Luz de mañana. Alex desayuna chilaquiles solo, pálido, con la mirada perdida.",
           "prompt": "Wide shot of a Mexican family dining room in the morning, soft natural daylight coming through a window. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.",
           "negativo": "base",
-          "notas": "Si Kling cambia la comida, añade «the plate of chilaquiles stays the same»."
+          "audio_omni": "Audio: a calm morning: birds outside, a distant street vendor calling out, the soft scrape of a fork on a clay plate and a quiet refrigerator hum. No music.",
+          "notas": "Si cambia la comida, añade «the plate of chilaquiles stays the same»."
         },
         {
           "id": "6B",
@@ -550,7 +662,8 @@
           "camara": "Primer plano, fijo.",
           "accion": "Siente un ardor sordo y baja la mirada hacia su brazo izquierdo.",
           "prompt": "Close-up of Alex, a pale and exhausted 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a gray t-shirt, sitting at a dining table in soft morning daylight. He stares blankly into nothing. Suddenly he frowns slightly, as if feeling a dull, burning pain, and slowly lowers his gaze toward his left arm. Neutral, slightly desaturated colors, photorealistic, 35mm film look, shallow depth of field, natural film grain.",
-          "negativo": "base"
+          "negativo": "base",
+          "audio_omni": "Audio: the same quiet morning ambience; a low, ominous tone slowly rises as he looks down. No music."
         },
         {
           "id": "6C",
@@ -563,6 +676,7 @@
           "accion": "Levanta el antebrazo: una incisión con suturas quirúrgicas perfectas. Corte a negro.",
           "prompt": "Close-up of a young man's left forearm with brown skin in soft morning daylight, the inside of the forearm facing the camera. A long, straight, fresh surgical incision runs along it, slightly reddened, closed with neat, perfectly spaced black surgical stitches. The forearm rises slightly into the light and turns a little toward the camera while the fingers tremble. The camera slowly pushes in toward the stitches. Clinical and precise, realistic skin texture, no blood, photorealistic, 35mm film look, shallow depth of field.",
           "negativo": "herida",
+          "audio_omni": "Audio: the low ominous tone swells while the morning ambience fades away, ending in total silence. No music.",
           "notas": "Deja «clinical» y «no blood» para no activar el filtro de contenido. Revisa que sea el brazo izquierdo."
         }
       ]

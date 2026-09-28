@@ -36,7 +36,7 @@ Son las imágenes que faltan para animar los planos. Genéralas **antes** que lo
 Character reference sheet of the young man in the reference image: a 22-year-old Mexican man with brown skin, short black hair with faded sides, a thin mustache and light stubble, tired eyes with dark circles, slim build. Three views side by side in one image: front, three-quarter and profile, neutral expression, wearing a plain heather-gray crew-neck t-shirt, neutral gray studio background, soft even lighting. Photorealistic, detailed skin texture, the same face in all three views.
 ```
 
-> Crea el Element «Alex» con el recorte + esta hoja. Si la cara de frente no se parece, genera varias y quédate con la más fiel al perfil.
+> Úsala con el recorte como referencia de Alex (Element en Kling, ingrediente en Flow). Si la cara de frente no se parece, genera varias y quédate con la más fiel al perfil.
 
 <a id="k1"></a>
 

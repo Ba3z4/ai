@@ -7,7 +7,7 @@ Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su 
 **Formato:** 16:9 · 24 fps · 1080p (4K en tomas finales si tu plan lo permite)  
 **Planos:** 20 (1 opcional) · **Montaje:** 1:50 · **Generación:** 160 s por pasada completa
 
-Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). La versión visual, con botones para copiar, es [storyboard.html](storyboard.html) (ábrela en el navegador).
+Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). La versión visual, con botones para copiar, es [storyboard.html](storyboard.html) (ábrela en el navegador). Los mismos planos adaptados a Gemini Omni están en [gemini-omni.md](gemini-omni.md).
 
 ## Antes de empezar
 
@@ -235,7 +235,7 @@ Static first-person POV from a bed in a dark bedroom at night, as if lying on th
 blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, bright light, daylight, warm colors, colorful, cheerful
 ```
 
-> El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en Kling.
+> El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en el generador.
 
 <a id="2b"></a>
 
@@ -262,7 +262,7 @@ Static first-person POV from a bed in a dark bedroom at night. The camera does n
 blurry, low quality, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, bright light, daylight, colorful, walking legs, visible feet, realistic human faces, smiling masks, clown makeup, gore, blood
 ```
 
-> Único plano con fotograma inicial y final: Kling interpola la aparición. Por eso K2 se hace sobre la ref. 01, con el mismo encuadre.
+> Único plano con fotograma inicial y final: la IA interpola la aparición. Por eso K2 se hace sobre la ref. 01, con el mismo encuadre.
 
 <a id="2c"></a>
 
@@ -434,7 +434,7 @@ Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden
 blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, dark, gloomy, night, horror, masks, fog
 ```
 
-> Entra con un flash blanco de 4 a 6 cuadros. Si Kling exagera el movimiento, añade «subtle movement» al prompt.
+> Entra con un flash blanco de 4 a 6 cuadros. Si el movimiento sale exagerado, añade «subtle movement» al prompt.
 
 ## Escena 5 · El despertar
 
@@ -469,7 +469,7 @@ The image of the happy family in the sunny park freezes like a photograph. Thin 
 blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, warped text, gibberish text, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, oversaturated, flickering
 ```
 
-> Inicio: exporta el último cuadro de 4A. Alternativa sin Kling: el efecto de vidrio roto de CapCut sobre el final de 4A.
+> Inicio: exporta el último cuadro de 4A. Alternativa: el efecto de vidrio roto de CapCut sobre el final de 4A.
 
 <a id="5b"></a>
 
@@ -633,7 +633,7 @@ Wide shot of a Mexican family dining room in the morning, soft natural daylight 
 blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, warped text, gibberish text, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, oversaturated, flickering
 ```
 
-> Si Kling cambia la comida, añade «the plate of chilaquiles stays the same».
+> Si cambia la comida, añade «the plate of chilaquiles stays the same».
 
 <a id="6b"></a>
 

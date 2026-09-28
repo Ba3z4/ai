@@ -12,6 +12,7 @@ Corto de terror de 1:50 para producir en Kling AI a partir de un guion de 6 esce
 | [biblia-visual.md](biblia-visual.md) | Tono, formato, guion de color, personajes, locaciones y reglas para escribir prompts |
 | [keyframes.md](keyframes.md) | Las 11 imágenes que faltan (K0–K10), con su prompt. Se generan primero |
 | [shotlist-kling.md](shotlist-kling.md) | Ajustes de Kling, continuidad, línea de tiempo y los 20 planos con prompt, negative prompt, duración y fotogramas |
+| [gemini-omni.md](gemini-omni.md) | Los mismos 20 planos adaptados a Gemini Omni (app de Gemini o Google Flow), con prompt maestro y arreglos rápidos |
 | [postproduccion.md](postproduccion.md) | Transiciones, sonido, voces, música, color, título y exportación |
 | [storyboard.html](storyboard.html) | Todo lo anterior en una página visual con botones para copiar. Ábrela en el navegador |
 | [referencias/](referencias/) | Tus 5 imágenes de referencia, numeradas |

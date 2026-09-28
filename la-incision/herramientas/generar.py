@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera shotlist-kling.md, keyframes.md y storyboard.html a partir de plan.json.
+"""Genera shotlist-kling.md, gemini-omni.md, keyframes.md y storyboard.html a partir de plan.json.
 
 Uso:
     python3 herramientas/generar.py
@@ -81,6 +81,39 @@ class Indice:
         return None
 
 
+# ---------------------------------------------------------------- Gemini Omni
+
+ORDINALES = ("first", "second", "third", "fourth")
+REFERENCIA_OMNI = {"Alex": "a character reference for Alex", "Figura": "a character reference for the masked figures"}
+
+
+def omni_duracion(p):
+    """Gemini Omni hace clips de 3, 5 o 10 s."""
+    if p["uso"] <= 1:
+        return 3
+    return 5 if p["genera"] <= 5 else 10
+
+
+def omni_adjuntos(p):
+    """IDs de las imágenes que se adjuntan, en orden, con su papel."""
+    adjuntos = [(p["inicio"], "primer cuadro")]
+    if p.get("fin"):
+        adjuntos.append((p["fin"], "último cuadro"))
+    return adjuntos + [("el-" + e.lower(), "referencia") for e in p["elements"]]
+
+
+def omni_prompt(p):
+    papeles = ["the exact first frame"] + (["the exact last frame"] if p.get("fin") else [])
+    papeles += [REFERENCIA_OMNI[e] for e in p["elements"]]
+    if len(papeles) == 1:
+        imagenes = "The attached image is the exact first frame."
+    else:
+        imagenes = "; ".join(f"the {ORDINALES[i]} attached image is {papel}" for i, papel in enumerate(papeles))
+        imagenes = imagenes[0].upper() + imagenes[1:] + "."
+    return (f"Shot {p['id']}, {omni_duracion(p)} seconds, 16:9. {imagenes} {p['prompt']} {p['audio_omni']} "
+            "No subtitles or on-screen text.")
+
+
 # ---------------------------------------------------------------- Markdown
 
 def md_bloque(texto):
@@ -107,7 +140,8 @@ def shotlist_md(plan, indice):
          f"**Planos:** {len(planos)} ({opcionales} opcional) · **Montaje:** {mmss(total)} · "
          f"**Generación:** {sum(p['genera'] for p in planos)} s por pasada completa", "",
          "Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). "
-         "La versión visual, con botones para copiar, es [storyboard.html](storyboard.html) (ábrela en el navegador).", "",
+         "La versión visual, con botones para copiar, es [storyboard.html](storyboard.html) (ábrela en el navegador). "
+         "Los mismos planos adaptados a Gemini Omni están en [gemini-omni.md](gemini-omni.md).", "",
          "## Antes de empezar", "", "### Flujo", ""]
     L += [f"{i}. {paso}" for i, paso in enumerate(plan["flujo"], 1)]
     L += ["", "### Ajustes en Kling", "", "| Ajuste | Valor |", "|---|---|"]
@@ -151,6 +185,38 @@ def shotlist_md(plan, indice):
                 L += ["**Audio nativo** (opcional: pégalo al final del prompt si activas el audio)", "", md_bloque(p["audio"]), ""]
             if p.get("notas"):
                 L += [f"> {p['notas']}", ""]
+    return "\n".join(L).rstrip() + "\n"
+
+
+def gemini_omni_md(plan, indice):
+    omni = plan["omni"]
+    planos = todos_los_planos(plan)
+    _, total = secuencia(plan)
+    L = [AVISO, "", f"# {plan['titulo']} · Prompts para Gemini Omni", "",
+         "Los mismos 20 planos del [shotlist](shotlist-kling.md), adaptados a Gemini Omni (app de Gemini o Google Flow): "
+         "clips de 3, 5 o 10 s, sonido generado junto con la imagen y la imagen adjunta como primer cuadro. "
+         "Las imágenes que faltan (K0–K10) se generan con los prompts de [keyframes.md](keyframes.md).", "",
+         f"**Planos:** {len(planos)} · **Montaje:** {mmss(total)} · "
+         f"**Generación:** {sum(omni_duracion(p) for p in planos)} s por pasada completa", "", "## Flujo", ""]
+    L += [f"{i}. {paso}" for i, paso in enumerate(omni["flujo"], 1)]
+    L += ["", "## Ajustes", "", "| Ajuste | Valor |", "|---|---|"] + [f"| {k} | {v} |" for k, v in omni["ajustes"]]
+    L += ["", "## Prompt maestro", "",
+          "Pégalo en un chat nuevo de la app de Gemini con `elements/alex-rostro.jpg` y `elements/figura-enmascarada.jpg` "
+          "adjuntos, en ese orden. En Flow no hace falta.", "", md_bloque(omni["prompt_maestro"]), ""]
+    for esc in plan["escenas"]:
+        L += [f"## Escena {esc['num']} · {esc['titulo']}", "", f"`{esc['slug']}`", ""]
+        for p in esc["planos"]:
+            adjuntos = " · ".join(f"{i}) {md_cuadro(indice, ident)} ({papel})"
+                                  for i, (ident, papel) in enumerate(omni_adjuntos(p), 1))
+            L += [f'<a id="{p["id"].lower()}"></a>', "",
+                  f"### {p['id']} · {p['titulo']}" + (" (opcional)" if p.get("opcional") else ""), "",
+                  f"**Clip:** {omni_duracion(p)} s · **Usa en el montaje:** {p['uso']} s  ",
+                  f"**Adjunta:** {adjuntos}  ", f"**Qué pasa:** {p['accion']}", "", md_bloque(omni_prompt(p)), ""]
+            nota = p.get("notas_omni") or p.get("notas")
+            if nota:
+                L += [f"> {nota}", ""]
+    L += ["## Arreglos rápidos", "", "Si una toma sale casi bien, pide un solo cambio en el mismo chat en vez de regenerarla.", "",
+          "| Si pasa esto | Escribe |", "|---|---|"] + [f"| {a} | {b} |" for a, b in omni["arreglos"]]
     return "\n".join(L).rstrip() + "\n"
 
 
@@ -239,6 +305,10 @@ a{color:inherit;text-underline-offset:3px}
   background:var(--surface);font:500 13px/1 var(--sans);text-decoration:none}
 .jump a:hover{border-color:var(--ink)}
 .jump i{width:8px;height:8px;border-radius:50%;background:var(--luz)}
+.motor{flex:0 0 auto;display:inline-flex;border:1px solid var(--ink);border-radius:999px;overflow:hidden;margin-right:6px}
+.motor button{padding:7px 13px;border:0;background:transparent;color:var(--ink);font:600 13px/1 var(--sans);cursor:pointer}
+.motor button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.page[data-motor="omni"] .solo-kling,.page[data-motor="kling"] .solo-omni{display:none}
 
 .block{padding-block:48px 8px}
 .sec{margin:0 0 6px;font:700 clamp(28px,5vw,40px)/1.1 var(--serif);text-wrap:balance}
@@ -282,6 +352,8 @@ th{font:600 11px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;c
 .ajustes dt{font-weight:600}
 .ajustes dd{margin:0}
 @media (max-width:520px){.ajustes div{grid-template-columns:minmax(0,1fr);gap:2px}}
+@media (min-width:521px){.arreglos div{grid-template-columns:13em minmax(0,1fr)}}
+.maestro{display:grid;gap:10px}
 .elements{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px}
 .element{margin:0;display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;align-items:start;padding:14px;
   border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
@@ -399,6 +471,23 @@ SCRIPT = """
     try { navigator.clipboard.writeText(el.textContent).then(ok, fallo); } catch (e) { fallo(); }
   });
 
+  var pagina = document.querySelector('.page');
+  function usarMotor(m) {
+    pagina.setAttribute('data-motor', m);
+    document.querySelectorAll('.motor button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-motor') === m));
+    });
+  }
+  var motor = null;
+  try { motor = localStorage.getItem('la-incision:motor'); } catch (e) {}
+  if (motor === 'omni' || motor === 'kling') usarMotor(motor);
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.motor button');
+    if (!b) return;
+    usarMotor(b.getAttribute('data-motor'));
+    try { localStorage.setItem('la-incision:motor', b.getAttribute('data-motor')); } catch (e) {}
+  });
+
   var CLAVE = 'la-incision:listo', estado = {};
   try { estado = JSON.parse(localStorage.getItem(CLAVE) || '{}') || {}; } catch (e) { estado = {}; }
   var casillas = Array.prototype.slice.call(document.querySelectorAll('input[data-listo]'));
@@ -506,18 +595,27 @@ def plano_html(plan, indice, p):
         destino = f"#k-{h(alt)}" if alt in indice.kfs else "#referencias"
         cuadros += f'<p class="alt">Otro inicio posible: <a href="{destino}">{h(indice.etiqueta(alt))}</a></p>'
     opcional = '<span class="tag">Opcional</span>' if p.get("opcional") else ""
-    specs = (f'<div><dt>Genera</dt><dd>{p["genera"]} s</dd></div><div><dt>Usa</dt><dd>{p["uso"]} s</dd></div>'
-             f'<div><dt>Elements</dt><dd>{h(", ".join(p["elements"]) or "—")}</dd></div>'
+    adjuntos = " · ".join(f"{i}) {indice.corta(ident)} ({papel})" for i, (ident, papel) in enumerate(omni_adjuntos(p), 1))
+    specs = (f'<div class="solo-kling"><dt>Genera</dt><dd>{p["genera"]} s</dd></div>'
+             f'<div class="solo-omni"><dt>Clip</dt><dd>{omni_duracion(p)} s</dd></div>'
+             f'<div><dt>Usa</dt><dd>{p["uso"]} s</dd></div>'
+             f'<div class="solo-kling"><dt>Elements</dt><dd>{h(", ".join(p["elements"]) or "—")}</dd></div>'
+             f'<div class="ancho solo-omni"><dt>Adjunta, en este orden</dt><dd>{h(adjuntos)}</dd></div>'
              f'<div class="ancho"><dt>Cámara</dt><dd>{h(p["camara"])}</dd></div>')
     partes = [f'<p class="accion">{h(p["accion"])}</p>', f'<dl class="specs">{specs}</dl>',
-              bloque_html(f"pr-{pid}", "Prompt", p["prompt"]),
-              f'<details class="mas"><summary>Negative prompt</summary>'
+              f'<div class="solo-omni">{bloque_html(f"po-{pid}", "Prompt para Gemini Omni", omni_prompt(p))}</div>',
+              f'<div class="solo-kling">{bloque_html(f"pr-{pid}", "Prompt para Kling", p["prompt"])}</div>',
+              f'<details class="mas solo-kling"><summary>Negative prompt</summary>'
               f'{bloque_html(f"ng-{pid}", "Negative prompt", plan["negativos"][p["negativo"]])}</details>']
     if p.get("audio"):
-        partes.append(f'<details class="mas"><summary>Audio nativo (opcional)</summary>'
+        partes.append(f'<details class="mas solo-kling"><summary>Audio nativo (opcional)</summary>'
                       f'<p class="pista">Pégalo al final del prompt solo si activas el audio de Kling.</p>'
                       f'{bloque_html(f"au-{pid}", "Audio nativo", p["audio"])}</details>')
-    if p.get("notas"):
+    if p.get("notas_omni"):
+        partes.append(f'<p class="nota solo-omni"><b>Nota.</b> {h(p["notas_omni"])}</p>')
+        if p.get("notas"):
+            partes.append(f'<p class="nota solo-kling"><b>Nota.</b> {h(p["notas"])}</p>')
+    elif p.get("notas"):
         partes.append(f'<p class="nota"><b>Nota.</b> {h(p["notas"])}</p>')
     return (f'<article class="card" id="p-{h(pid)}"><div class="media">{cuadros}</div><div class="cuerpo">'
             f'<div class="cab"><span class="sid">{h(pid)}</span><h3>{h(p["titulo"])}</h3>{opcional}{casilla("plano", pid)}</div>'
@@ -563,8 +661,12 @@ def contenido_html(plan):
     nav = ['<a href="#montaje">Montaje</a>', '<a href="#preparacion">Preparación</a>',
            '<a href="#continuidad">Continuidad</a>', '<a href="#keyframes">Keyframes</a>']
     nav += [f'<a class="luz-{e["luz"]}" href="#esc-{e["num"]}"><i></i>Esc. {e["num"]}</a>' for e in plan["escenas"]]
+    omni = plan["omni"]
     flujo = "".join(f"<li>{h(paso)}</li>" for paso in plan["flujo"])
     ajustes = "".join(f"<div><dt>{h(k)}</dt><dd>{h(v)}</dd></div>" for k, v in plan["ajustes"])
+    flujo_omni = "".join(f"<li>{h(paso)}</li>" for paso in omni["flujo"])
+    ajustes_omni = "".join(f"<div><dt>{h(k)}</dt><dd>{h(v)}</dd></div>" for k, v in omni["ajustes"])
+    arreglos = "".join(f"<div><dt>{h(k)}</dt><dd>{h(v)}</dd></div>" for k, v in omni["arreglos"])
     elements = "".join(
         f'<figure class="element"><img src="{h(e["imagen"])}" alt="Element {h(e["id"])}" decoding="async">'
         f'<figcaption><b>{h(e["id"])}</b><p>{h(e["fuente"])}</p><p class="usa">Úsalo en {h(e["usar_en"])}</p></figcaption></figure>'
@@ -578,21 +680,21 @@ def contenido_html(plan):
         f'<p><b>{h(c["titulo"])}.</b> {h(c["detalle"])}</p></li>' for c in plan["continuidad"])
     keyframes = "".join(keyframe_html(indice, k) for k in plan["keyframes"])
     escenas = "".join(escena_html(plan, indice, esc) for esc in plan["escenas"])
-    return f"""<div class="page" lang="es">
+    return f"""<div class="page" lang="es" data-motor="omni">
 <header>
-<p class="eyebrow">Plan de producción para Kling AI</p>
+<p class="eyebrow">Plan de producción para Gemini Omni y Kling AI</p>
 <h1 class="title">{h(plan["titulo"])}</h1>
 <p class="logline">{h(plan["logline"])}</p>
 <dl class="meta">
 <div><dt>Planos</dt><dd>{len(planos)}</dd></div>
 <div><dt>Keyframes</dt><dd>{len(plan["keyframes"])}</dd></div>
 <div><dt>Montaje</dt><dd>{mmss(total)}</dd></div>
-<div><dt>Generación</dt><dd>{sum(p["genera"] for p in planos)} s por pasada</dd></div>
+<div><dt>Generación</dt><dd><span class="solo-omni">{sum(omni_duracion(p) for p in planos)} s por pasada</span><span class="solo-kling">{sum(p["genera"] for p in planos)} s por pasada</span></dd></div>
 <div><dt>Formato</dt><dd>16:9</dd></div>
 <div><dt>Avance</dt><dd id="avance">0/{len(planos)} planos · 0/{len(plan["keyframes"])} keyframes</dd></div>
 </dl>
 </header>
-<nav class="jump" aria-label="Secciones">{"".join(nav)}</nav>
+<nav class="jump" aria-label="Secciones"><div class="motor" role="group" aria-label="Prompts para"><button type="button" data-motor="omni" aria-pressed="true">Gemini Omni</button><button type="button" data-motor="kling" aria-pressed="false">Kling</button></div>{"".join(nav)}</nav>
 <main>
 <section class="block" id="montaje">
 <h2 class="sec">Montaje</h2>
@@ -602,10 +704,20 @@ def contenido_html(plan):
 <section class="block" id="preparacion">
 <h2 class="sec">Preparación</h2>
 <div class="prep">
-<div><h3 class="sub">Flujo</h3><ol class="flujo">{flujo}</ol></div>
-<div><h3 class="sub">Ajustes en Kling</h3><dl class="ajustes">{ajustes}</dl></div>
+<div><h3 class="sub">Flujo</h3><ol class="flujo solo-omni">{flujo_omni}</ol><ol class="flujo solo-kling">{flujo}</ol></div>
+<div><h3 class="sub solo-omni">Ajustes en Gemini Omni</h3><dl class="ajustes solo-omni">{ajustes_omni}</dl>
+<h3 class="sub solo-kling">Ajustes en Kling</h3><dl class="ajustes solo-kling">{ajustes}</dl></div>
 </div>
-<h3 class="sub">Elements</h3>
+<div class="solo-omni">
+<h3 class="sub" id="prompt-maestro">Prompt maestro</h3>
+<div class="maestro"><p class="pista">Pégalo en un chat nuevo de la app de Gemini con los dos recortes de abajo adjuntos: primero Alex, luego la figura. En Flow no hace falta.</p>
+{bloque_html("maestro", "Prompt maestro", omni["prompt_maestro"])}</div>
+<h3 class="sub" id="arreglos">Arreglos rápidos</h3>
+<p class="pista">Si una toma sale casi bien, escribe el arreglo en el mismo chat en vez de regenerarla. Un cambio por mensaje.</p>
+<dl class="ajustes arreglos">{arreglos}</dl>
+</div>
+<h3 class="sub">Referencias de personaje</h3>
+<p class="pista">En Kling son Elements. En Gemini Omni se adjuntan como referencia; en Flow, como ingredientes.</p>
 <div class="elements">{elements}</div>
 <h3 class="sub" id="referencias">Tus referencias</h3>
 <div class="refs">{refs}</div>
@@ -646,11 +758,12 @@ def main():
     plan = cargar()
     indice = Indice(plan)
     (RAIZ / "shotlist-kling.md").write_text(shotlist_md(plan, indice), encoding="utf-8")
+    (RAIZ / "gemini-omni.md").write_text(gemini_omni_md(plan, indice), encoding="utf-8")
     (RAIZ / "keyframes.md").write_text(keyframes_md(plan, indice), encoding="utf-8")
     (RAIZ / "storyboard.html").write_text(pagina(plan, completa=True), encoding="utf-8")
     if args.artefacto:
         args.artefacto.write_text(pagina(plan, completa=False), encoding="utf-8")
-    print("Listo: shotlist-kling.md, keyframes.md y storyboard.html")
+    print("Listo: shotlist-kling.md, gemini-omni.md, keyframes.md y storyboard.html")
 
 
 if __name__ == "__main__":
