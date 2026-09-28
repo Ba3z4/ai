@@ -10,6 +10,7 @@ Cómo armar el corto con las tomas de Kling. El orden y la duración exacta de c
 ## Preparar el material
 
 - Renombra cada toma elegida con su ID: `1A.mp4`, `1B.mp4`… Así el montaje sigue el shotlist sin buscar.
+- Con las tomas en `tomas/`, `python3 herramientas/armar_corte.py` arma un corte bruto (`corte-bruto.mp4`) con cada plano recortado a su duración, el negro y el título. Las tomas que falten salen como tarjetas grises. Es la base para editar el sonido y el color.
 - Si Kling te entrega a 30 fps, deja que el editor convierta a 24 y revisa que no haya tirones en los movimientos lentos.
 - Si un plano quedó corto, alárgalo con la opción de extender de Kling o ralentízalo al 80 % con interpolación de cuadros (en DaVinci: *Optical Flow*).
 - Cuando un clip empiece o termine con deformaciones, recorta esos cuadros: por eso cada plano se genera más largo de lo que se usa.

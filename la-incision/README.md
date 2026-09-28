@@ -17,6 +17,8 @@ Corto de terror de 1:50 para producir en Kling AI a partir de un guion de 6 esce
 | [referencias/](referencias/) | Tus 5 imágenes de referencia, numeradas |
 | [elements/](elements/) | Recortes listos para crear los Elements «Alex» y «Figura» en Kling |
 | [plan.json](plan.json) | Los datos de planos y keyframes de los que salen el shotlist, los keyframes y el storyboard |
+| [guia-para-claude-en-tu-pc.md](guia-para-claude-en-tu-pc.md) | Instrucciones para que Claude Desktop (con Computer use) produzca todo en Kling desde tu PC |
+| [herramientas/armar_corte.py](herramientas/armar_corte.py) | Arma el corte bruto con las tomas de `tomas/` (necesita Python 3 y ffmpeg) |
 
 ## Flujo de trabajo
 

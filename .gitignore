@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+
+# Videos generados: pesan demasiado para git
+*.mp4
+*.mov
+*.webm
+*.mkv
