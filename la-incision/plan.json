@@ -1,0 +1,571 @@
+{
+  "titulo": "La Incisión",
+  "logline": "Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su brazo una incisión con suturas perfectas: no fue un sueño.",
+  "formato": "16:9 · 24 fps · 1080p (4K en tomas finales si tu plan lo permite)",
+  "repo": "https://github.com/Ba3z4/ai",
+  "flujo": [
+    "Sube las 5 referencias a Kling y crea los Elements «Alex» y «Figura» con los recortes de la carpeta elements/.",
+    "Genera los keyframes K0–K10 (imágenes 16:9) y revisa la lista de continuidad.",
+    "Genera los planos escena por escena: primero un borrador en modo rápido y luego la toma final.",
+    "Elige la mejor toma de cada plano y guárdala con su ID (por ejemplo 3A_v2.mp4).",
+    "Graba o genera las voces y junta los efectos de sonido de cada escena.",
+    "Monta en CapCut o DaVinci Resolve siguiendo la línea de tiempo y postproduccion.md."
+  ],
+  "ajustes": [
+    ["Modelo", "Kling 3.0 o la versión más reciente de tu plan. Borradores en modo rápido (Turbo o Estándar); tomas finales en Pro o alta calidad."],
+    ["Proporción", "16:9. Tus referencias ya vienen en horizontal."],
+    ["Modo", "Imagen a video con fotograma inicial en todos los planos. Fotograma final solo en 2B."],
+    ["Duración", "La que marca «Genera» (5 o 10 s). Kling 3.0 llega a 15 s, pero los clips cortos se deforman menos."],
+    ["Elements", "«Alex» y «Figura», en los planos que los indican, si tu versión permite combinarlos con el fotograma inicial. Si no, manda el fotograma inicial."],
+    ["Idioma", "Prompts en inglés, que Kling sigue mejor. Los diálogos van en español, entre comillas."],
+    ["Audio nativo", "Apagado por defecto: el sonido se arma en la edición. Enciéndelo solo en 1A–1C si quieres que Kling genere las voces en español."],
+    ["Negative prompt", "Pégalo cuando tu versión muestre el campo."],
+    ["Multi-shot", "Opcional en Kling 3.0: agrupa planos de una misma escena (hasta 6) pegando cada prompt como un plano."],
+    ["Intentos", "Calcula 2 o 3 generaciones por plano. Una pasada completa son unos 160 s de video."]
+  ],
+  "elements": [
+    {
+      "id": "Alex",
+      "imagen": "elements/alex-rostro.jpg",
+      "fuente": "Recorte del rostro de Alex (ref. 04) + la hoja de personaje K0. La ref. solo lo muestra de perfil; K0 le da a Kling su cara de frente.",
+      "usar_en": "1A, 1C, 2C, 3B, 5E, 6A, 6B y los insertos del brazo (3C, 5D, 6C) para mantener el tono de piel."
+    },
+    {
+      "id": "Figura",
+      "imagen": "elements/figura-enmascarada.jpg",
+      "fuente": "Recorte de la figura central de la ref. 05: máscara, cabello y tela negra desgarrada.",
+      "usar_en": "2B, 2D, 3A, 5B y 5C."
+    }
+  ],
+  "referencias": [
+    {
+      "id": "ref01",
+      "archivo": "referencias/01-habitacion-noche.jpg",
+      "titulo": "Habitación de Alex, noche",
+      "descripcion": "POV desde la cama: ventilador de techo, ropero, puerta entreabierta, cómoda con espejo, ventana con farola y reloj rojo en 03:14.",
+      "usa_en": "2A, 2B (inicio), 5F · base de K2, K4 y K6"
+    },
+    {
+      "id": "ref02",
+      "archivo": "referencias/02-recuerdo-parque.jpg",
+      "titulo": "El recuerdo en el parque",
+      "descripcion": "La abuela, papá y mamá jóvenes, la niña de vestido amarillo y el niño en hombros (Alex de niño), en hora dorada.",
+      "usa_en": "4A"
+    },
+    {
+      "id": "ref03",
+      "archivo": "referencias/03-pov-chat.jpg",
+      "titulo": "POV del chat con Mariana",
+      "descripcion": "Las manos de Alex con el celular en la cena y la pelea con Mariana en pantalla.",
+      "usa_en": "1B · base de K1"
+    },
+    {
+      "id": "ref04",
+      "archivo": "referencias/04-comedor-cena.jpg",
+      "titulo": "La cena familiar",
+      "descripcion": "Mamá, papá, hermana y Alex (polo a rayas) en el comedor. En su celular se lee «Todo está bien».",
+      "usa_en": "1A · base de K0, K7 y K10"
+    },
+    {
+      "id": "ref05",
+      "archivo": "referencias/05-figuras-enmascaradas.jpg",
+      "titulo": "Las tres figuras",
+      "descripcion": "Figuras altas de tela negra y cabello largo con máscaras blancas. La habitación no es la de la ref. 01 (ver continuidad).",
+      "usa_en": "5B · Element «Figura» · base de K2, K4 y K5"
+    }
+  ],
+  "continuidad": [
+    {
+      "nivel": "Corrige",
+      "titulo": "La ref. 05 es otra habitación",
+      "detalle": "Tiene papel tapiz, dos ventanas y la cómoda a la izquierda; no coincide con la ref. 01. Usa la 05 solo para las figuras y genera K2 y K4 sobre la habitación de la ref. 01."
+    },
+    {
+      "nivel": "Corrige",
+      "titulo": "La ref. 03 no coincide con la ref. 04",
+      "detalle": "Al fondo hay otra familia (dos señores mayores y más gente), el celular tiene funda dorada y la pantalla mezcla la muesca de iPhone con botones de Android. Con el fondo muy desenfocado pasa; para ir a lo seguro, usa la ruta pro con K1."
+    },
+    {
+      "nivel": "Decide",
+      "titulo": "Máscaras con o sin facciones",
+      "detalle": "El guion dice «lisa, sin facciones»; en la ref. 05 tienen cuencas negras y rasgos suaves. Los prompts usan «smooth white porcelain masks with hollow black eyes». Para seguir el guion al pie de la letra, cambia esa frase por «completely featureless white masks, no eyes, no mouth» en todos los prompts."
+    },
+    {
+      "nivel": "Revisa",
+      "titulo": "Brazo izquierdo",
+      "detalle": "Los generadores suelen invertir izquierda y derecha. En K5, K9, 3C, 5D y 6C confirma que sea el izquierdo; si no, voltea la imagen horizontalmente antes de animarla."
+    },
+    {
+      "nivel": "Revisa",
+      "titulo": "Vestuario de Alex",
+      "detalle": "Polo blanca con rayas grises solo en la escena 1. Playera gris lisa de manga corta en la noche y en el desayuno, para que el antebrazo se vea en la escena 6."
+    },
+    {
+      "nivel": "Nota",
+      "titulo": "Anillo en la ref. 03",
+      "detalle": "Las manos llevan un anillo que se lee como de matrimonio, y Alex tiene 22 años y novia. Quítalo en K1 o ignóralo."
+    },
+    {
+      "nivel": "Nota",
+      "titulo": "Celular sobre la mesa",
+      "detalle": "El guion dice «debajo de la mesa», pero en las refs 03 y 04 está sobre la mesa. No cambia la historia."
+    },
+    {
+      "nivel": "Nota",
+      "titulo": "El recuerdo es el pasado",
+      "detalle": "En la ref. 02 los papás son más jóvenes (el papá sin bigote) y aparece la abuela: léelo como la infancia de Alex, con él de niño en los hombros de su papá. El papá usa una polo a rayas, como Alex en la cena."
+    },
+    {
+      "nivel": "Nota",
+      "titulo": "El reloj marca 03:14",
+      "detalle": "Se ve en la ref. 01 y en todo lo que salga de ella. Mantén esa hora en las escenas 2, 3 y 5, o usa la idea del «tiempo perdido» de la biblia visual."
+    }
+  ],
+  "negativos": {
+    "base": "blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, warped text, gibberish text, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, oversaturated, flickering",
+    "noche": "blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, bright light, daylight, warm colors, colorful, cheerful",
+    "figuras": "blurry, low quality, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, bright light, daylight, colorful, walking legs, visible feet, realistic human faces, smiling masks, clown makeup, gore, blood",
+    "recuerdo": "blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, dark, gloomy, night, horror, masks, fog",
+    "herida": "blurry, low quality, deformed hands, extra fingers, extra limbs, morphing, subtitles, captions, watermark, logo, cartoon, anime, plastic CGI look, flickering, blood, gore, open wound, pus, bruises, dirty skin"
+  },
+  "keyframes": [
+    {
+      "id": "K0",
+      "titulo": "Hoja de personaje de Alex",
+      "base": ["el-alex"],
+      "usa_en": "Element «Alex»",
+      "como": "Imagen con referencia de rostro o personaje: sube elements/alex-rostro.jpg.",
+      "prompt": "Character reference sheet of the young man in the reference image: a 22-year-old Mexican man with brown skin, short black hair with faded sides, a thin mustache and light stubble, tired eyes with dark circles, slim build. Three views side by side in one image: front, three-quarter and profile, neutral expression, wearing a plain heather-gray crew-neck t-shirt, neutral gray studio background, soft even lighting. Photorealistic, detailed skin texture, the same face in all three views.",
+      "notas": "Crea el Element «Alex» con el recorte + esta hoja. Si la cara de frente no se parece, genera varias y quédate con la más fiel al perfil."
+    },
+    {
+      "id": "K1",
+      "titulo": "Celular con pantalla verde (ruta pro)",
+      "opcional": true,
+      "base": ["ref03"],
+      "usa_en": "1B (inicio, ruta pro)",
+      "como": "Edición de imagen sobre la ref. 03.",
+      "prompt": "Edit the reference image: replace everything on the phone screen with a flat, evenly lit, solid bright green screen (#00FF00) with no interface, no text and no reflections, and remove the ring from the finger. Keep the hands, the phone, the dinner table, the blurred family in the background and the warm lighting exactly the same.",
+      "notas": "Solo si vas a meter el chat real en la edición (croma + seguimiento). Así el texto se lee perfecto y puedes empezar en «Todo está bien» antes de la pelea."
+    },
+    {
+      "id": "K2",
+      "titulo": "La habitación con las tres figuras",
+      "base": ["ref01", "ref05"],
+      "usa_en": "2B (fin) · 2D (inicio)",
+      "como": "Edición con dos referencias: la ref. 01 como imagen base y la ref. 05 para las figuras.",
+      "prompt": "Keep the dark bedroom from the first reference image exactly as it is: same camera angle from the bed, same wardrobe, half-open door, dresser with mirror, wall shelves, window with the streetlight and the red digital clock. Add the three tall, thin figures from the second reference image, standing in the far corner between the half-open door and the dresser and silently facing the bed: long bodies of tattered black cloth, long black hair and smooth white porcelain masks with hollow black eyes. They are partly swallowed by the shadows. Cold blue moonlight, deep black shadows, photorealistic horror film still, heavy film grain, 16:9.",
+      "notas": "Este cuadro y la ref. 01 deben tener el mismo encuadre: son el inicio y el fin de 2B."
+    },
+    {
+      "id": "K3",
+      "titulo": "Alex paralizado (primer plano)",
+      "base": ["el-alex", "K0"],
+      "usa_en": "2C · 3B",
+      "como": "Imagen con el Element o la referencia de personaje de Alex.",
+      "prompt": "Close-up of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, lying on his back in bed with his head on a dark gray pillow, wearing a plain gray t-shirt. His eyes are wide open in terror, his body is frozen and there is a thin layer of sweat on his forehead. Lit only by cold blue moonlight from a window, deep black shadows. Photorealistic horror film still, 35mm, shallow depth of field, film grain, 16:9."
+    },
+    {
+      "id": "K4",
+      "titulo": "POV al techo: las máscaras encima",
+      "base": ["ref01", "ref05"],
+      "usa_en": "3A · 5C",
+      "como": "Imagen con dos referencias: la ref. 01 (ventilador y ambiente) y la ref. 05 (figuras).",
+      "prompt": "First-person point of view lying on the back in bed, looking straight up at a dark bedroom ceiling with a dark wooden ceiling fan with white glass shades, like the fan in the first reference. Three smooth white porcelain masks with hollow black eyes, like the figures in the second reference, lean over the viewer from above, very close to the camera, filling most of the frame. Their long black hair hangs down toward the lens and their dark bodies merge with the darkness. Cold blue moonlight, deep black shadows, photorealistic horror film still, wide-angle lens, heavy film grain, 16:9."
+    },
+    {
+      "id": "K5",
+      "titulo": "El antebrazo y la mano oscura",
+      "base": ["el-alex", "ref05"],
+      "usa_en": "3C · 5D",
+      "como": "Imagen con referencia de piel (Alex) y de las figuras (ref. 05).",
+      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, resting palm up on a dark gray bed sheet at night, the sleeve of a gray t-shirt visible at the edge of the frame. From the darkness at the top of the frame, a long, thin, black shadowy hand with unnaturally long fingers reaches toward the inside of the forearm, almost touching it. Cold blue moonlight, deep black shadows, photorealistic horror film still, macro lens, heavy film grain, 16:9.",
+      "notas": "Revisa que sea el brazo IZQUIERDO. Si sale el derecho, voltea la imagen horizontalmente."
+    },
+    {
+      "id": "K6",
+      "titulo": "Alex acostado (plano medio)",
+      "base": ["el-alex", "ref01"],
+      "usa_en": "5E",
+      "como": "Imagen con el Element de Alex y la ref. 01 como referencia de la habitación.",
+      "prompt": "Medium side shot of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, lying on his back in a dark wooden sleigh bed with dark gray bedding, in the same dark bedroom as the second reference. His eyes are closed, he looks restless and there is sweat on his face. Cold blue moonlight from the window, ceiling fan above, dark wooden furniture. Photorealistic horror film still, 35mm, film grain, 16:9."
+    },
+    {
+      "id": "K7",
+      "titulo": "El comedor en la mañana",
+      "base": ["ref04", "el-alex"],
+      "usa_en": "6A · referencia de luz para K8 y K9",
+      "como": "Edición de la ref. 04 (mismo comedor) con el Element de Alex.",
+      "prompt": "The same Mexican dining room as the reference image, with the same textured walls, framed family photos, green arch and plants, but now in the morning with soft natural daylight coming through a window. The table is clean and all the other chairs are empty. The young man from the reference, now wearing a plain gray t-shirt, sits alone at the center of the table, pale and exhausted, in front of a clay plate of red chilaquiles with cream, crumbled fresh cheese and sliced onion, next to a cup of coffee. Neutral, slightly desaturated colors, quiet atmosphere, photorealistic 35mm film still, 16:9."
+    },
+    {
+      "id": "K8",
+      "titulo": "Alex en el desayuno (primer plano)",
+      "base": ["K7", "el-alex"],
+      "usa_en": "6B",
+      "como": "Imagen con el Element de Alex; usa K7 como referencia de luz y fondo.",
+      "prompt": "Close-up of the young man from the reference, a pale, exhausted 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, sitting at a wooden dining table in soft morning daylight. He stares blankly into nothing, with dark circles under his eyes. A textured wall with framed family photos is blurred in the background. Photorealistic, 35mm, shallow depth of field, film grain, 16:9."
+    },
+    {
+      "id": "K9",
+      "titulo": "La incisión",
+      "base": ["el-alex", "K7"],
+      "usa_en": "6C",
+      "como": "Imagen con referencia de piel (Alex) y K7 para la luz de la mañana.",
+      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, held up in soft morning daylight with the inside of the forearm facing the camera. A long, straight, fresh surgical incision runs along the forearm, slightly reddened and swollen, closed with neat, perfectly spaced black surgical stitches. Clinical and precise, no blood. A plate of chilaquiles on a wooden table is blurred in the background. Photorealistic, 50mm macro, shallow depth of field, realistic skin texture, 16:9.",
+      "notas": "Deja «clinical» y «no blood» para no activar el filtro de contenido. Brazo IZQUIERDO."
+    },
+    {
+      "id": "K10",
+      "titulo": "Alex en la cena (plano medio corto)",
+      "base": ["ref04"],
+      "usa_en": "1C",
+      "como": "Edición o reencuadre de la ref. 04.",
+      "prompt": "Medium close-up of the young man in the white and gray striped polo shirt from the reference image, sitting at the family dinner table at night, head down, looking at the phone in his hands, his tired face lit by the cold glow of the screen and turned slightly toward the camera. Behind him the family dinner is blurred into warm bokeh. Warm tungsten light from a hanging lamp, photorealistic 35mm film still, shallow depth of field, film grain, 16:9."
+    }
+  ],
+  "montaje_extras": [
+    {"despues_de": "1C", "id": "Negro", "titulo": "Corte a negro en silencio", "uso": 1},
+    {"despues_de": "6C", "id": "Título", "titulo": "«LA INCISIÓN» sobre negro", "uso": 4}
+  ],
+  "escenas": [
+    {
+      "num": 1,
+      "slug": "INT. COMEDOR CASA MEXICANA - NOCHE",
+      "titulo": "La cena",
+      "luz": "calida",
+      "resumen": "La familia cena y platica animada. Alex está ahí, pero su cabeza está en la pelea con Mariana.",
+      "color": "Ámbar de la lámpara colgante y paredes terracota. La luz fría del celular en la cara de Alex lo separa de la calidez familiar.",
+      "paleta": [["Tungsteno", "#D08A3A"], ["Terracota", "#9C5534"], ["Madera", "#6B3F22"], ["Pantalla", "#6F9CC8"]],
+      "sonido": "Plática familiar, cubiertos y una radio lejana. Conforme la cámara llega a Alex, todo se filtra como bajo el agua y sube un zumbido grave. La voz de la madre entra amortiguada y se aclara de golpe en «¿Alex?».",
+      "planos": [
+        {
+          "id": "1A",
+          "titulo": "La cena",
+          "genera": 10,
+          "uso": 9,
+          "inicio": "ref04",
+          "elements": ["Alex"],
+          "camara": "Dolly-in lento que deriva hacia Alex; el foco pasa de la familia a él.",
+          "accion": "La familia platica y se pasa los platos; Alex, inmóvil, mira el celular. La cámara se acerca despacio y el foco pasa de la familia a su cara.",
+          "prompt": "Slow cinematic dolly-in on a lively Mexican family dinner at night. The mother talks animatedly and gestures with her hands, the father smiles while cutting his chicken, and the sister laughs and reaches for the tortilla basket. Only the young man in the striped polo shirt in the foreground stays completely still, head down, staring at the phone in his hand, his face lit by the cold glow of the screen. As the camera drifts toward him, the focus slowly shifts from the family to his face, and the family softens into warm, blurry bokeh. Warm tungsten light from a hanging lamp, terracotta walls, framed family photos. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
+          "negativo": "base",
+          "audio": "Audio: lively family chatter in Mexican Spanish, clinking cutlery and plates, a radio playing softly in the kitchen. The voices become muffled as the camera gets closer to the young man.",
+          "notas": "En la ref. 04 el celular está sobre la mesa y el guion dice «debajo». No cambia la historia; si te importa, corrígelo en el keyframe."
+        },
+        {
+          "id": "1B",
+          "titulo": "POV: el chat",
+          "genera": 10,
+          "uso": 8,
+          "inicio": "ref03",
+          "inicio_alt": "K1",
+          "elements": [],
+          "camara": "POV en mano con vaivén de respiración; fondo desenfocado.",
+          "accion": "Vemos el chat por los ojos de Alex. El pulgar desliza, las manos tiemblan y las letras se desenfocan un instante. La voz de la madre entra amortiguada.",
+          "prompt": "First-person POV of a young man holding a smartphone with both hands at a family dinner table at night. His thumb slowly scrolls the chat on the screen. His hands tremble slightly with tension and the phone rises and falls gently with his breathing. For a moment the focus drifts and the text on the screen softens, as if his eyes lose focus from stress, then it sharpens again. In the background the family keeps eating and talking, completely out of focus in warm bokeh. Warm tungsten light from a hanging lamp. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
+          "negativo": "base",
+          "audio": "Audio: family chatter and cutlery heard muffled, as if underwater, under a low hum. Then a warm middle-aged Mexican woman's voice off-screen, growing clearer, says in Spanish: \"...y entonces le dije a tu tía que no íbamos a poder ir el domingo. ¿Alex? ¿Me estás escuchando, mijo?\"",
+          "notas": "Ruta rápida: usa la ref. 03 tal cual (el texto puede deformarse un poco). Ruta pro: genera desde K1 (pantalla verde) y en la edición pon una grabación real del chat que empiece en «Todo está bien» y baje hasta la pelea."
+        },
+        {
+          "id": "1C",
+          "titulo": "«Sí, ma. Todo bien.»",
+          "genera": 10,
+          "uso": 6,
+          "inicio": "K10",
+          "elements": ["Alex"],
+          "camara": "Plano medio corto, fijo.",
+          "accion": "Alex bloquea el celular, levanta la vista y finge media sonrisa: «Sí, ma. Todo bien.» La sonrisa se le borra en cuanto dejan de mirarlo.",
+          "prompt": "Medium close-up of Alex, a tired 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a white and gray striped polo shirt, sitting at a family dinner table at night. He quickly locks his phone and the screen goes dark. He looks up toward his mother off-screen, forces a small, unconvincing half-smile and says quietly: \"Sí, ma. Todo bien.\" A moment later the smile fades and his eyes drop again, empty and exhausted. Warm tungsten light, the family dinner blurred in the background. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
+          "negativo": "base",
+          "audio": "Audio: Alex speaks in Mexican Spanish with a tired, flat voice. Muffled family chatter continues in the background.",
+          "notas": "Si no usas audio nativo, genera sin sonido y aplica después el Lip Sync de Kling con la voz grabada."
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "slug": "INT. HABITACIÓN DE ALEX - NOCHE",
+      "titulo": "Las tres sombras",
+      "luz": "luna",
+      "resumen": "Corte directo a la oscuridad. Alex, agotado, está por dormirse cuando tres figuras con máscara blanca aparecen en su cuarto. No puede moverse.",
+      "color": "Azul luna y negros profundos. El rojo del reloj (03:14) es el único acento cálido.",
+      "paleta": [["Noche", "#0E1620"], ["Azul luna", "#3E5E7C"], ["Sombra", "#26313B"], ["Reloj", "#D2232A"]],
+      "sonido": "Corte seco a silencio total (1 s). Después, tono de cuarto: respiración pausada, zumbido del ventilador, un perro a lo lejos y crujidos de la casa. Al aparecer las figuras entra un drone grave que crece y un pitido agudo tipo acúfeno; la respiración se acelera.",
+      "planos": [
+        {
+          "id": "2A",
+          "titulo": "La habitación en penumbra",
+          "genera": 10,
+          "uso": 8,
+          "inicio": "ref01",
+          "elements": [],
+          "camara": "POV desde la almohada, fijo.",
+          "accion": "Penumbra y silencio. Las sombras de los rincones se estiran de forma antinatural. Alex parpadea, pesado.",
+          "prompt": "Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. The streetlight outside the window flickers faintly. No people in the room. Cold blue moonlight through the window, deep black shadows, the red digital clock as the only warm light. Photorealistic horror film look, low-key lighting, heavy film grain.",
+          "negativo": "noche",
+          "notas": "El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en Kling."
+        },
+        {
+          "id": "2B",
+          "titulo": "Aparecen las tres sombras",
+          "genera": 10,
+          "uso": 7,
+          "inicio": "ref01",
+          "fin": "K2",
+          "elements": ["Figura"],
+          "camara": "POV fijo, mismo encuadre que 2A.",
+          "accion": "La oscuridad de la esquina se espesa y de ella salen tres figuras altas con máscara blanca. Se quedan quietas, observándolo.",
+          "prompt": "Static first-person POV from a bed in a dark bedroom at night. The camera does not move. In the far corner, between the half-open door and the dresser, the darkness slowly thickens and takes shape: three tall, thin figures emerge from the shadows one by one and stand perfectly still, silently facing the bed. They have long bodies of tattered black cloth, long black hair and smooth white porcelain masks. Once they appear, they do not move at all. Cold blue moonlight, deep black shadows, photorealistic horror film look, low-key lighting, heavy film grain.",
+          "negativo": "figuras",
+          "notas": "Único plano con fotograma inicial y final: Kling interpola la aparición. Por eso K2 se hace sobre la ref. 01, con el mismo encuadre."
+        },
+        {
+          "id": "2C",
+          "titulo": "El cuerpo no responde",
+          "opcional": true,
+          "genera": 5,
+          "uso": 3,
+          "inicio": "K3",
+          "elements": ["Alex"],
+          "camara": "Primer plano cenital, fijo.",
+          "accion": "Inserto del rostro de Alex: el cuerpo no responde, solo los ojos se mueven. Parálisis del sueño.",
+          "prompt": "Close-up of Alex, a 22-year-old Mexican man with brown skin, lying on his back in bed in the dark, lit only by cold blue moonlight. His body is completely frozen; only his eyes move, darting from side to side in terror. His breathing becomes fast and shallow, a drop of sweat runs down his temple, and his fingers twitch, but his body cannot move. Photorealistic horror film look, low-key lighting, heavy film grain, shallow depth of field.",
+          "negativo": "noche",
+          "notas": "Opcional. Rompe el POV del guion, pero le pone cara al terror. Va entre 2B y 2D."
+        },
+        {
+          "id": "2D",
+          "titulo": "Se deslizan hacia él",
+          "genera": 10,
+          "uso": 8,
+          "inicio": "K2",
+          "elements": ["Figura"],
+          "camara": "POV fijo con temblor sutil; la imagen se oscurece desde los bordes.",
+          "accion": "Las figuras se deslizan hacia la cama sin caminar. La imagen tiembla (él lucha) y se oscurece mientras se le cierran los ojos.",
+          "prompt": "Static first-person POV from a bed, lying down and unable to move. Three tall shadowy figures with smooth white porcelain masks stand in the dark bedroom, watching. Very slowly they begin to glide toward the bed without moving their legs, as if floating, their masks fixed on the camera. The camera trembles slightly, as if the viewer is desperately trying to move but cannot. The edges of the image slowly darken and blur as the eyelids grow heavy, until the image fades almost completely to black. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
+          "negativo": "figuras",
+          "notas": "Si la imagen no llega a negro, termina el fundido en la edición."
+        }
+      ]
+    },
+    {
+      "num": 3,
+      "slug": "INT. HABITACIÓN DE ALEX - MADRUGADA",
+      "titulo": "La parálisis",
+      "luz": "luna",
+      "resumen": "Alex abre los ojos: las máscaras flotan a centímetros de su cara. Intenta gritar y no sale nada. Una extremidad oscura va hacia su brazo izquierdo.",
+      "color": "Igual que la escena 2, un punto más oscura y con más contraste.",
+      "paleta": [["Noche", "#0E1620"], ["Azul luna", "#3E5E7C"], ["Máscara", "#E8E6E1"], ["Reloj", "#D2232A"]],
+      "sonido": "Inhalación brusca al abrir los ojos. Latidos y acúfeno en aumento. El grito es mudo: solo aire ahogado. La extremidad suena a un crujido lento de articulaciones, como nudillos tronando.",
+      "planos": [
+        {
+          "id": "3A",
+          "titulo": "Las máscaras encima",
+          "genera": 10,
+          "uso": 6,
+          "inicio": "K4",
+          "elements": ["Figura"],
+          "camara": "POV hacia el techo, fijo con temblor sutil.",
+          "accion": "Los ojos se abren de golpe: las tres máscaras flotan a centímetros de su cara. La del centro ladea la cabeza.",
+          "prompt": "First-person POV lying on the back in bed, looking straight up at the dark ceiling. Three smooth white porcelain masks with hollow black eyes lean over the viewer only a few centimeters from the camera, their long black hair hanging down toward the lens. They are perfectly still and staring; only their hair sways slightly. Very slowly, the middle mask tilts its head to one side. The camera trembles subtly, as if the viewer is struggling but cannot move. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
+          "negativo": "figuras",
+          "notas": "Entra desde negro, con los ojos abriéndose de golpe (3 o 4 cuadros) y una inhalación brusca."
+        },
+        {
+          "id": "3B",
+          "titulo": "El grito sin voz",
+          "genera": 5,
+          "uso": 4,
+          "inicio": "K3",
+          "elements": ["Alex"],
+          "camara": "Primerísimo primer plano, fijo.",
+          "accion": "Intenta gritar: abre la boca y no sale nada. Solo tiembla.",
+          "prompt": "Extreme close-up of Alex's face as he lies on his back in bed in cold blue moonlight, completely paralyzed. He tries to scream: his mouth opens wide but no sound comes out, the tendons in his neck tighten, his wide eyes fill with tears and his face trembles with effort, but his head does not move. Photorealistic horror film look, low-key lighting, heavy film grain.",
+          "negativo": "noche",
+          "notas": "Genéralo sin audio: el silencio es el efecto."
+        },
+        {
+          "id": "3C",
+          "titulo": "La extremidad oscura",
+          "genera": 10,
+          "uso": 5,
+          "inicio": "K5",
+          "elements": ["Alex"],
+          "camara": "Inserto cerrado del antebrazo, fijo.",
+          "accion": "Una extremidad larga y oscura se acerca a su antebrazo izquierdo y, justo antes de tocarlo, corte a blanco.",
+          "prompt": "Close-up of a young man's left forearm lying still on a dark bed sheet, palm up, in cold blue moonlight. From the darkness at the top of the frame, a long, thin, unnaturally jointed black hand with very long fingers slowly reaches toward the inside of the forearm. The forearm trembles slightly but cannot pull away. The fingertips stop a few millimeters above the skin. Slow, tense movement, deep black shadows, photorealistic horror film look, heavy film grain.",
+          "negativo": "noche",
+          "notas": "Corta justo antes del contacto y entra directo el flash blanco de 4A."
+        }
+      ]
+    },
+    {
+      "num": 4,
+      "slug": "INT. MENTE DE ALEX - SUEÑO/FLASHBACK",
+      "titulo": "El recuerdo",
+      "luz": "dorada",
+      "resumen": "Como defensa, la mente de Alex se refugia en un recuerdo: su familia, cuando él era niño, riendo en un parque soleado.",
+      "color": "Hora dorada sobreexpuesta: bloom, halación y destellos de sol entre los árboles.",
+      "paleta": [["Sol", "#F2C063"], ["Follaje", "#6F8B3A"], ["Piel cálida", "#C98B5E"], ["Destello", "#FFF1CF"]],
+      "sonido": "Flash blanco con un golpe en reversa. Risas con eco, pájaros y un arrullo tarareado (por ejemplo «A la rorro niño», que es tradicional). El acúfeno desaparece.",
+      "planos": [
+        {
+          "id": "4A",
+          "titulo": "El parque",
+          "genera": 10,
+          "uso": 8,
+          "inicio": "ref02",
+          "elements": [],
+          "camara": "Push-in lento, en cámara lenta.",
+          "accion": "Tras un destello de luz, la familia de su infancia ríe en un parque soleado, en cámara lenta. Paz absoluta.",
+          "prompt": "Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs and gently rocks the little girl in the yellow dress in her arms, the mother hugs them and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.",
+          "negativo": "recuerdo",
+          "notas": "Entra con un flash blanco de 4 a 6 cuadros. Si Kling exagera el movimiento, añade «subtle movement» al prompt."
+        }
+      ]
+    },
+    {
+      "num": 5,
+      "slug": "INT. HABITACIÓN DE ALEX - MADRUGADA",
+      "titulo": "El despertar",
+      "luz": "luna",
+      "resumen": "El recuerdo se rompe como un cristal. Montaje de flashes mientras Alex forcejea. Se incorpora de golpe: el cuarto está vacío.",
+      "color": "Regreso brusco al azul luna. En los flashes, más contraste y desenfoque de movimiento.",
+      "paleta": [["Noche", "#0E1620"], ["Azul luna", "#3E5E7C"], ["Máscara", "#E8E6E1"], ["Sudor frío", "#9DB4C7"]],
+      "sonido": "Cristal rompiéndose y regresa el acúfeno. Golpes secos y glitches sincronizados con cada flash. Una gran bocanada de aire al incorporarse; después, silencio: solo su respiración.",
+      "planos": [
+        {
+          "id": "5A",
+          "titulo": "El recuerdo se rompe",
+          "genera": 5,
+          "uso": 3,
+          "inicio": "4A-ultimo",
+          "elements": [],
+          "camara": "Fijo; efecto de cristal que se rompe.",
+          "accion": "El recuerdo se congela y se rompe como cristal hacia la oscuridad.",
+          "prompt": "The image of the happy family in the sunny park freezes like a photograph. Thin cracks spread across the entire picture like breaking glass, then it shatters into hundreds of sharp shards that fall away in slow motion into complete darkness. Glinting glass edges, cinematic, photorealistic.",
+          "negativo": "base",
+          "notas": "Inicio: exporta el último cuadro de 4A. Alternativa sin Kling: el efecto de vidrio roto de CapCut sobre el final de 4A."
+        },
+        {
+          "id": "5B",
+          "titulo": "Flash: la máscara ladea la cabeza",
+          "genera": 5,
+          "uso": 1,
+          "inicio": "ref05",
+          "inicio_alt": "K2",
+          "elements": ["Figura"],
+          "camara": "Push-in rápido a la máscara.",
+          "accion": "Flash: una máscara blanca ladea la cabeza de forma antinatural.",
+          "prompt": "Fast push-in toward the central figure's smooth white porcelain mask in a dark bedroom until the mask fills the frame. The mask slowly and unnaturally tilts its head sideways, almost ninety degrees, still staring at the camera. Cold blue moonlight, deep black shadows, photorealistic horror film look, heavy film grain.",
+          "negativo": "figuras",
+          "notas": "Solo usarás 1 s. Genera 5 s y quédate con el instante más raro del ladeo."
+        },
+        {
+          "id": "5C",
+          "titulo": "Flash: el techo girando",
+          "genera": 5,
+          "uso": 1,
+          "inicio": "K4",
+          "elements": ["Figura"],
+          "camara": "POV al techo con giro violento.",
+          "accion": "Flash: el techo gira violentamente.",
+          "prompt": "First-person POV looking up at a dark bedroom ceiling with a ceiling fan. The camera suddenly spins fast and violently around its axis; the ceiling and the fan whirl in circles with heavy motion blur, and the white masks at the edges smear into streaks of pale light. Disorienting and chaotic. Cold blue moonlight, photorealistic horror film look, heavy film grain.",
+          "negativo": "figuras",
+          "notas": "Solo usarás 1 s."
+        },
+        {
+          "id": "5D",
+          "titulo": "Flash: recupera el brazo",
+          "genera": 5,
+          "uso": 1,
+          "inicio": "K5",
+          "elements": ["Alex"],
+          "camara": "Inserto cerrado; movimiento brusco del brazo.",
+          "accion": "Flash: la mano oscura se retira; Alex cierra el puño y recupera el brazo.",
+          "prompt": "Close-up of a young man's left forearm lying on a dark bed sheet in cold blue moonlight. The long black shadowy hand quickly pulls back into the darkness and disappears. The fingers twitch, then the hand clenches into a tight fist and the whole arm jerks upward, out of the frame. Sudden, fast movement, photorealistic horror film look, heavy film grain.",
+          "negativo": "noche",
+          "notas": "Solo usarás 1 s: el instante del puño."
+        },
+        {
+          "id": "5E",
+          "titulo": "Despierta de golpe",
+          "genera": 5,
+          "uso": 4,
+          "inicio": "K6",
+          "elements": ["Alex"],
+          "camara": "Plano medio lateral, fijo.",
+          "accion": "Alex se incorpora de golpe, empapado en sudor frío, jadeando.",
+          "prompt": "Medium shot of Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lying on his back in bed in a dark bedroom. Suddenly he sits bolt upright, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.",
+          "negativo": "noche",
+          "notas": "Si tarda en incorporarse, acelera el clip en la edición."
+        },
+        {
+          "id": "5F",
+          "titulo": "El cuarto vacío",
+          "genera": 10,
+          "uso": 6,
+          "inicio": "ref01",
+          "elements": [],
+          "camara": "POV en mano: se eleva, avanza hacia la esquina y panea a la ventana.",
+          "accion": "Mira alrededor: la esquina donde estaban las figuras está vacía. Solo la luz de la luna. Silencio.",
+          "prompt": "First-person POV from a bed in a dark bedroom, breathing heavily. The camera rises slightly as if sitting up, slowly pushes in toward the dark corner between the half-open door and the dresser, which is completely empty, then pans nervously to the right toward the window. The room is empty and silent; only cold moonlight comes in through the window. Subtle handheld movement, low-key lighting, photorealistic horror film look, heavy film grain.",
+          "negativo": "noche",
+          "notas": "Sin música aquí: solo respiración y silencio."
+        }
+      ]
+    },
+    {
+      "num": 6,
+      "slug": "INT. COMEDOR CASA MEXICANA - DÍA (MAÑANA)",
+      "titulo": "La incisión",
+      "luz": "dia",
+      "resumen": "Todo parece normal otra vez. Alex desayuna solo, pálido. Un ardor lo hace mirar su brazo: tiene una incisión con suturas perfectas. No fue un sueño.",
+      "color": "Luz de día suave, neutra y un poco desaturada. Alex se ve pálido.",
+      "paleta": [["Luz de día", "#D9DDDE"], ["Ocre", "#B89067"], ["Madera", "#7A5231"], ["Chilaquiles", "#A8321F"]],
+      "sonido": "Mañana normal: pájaros, un vendedor o el camión del gas a lo lejos, el tenedor contra el plato. Un tono grave entra cuando mira su brazo. Corte a negro en silencio absoluto y un golpe grave con el título.",
+      "planos": [
+        {
+          "id": "6A",
+          "titulo": "Desayuno en silencio",
+          "genera": 10,
+          "uso": 8,
+          "inicio": "K7",
+          "elements": ["Alex"],
+          "camara": "Plano general, push-in muy lento.",
+          "accion": "Luz de mañana. Alex desayuna chilaquiles solo, pálido, con la mirada perdida.",
+          "prompt": "Wide shot of a Mexican family dining room in the morning, soft natural daylight coming through a window. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.",
+          "negativo": "base",
+          "notas": "Si Kling cambia la comida, añade «the plate of chilaquiles stays the same»."
+        },
+        {
+          "id": "6B",
+          "titulo": "El ardor",
+          "genera": 5,
+          "uso": 4,
+          "inicio": "K8",
+          "elements": ["Alex"],
+          "camara": "Primer plano, fijo.",
+          "accion": "Siente un ardor sordo y baja la mirada hacia su brazo izquierdo.",
+          "prompt": "Close-up of Alex, a pale and exhausted 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a gray t-shirt, sitting at a dining table in soft morning daylight. He stares blankly into nothing. Suddenly he frowns slightly, as if feeling a dull, burning pain, and slowly lowers his gaze toward his left arm. Neutral, slightly desaturated colors, photorealistic, 35mm film look, shallow depth of field, natural film grain.",
+          "negativo": "base"
+        },
+        {
+          "id": "6C",
+          "titulo": "No fue un sueño",
+          "genera": 10,
+          "uso": 5,
+          "inicio": "K9",
+          "elements": ["Alex"],
+          "camara": "Inserto; push-in lento a las suturas.",
+          "accion": "Levanta el antebrazo: una incisión con suturas quirúrgicas perfectas. Corte a negro.",
+          "prompt": "Close-up of a young man's left forearm with brown skin in soft morning daylight, the inside of the forearm facing the camera. A long, straight, fresh surgical incision runs along it, slightly reddened, closed with neat, perfectly spaced black surgical stitches. The forearm rises slightly into the light and turns a little toward the camera while the fingers tremble. The camera slowly pushes in toward the stitches. Clinical and precise, realistic skin texture, no blood, photorealistic, 35mm film look, shallow depth of field.",
+          "negativo": "herida",
+          "notas": "Deja «clinical» y «no blood» para no activar el filtro de contenido. Revisa que sea el brazo izquierdo."
+        }
+      ]
+    }
+  ]
+}
