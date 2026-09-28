@@ -83,8 +83,6 @@ class Indice:
 
 # ---------------------------------------------------------------- Gemini Omni
 
-ORDINALES = ("first", "second", "third", "fourth")
-REFERENCIA_OMNI = {"Alex": "a character reference for Alex", "Figura": "a character reference for the masked figures"}
 
 
 def omni_duracion(p):
@@ -95,23 +93,23 @@ def omni_duracion(p):
 
 
 def omni_adjuntos(p):
-    """IDs de las imágenes que se adjuntan, en orden, con su papel."""
+    """IDs de las imágenes que se adjuntan, en orden, con su papel.
+
+    Solo cuadros: si se adjunta también el recorte de un personaje, Omni lo usa como un plano extra al inicio.
+    """
     adjuntos = [(p["inicio"], "primer cuadro")]
     if p.get("fin"):
         adjuntos.append((p["fin"], "último cuadro"))
-    return adjuntos + [("el-" + e.lower(), "referencia") for e in p["elements"]]
+    return adjuntos
 
 
 def omni_prompt(p):
-    papeles = ["the exact first frame"] + (["the exact last frame"] if p.get("fin") else [])
-    papeles += [REFERENCIA_OMNI[e] for e in p["elements"]]
-    if len(papeles) == 1:
-        imagenes = "The attached image is the exact first frame."
+    if p.get("fin"):
+        imagenes = "The first attached image is the exact first frame and the second attached image is the exact last frame."
     else:
-        imagenes = "; ".join(f"the {ORDINALES[i]} attached image is {papel}" for i, papel in enumerate(papeles))
-        imagenes = imagenes[0].upper() + imagenes[1:] + "."
-    return (f"Shot {p['id']}, {omni_duracion(p)} seconds, 16:9. {imagenes} {p['prompt']} {p['audio_omni']} "
-            "No subtitles or on-screen text.")
+        imagenes = "The attached image is the exact first frame."
+    return (f"Shot {p['id']}, {omni_duracion(p)} seconds, 16:9. {imagenes} One continuous shot with no cuts. "
+            f"{p['prompt']} {p['audio_omni']} No subtitles or on-screen text.")
 
 
 # ---------------------------------------------------------------- Markdown

@@ -231,7 +231,7 @@
   "omni": {
     "flujo": [
       "Abre la app de Gemini o Google Flow y elige Gemini Omni, en formato 16:9.",
-      "En la app de Gemini abre un chat nuevo, adjunta los recortes de elements/ y pega el prompt maestro. En Flow no hace falta.",
+      "En la app de Gemini abre un chat nuevo, elige formato 16:9, adjunta los recortes de elements/ y pega el prompt maestro. En Flow no hace falta.",
       "Genera los keyframes K0–K10 con Gemini (imágenes), adjuntando las referencias en el orden de cada prompt, y descárgalos.",
       "Genera los planos en orden: adjunta las imágenes de «Adjunta», en ese orden, y pega el prompt de Omni.",
       "Si una toma sale casi bien, pide un arreglo rápido en lugar de regenerarla.",
@@ -244,7 +244,7 @@
       ],
       [
         "Formato",
-        "16:9."
+        "16:9. Elígelo en la configuración de la app o de Flow antes de generar: si solo lo pides en el prompt, puede salir vertical (9:16)."
       ],
       [
         "Duración",
@@ -252,7 +252,7 @@
       ],
       [
         "Primer cuadro",
-        "Adjunta primero la imagen que indica «Adjunta»: el prompt le dice a Omni que es el cuadro inicial exacto. En Flow: «Frames to Video» → «+ Add start frame»."
+        "Adjunta la imagen que indica «Adjunta»: el prompt le dice a Omni que es el cuadro inicial exacto. Si la app de Gemini no la respeta (cambia la familia o el cuarto), usa Flow: «Frames to Video» → «+ Add start frame»."
       ],
       [
         "Último cuadro",
@@ -260,7 +260,7 @@
       ],
       [
         "Personajes",
-        "Adjunta el recorte de Alex o de la figura como referencia. En Flow, créalos como ingredientes (hasta 3 por prompt)."
+        "Los recortes de Alex y de la figura van solo con el prompt maestro. No los adjuntes en cada plano: Omni los convierte en un plano extra al inicio. Adjunta solo los cuadros que indica «Adjunta»."
       ],
       [
         "Audio",
@@ -275,8 +275,20 @@
         "Tu plan tiene un límite diario de videos. Con 20 planos y reintentos puede tomarte más de un día."
       ]
     ],
-    "prompt_maestro": "Vamos a producir, plano por plano, un cortometraje de terror de 1:50 llamado «La Incisión». Formato 16:9, look cinematográfico fotorrealista: lente de 35 mm, poca profundidad de campo y grano de película.\n\nHistoria: Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su antebrazo izquierdo una incisión con suturas perfectas: no fue un sueño.\n\nPersonajes:\n- Alex: 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y ojeras. En la cena usa una polo blanca con rayas grises; de noche y en el desayuno, una playera gris lisa. La primera imagen adjunta es su rostro.\n- Su familia: mamá (unos 50 años, blusa estampada), papá (unos 55, bigote, camisa a cuadros) y hermana (unos 19, playera rosa).\n- Las tres figuras: altísimas y delgadas, de tela negra desgarrada, cabello negro largo y máscaras blancas de porcelana con cuencas negras. Nunca caminan: se deslizan. Nunca hacen ruido. La segunda imagen adjunta es una de ellas.\n\nReglas para cada video:\n1. Te mandaré cada plano con su ID (1A, 1B…), su duración y su prompt en inglés. Genera solo ese plano y espera el siguiente.\n2. Las imágenes que adjunte van en el orden que dice el prompt: la primera es el cuadro inicial exacto; las demás son referencias de personaje.\n3. Sigue el prompt al pie de la letra: una sola acción por plano y cámara fija cuando lo pida.\n4. Sin subtítulos ni texto en pantalla. Diálogos en español con acento mexicano y labios sincronizados. Sin música.\n5. Mantén a Alex, la familia y las figuras idénticos en todos los planos.\n6. Si te pido un cambio, cambia solo eso y deja todo lo demás igual.\n\nSi entendiste, responde solo «Listo».",
+    "prompt_maestro": "Vamos a producir, plano por plano, un cortometraje de terror de 1:50 llamado «La Incisión». Formato 16:9, look cinematográfico fotorrealista: lente de 35 mm, poca profundidad de campo y grano de película.\n\nHistoria: Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su antebrazo izquierdo una incisión con suturas perfectas: no fue un sueño.\n\nPersonajes:\n- Alex: 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y ojeras. En la cena usa una polo blanca con rayas grises; de noche y en el desayuno, una playera gris lisa. La primera imagen adjunta es su rostro.\n- Su familia: mamá (unos 50 años, blusa estampada), papá (unos 55, bigote, camisa a cuadros) y hermana (unos 19, playera rosa).\n- Las tres figuras: altísimas y delgadas, de tela negra desgarrada, cabello negro largo y máscaras blancas de porcelana con cuencas negras. Nunca caminan: se deslizan. Nunca hacen ruido. La segunda imagen adjunta es una de ellas.\n\nReglas para cada video:\n1. Te mandaré cada plano con su ID (1A, 1B…), su duración y su prompt en inglés. Genera solo ese plano y espera el siguiente.\n2. La imagen que adjunte en cada plano es su cuadro inicial exacto: empieza ahí, en un solo plano continuo, sin cortes y con las mismas personas y el mismo lugar.\n3. Sigue el prompt al pie de la letra: una sola acción por plano y cámara fija cuando lo pida.\n4. Sin subtítulos ni texto en pantalla. Diálogos en español con acento mexicano y labios sincronizados. Sin música.\n5. Mantén a Alex, la familia y las figuras idénticos en todos los planos.\n6. Si te pido un cambio, cambia solo eso y deja todo lo demás igual.\n\nSi entendiste, responde solo «Listo».",
     "arreglos": [
+      [
+        "Salió vertical",
+        "No se arregla con un mensaje: cambia el formato a 16:9 en la configuración y genera de nuevo."
+      ],
+      [
+        "Hizo cortes o empezó con otro plano",
+        "Deja todo igual, pero que sea un solo plano continuo, sin cortes, que empiece exactamente en la imagen adjunta."
+      ],
+      [
+        "Cambió la familia o el cuarto",
+        "Usa exactamente las personas y el cuarto de la imagen adjunta, sin cambiar a nadie."
+      ],
       [
         "Se movió la cámara",
         "Deja todo igual, pero la cámara no debe moverse en absoluto."
