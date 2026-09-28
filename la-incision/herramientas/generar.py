@@ -75,7 +75,7 @@ class Indice:
 
     def archivo(self, ident):
         if ident in self.refs:
-            return self.refs[ident]["archivo"]
+            return self.refs[ident].get("vertical", self.refs[ident]["archivo"])
         if ident in self.elements:
             return self.elements[ident]["imagen"]
         return None
@@ -108,7 +108,7 @@ def omni_prompt(p):
         imagenes = "The first attached image is the exact first frame and the second attached image is the exact last frame."
     else:
         imagenes = "The attached image is the exact first frame."
-    return (f"Shot {p['id']}, {omni_duracion(p)} seconds, 16:9. {imagenes} One continuous shot with no cuts. "
+    return (f"Shot {p['id']}, {omni_duracion(p)} seconds, vertical 9:16. {imagenes} One continuous shot with no cuts. "
             f"{p['prompt']} {p['audio_omni']} No subtitles or on-screen text.")
 
 
@@ -148,7 +148,7 @@ def shotlist_md(plan, indice):
     L += [f"| **{e['id']}** | <img src=\"{e['imagen']}\" width=\"110\" alt=\"{e['id']}\"> | {e['fuente']} | {e['usar_en']} |"
           for e in plan["elements"]]
     L += ["", "### Referencias", "", "| Ref. | Imagen | Qué es | Se usa en |", "|---|---|---|---|"]
-    L += [f"| {r['id'][3:]} | <img src=\"{r['archivo']}\" width=\"200\" alt=\"{r['titulo']}\"> | "
+    L += [f"| {r['id'][3:]} | <img src=\"{indice.archivo(r['id'])}\" width=\"110\" alt=\"{r['titulo']}\"> | "
           f"**{r['titulo']}.** {r['descripcion']} | {r['usa_en']} |" for r in plan["referencias"]]
     L += ["", "### Continuidad: revisa esto antes de generar", ""]
     L += [f"- **{c['nivel']} · {c['titulo']}.** {c['detalle']}" for c in plan["continuidad"]]
@@ -166,7 +166,7 @@ def shotlist_md(plan, indice):
         for p in esc["planos"]:
             L += [f'<a id="{p["id"].lower()}"></a>', "",
                   f"### {p['id']} · {p['titulo']}" + (" (opcional)" if p.get("opcional") else ""), ""]
-            imagenes = [md_imagen(indice, i, 360) for i in (p["inicio"], p.get("fin")) if i]
+            imagenes = [md_imagen(indice, i, 200) for i in (p["inicio"], p.get("fin")) if i]
             imagenes = [i for i in imagenes if i]
             if imagenes:
                 L += [" ".join(imagenes), ""]
@@ -220,7 +220,7 @@ def gemini_omni_md(plan, indice):
 
 def keyframes_md(plan, indice):
     L = [AVISO, "", f"# {plan['titulo']} · Keyframes", "",
-         "Son las imágenes que faltan para animar los planos. Genéralas **antes** que los videos, en 16:9 y a la mayor resolución que permita tu plan.", "",
+         "Son las imágenes que faltan para animar los planos. Genéralas **antes** que los videos, en vertical 9:16 y a la mayor resolución que permita tu plan.", "",
          "- En Kling usa **Imágenes** con referencia (o edición con varias referencias, según tu versión). Cualquier generador con referencias sirve.",
          "- «The reference image» o «the first/second reference image» son las imágenes que subes, en ese orden. "
          "Si tu herramienta usa etiquetas (por ejemplo @imagen1), cámbialas en el prompt.",
@@ -232,7 +232,7 @@ def keyframes_md(plan, indice):
     for k in plan["keyframes"]:
         L += [f'<a id="{k["id"].lower()}"></a>', "",
               f"## {k['id']} · {k['titulo']}" + (" (opcional)" if k.get("opcional") else ""), ""]
-        imagenes = [i for i in (md_imagen(indice, b, 220) for b in k["base"]) if i]
+        imagenes = [i for i in (md_imagen(indice, b, 140) for b in k["base"]) if i]
         if imagenes:
             L += [" ".join(imagenes), ""]
         L += [f"**Referencias:** {', '.join(indice.etiqueta(b) for b in k['base'])}  ",
@@ -359,9 +359,9 @@ th{font:600 11px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;c
 .element b{font:700 22px/1.1 var(--serif)}
 .element p{margin:6px 0 0;font-size:14px}
 .element .usa{color:var(--muted)}
-.refs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:18px 16px}
+.refs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,136px),1fr));gap:18px 16px}
 .ref{margin:0}
-.ref img{width:100%;aspect-ratio:2000/1091;object-fit:cover;border-radius:4px;background:#000}
+.ref img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:4px;background:#000}
 .ref figcaption{padding-top:8px;font-size:13px;line-height:1.45}
 .ref b{display:block;font-size:14px}
 .ref p{margin:4px 0 0}
@@ -385,7 +385,10 @@ th{font:600 11px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;c
 .card.hecho{border-color:var(--ok)}
 .media,.cuerpo{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start;min-width:0}
 .frame{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
-.frame img,.frame .falta{width:100%;aspect-ratio:2000/1091;border-radius:4px;object-fit:cover;background:#000}
+.frame img,.frame .falta{width:100%;aspect-ratio:9/16;border-radius:4px;object-fit:cover;background:#000}
+.cuadros{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;align-content:start}
+.cuadros .frame{flex:1 1 150px;max-width:260px}
+.cuadros .alt{flex-basis:100%}
 .frame .falta{display:grid;place-content:center;justify-items:center;gap:4px;padding:12px;text-align:center;
   border:1.5px dashed var(--muted);background:var(--sunken);color:var(--muted);text-decoration:none}
 .falta b{font:700 30px/1 var(--serif);color:var(--ink)}
@@ -615,7 +618,7 @@ def plano_html(plan, indice, p):
             partes.append(f'<p class="nota solo-kling"><b>Nota.</b> {h(p["notas"])}</p>')
     elif p.get("notas"):
         partes.append(f'<p class="nota"><b>Nota.</b> {h(p["notas"])}</p>')
-    return (f'<article class="card" id="p-{h(pid)}"><div class="media">{cuadros}</div><div class="cuerpo">'
+    return (f'<article class="card" id="p-{h(pid)}"><div class="media cuadros">{cuadros}</div><div class="cuerpo">'
             f'<div class="cab"><span class="sid">{h(pid)}</span><h3>{h(p["titulo"])}</h3>{opcional}{casilla("plano", pid)}</div>'
             f'{"".join(partes)}</div></article>')
 
@@ -670,7 +673,7 @@ def contenido_html(plan):
         f'<figcaption><b>{h(e["id"])}</b><p>{h(e["fuente"])}</p><p class="usa">Úsalo en {h(e["usar_en"])}</p></figcaption></figure>'
         for e in plan["elements"])
     refs = "".join(
-        f'<figure class="ref"><img src="{h(r["archivo"])}" alt="{h(r["titulo"])}" decoding="async">'
+        f'<figure class="ref"><img src="{h(indice.archivo(r["id"]))}" alt="{h(r["titulo"])}" decoding="async">'
         f'<figcaption><b>{h(r["id"][3:])} · {h(r["titulo"])}</b><p>{h(r["descripcion"])}</p><p class="usa">{h(r["usa_en"])}</p></figcaption></figure>'
         for r in plan["referencias"])
     continuidad = "".join(
@@ -688,7 +691,7 @@ def contenido_html(plan):
 <div><dt>Keyframes</dt><dd>{len(plan["keyframes"])}</dd></div>
 <div><dt>Montaje</dt><dd>{mmss(total)}</dd></div>
 <div><dt>Generación</dt><dd><span class="solo-omni">{sum(omni_duracion(p) for p in planos)} s por pasada</span><span class="solo-kling">{sum(p["genera"] for p in planos)} s por pasada</span></dd></div>
-<div><dt>Formato</dt><dd>16:9</dd></div>
+<div><dt>Formato</dt><dd>{h(plan["proporcion"])} vertical</dd></div>
 <div><dt>Avance</dt><dd id="avance">0/{len(planos)} planos · 0/{len(plan["keyframes"])} keyframes</dd></div>
 </dl>
 </header>
@@ -727,7 +730,7 @@ def contenido_html(plan):
 </section>
 <section class="block" id="keyframes">
 <h2 class="sec">Keyframes</h2>
-<p class="lede">Las imágenes que faltan para animar los planos. Genéralas antes que los videos, en 16:9. «The first/second reference image» son las imágenes que subes, en ese orden.</p>
+<p class="lede">Las imágenes que faltan para animar los planos. Genéralas antes que los videos, en vertical 9:16. «The first/second reference image» son las imágenes que subes, en ese orden.</p>
 <div class="lista">{keyframes}</div>
 </section>
 {escenas}

@@ -1,33 +1,51 @@
 {
   "titulo": "La Incisión",
   "logline": "Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su brazo una incisión con suturas perfectas: no fue un sueño.",
-  "formato": "16:9 · 24 fps · 1080p (4K en tomas finales si tu plan lo permite)",
+  "formato": "9:16 vertical para TikTok · 1080×1920 · 24 fps",
   "repo": "https://github.com/Ba3z4/ai",
   "flujo": [
-    "Sube las 5 referencias a Kling y crea los Elements «Alex» y «Figura» con los recortes de la carpeta elements/.",
-    "Genera los keyframes K0–K10 (imágenes 16:9) y revisa la lista de continuidad.",
+    "Sube las referencias verticales (referencias/vertical/) a Kling y crea los Elements «Alex» y «Figura» con los recortes de la carpeta elements/.",
+    "Genera los keyframes K0–K10 (imágenes verticales 9:16) y revisa la lista de continuidad.",
     "Genera los planos escena por escena: primero un borrador en modo rápido y luego la toma final.",
     "Elige la mejor toma de cada plano y guárdala con su ID (por ejemplo 3A_v2.mp4).",
     "Graba o genera las voces y junta los efectos de sonido de cada escena.",
     "Monta en CapCut o DaVinci Resolve siguiendo la línea de tiempo y postproduccion.md."
   ],
   "ajustes": [
-    ["Modelo", "Kling 3.0 o la versión más reciente de tu plan. Borradores en modo rápido (Turbo o Estándar); tomas finales en Pro o alta calidad."],
-    ["Proporción", "16:9. Tus referencias ya vienen en horizontal."],
+    [
+      "Modelo",
+      "Kling 3.0 o la versión más reciente de tu plan. Borradores en modo rápido (Turbo o Estándar); tomas finales en Pro o alta calidad."
+    ],
+    [
+      "Proporción",
+      "9:16 vertical para TikTok. Usa como primer cuadro las versiones verticales de referencias/vertical/."
+    ],
     ["Modo", "Imagen a video con fotograma inicial en todos los planos. Fotograma final solo en 2B."],
-    ["Duración", "La que marca «Genera» (5 o 10 s). Kling 3.0 llega a 15 s, pero los clips cortos se deforman menos."],
-    ["Elements", "«Alex» y «Figura», en los planos que los indican, si tu versión permite combinarlos con el fotograma inicial. Si no, manda el fotograma inicial."],
+    [
+      "Duración",
+      "La que marca «Genera» (5 o 10 s). Kling 3.0 llega a 15 s, pero los clips cortos se deforman menos."
+    ],
+    [
+      "Elements",
+      "«Alex» y «Figura», en los planos que los indican, si tu versión permite combinarlos con el fotograma inicial. Si no, manda el fotograma inicial."
+    ],
     ["Idioma", "Prompts en inglés, que Kling sigue mejor. Los diálogos van en español, entre comillas."],
-    ["Audio nativo", "Apagado por defecto: el sonido se arma en la edición. Enciéndelo solo en 1A–1C si quieres que Kling genere las voces en español."],
+    [
+      "Audio nativo",
+      "Apagado por defecto: el sonido se arma en la edición. Enciéndelo solo en 1A–1C si quieres que Kling genere las voces en español."
+    ],
     ["Negative prompt", "Pégalo cuando tu versión muestre el campo."],
-    ["Multi-shot", "Opcional en Kling 3.0: agrupa planos de una misma escena (hasta 6) pegando cada prompt como un plano."],
+    [
+      "Multi-shot",
+      "Opcional en Kling 3.0: agrupa planos de una misma escena (hasta 6) pegando cada prompt como un plano."
+    ],
     ["Intentos", "Calcula 2 o 3 generaciones por plano. Una pasada completa son unos 160 s de video."]
   ],
   "elements": [
     {
       "id": "Alex",
-      "imagen": "elements/alex-rostro.jpg",
-      "fuente": "Recorte del rostro de Alex (ref. 04) + la hoja de personaje K0. La ref. solo lo muestra de perfil; K0 le da a Kling su cara de frente.",
+      "imagen": "elements/alex-toma1A.jpg",
+      "fuente": "Recorte del rostro de Alex en el último cuadro de tu toma 1A + la hoja de personaje K0. Es la cara que ya quedó en el corto.",
       "usar_en": "1A, 1C, 2C, 3B, 5E, 6A, 6B y los insertos del brazo (3C, 5D, 6C) para mantener el tono de piel."
     },
     {
@@ -42,39 +60,65 @@
       "id": "ref01",
       "archivo": "referencias/01-habitacion-noche.jpg",
       "titulo": "Habitación de Alex, noche",
-      "descripcion": "POV desde la cama: ventilador de techo, ropero, puerta entreabierta, cómoda con espejo, ventana con farola y reloj rojo en 03:14.",
-      "usa_en": "2A, 2B (inicio), 5F · base de K2, K4 y K6"
+      "descripcion": "POV desde la cama: ventilador de techo, puerta entreabierta con ropa colgada y cómoda con espejo. El recorte vertical deja fuera la ventana y el reloj.",
+      "usa_en": "2A, 2B (inicio), 5F · base de K2, K4 y K6",
+      "vertical": "referencias/vertical/01-habitacion-noche.jpg"
     },
     {
       "id": "ref02",
       "archivo": "referencias/02-recuerdo-parque.jpg",
       "titulo": "El recuerdo en el parque",
-      "descripcion": "La abuela, papá y mamá jóvenes, la niña de vestido amarillo y el niño en hombros (Alex de niño), en hora dorada.",
-      "usa_en": "4A"
+      "descripcion": "La abuela, mamá y papá jóvenes, con Alex de niño en los hombros de su papá, en hora dorada.",
+      "usa_en": "4A",
+      "vertical": "referencias/vertical/02-recuerdo-parque.jpg"
     },
     {
       "id": "ref03",
       "archivo": "referencias/03-pov-chat.jpg",
       "titulo": "POV del chat con Mariana",
       "descripcion": "Las manos de Alex con el celular en la cena y la pelea con Mariana en pantalla.",
-      "usa_en": "1B · base de K1"
+      "usa_en": "1B · base de K1",
+      "vertical": "referencias/vertical/03-pov-chat.jpg"
     },
     {
       "id": "ref04",
       "archivo": "referencias/04-comedor-cena.jpg",
       "titulo": "La cena familiar",
       "descripcion": "Mamá, papá, hermana y Alex (polo a rayas) en el comedor. En su celular se lee «Todo está bien».",
-      "usa_en": "1A · base de K0, K7 y K10"
+      "usa_en": "1A (solo si la regeneras) · base de K0 y K10",
+      "vertical": "referencias/vertical/04-comedor-cena.jpg"
     },
     {
       "id": "ref05",
       "archivo": "referencias/05-figuras-enmascaradas.jpg",
       "titulo": "Las tres figuras",
       "descripcion": "Figuras altas de tela negra y cabello largo con máscaras blancas. La habitación no es la de la ref. 01 (ver continuidad).",
-      "usa_en": "5B · Element «Figura» · base de K2, K4 y K5"
+      "usa_en": "5B · Element «Figura» · base de K2, K4 y K5",
+      "vertical": "referencias/vertical/05-figuras-enmascaradas.jpg"
+    },
+    {
+      "id": "ref06",
+      "archivo": "referencias/vertical/06-toma1A-comedor.jpg",
+      "vertical": "referencias/vertical/06-toma1A-comedor.jpg",
+      "titulo": "Toma 1A: el comedor y la familia",
+      "descripcion": "Cuadro del segundo 2.5 de tu toma 1A de Gemini Omni. Desde ahora, esta es la familia y este es el comedor del corto.",
+      "usa_en": "Referencia de familia y comedor · base de K7"
+    },
+    {
+      "id": "ref07",
+      "archivo": "referencias/vertical/07-toma1A-final.jpg",
+      "vertical": "referencias/vertical/07-toma1A-final.jpg",
+      "titulo": "Toma 1A: último cuadro",
+      "descripcion": "El último cuadro de tu toma 1A: Alex en primer plano. Es el primer cuadro de 1C, para que el corte no se note.",
+      "usa_en": "1C (inicio)"
     }
   ],
   "continuidad": [
+    {
+      "nivel": "Nota",
+      "titulo": "La familia ahora es la de tu toma 1A",
+      "detalle": "Gemini cambió a la familia y el comedor de tu imagen 4. Como la toma quedó bien, esa es la familia del corto: 1C empieza en su último cuadro (ref. 07) y la escena 6 usa su comedor (ref. 06). Si prefieres la familia original, regenera 1A con la ref. 04 vertical."
+    },
     {
       "nivel": "Corrige",
       "titulo": "La ref. 05 es otra habitación",
@@ -82,8 +126,8 @@
     },
     {
       "nivel": "Corrige",
-      "titulo": "La ref. 03 no coincide con la ref. 04",
-      "detalle": "Al fondo hay otra familia (dos señores mayores y más gente), el celular tiene funda dorada y la pantalla mezcla la muesca de iPhone con botones de Android. Con el fondo muy desenfocado pasa; para ir a lo seguro, usa la ruta pro con K1."
+      "titulo": "La ref. 03 no coincide con tu toma 1A",
+      "detalle": "Al fondo hay otra familia, el celular tiene funda dorada y la pantalla mezcla la muesca de iPhone con botones de Android. Con el fondo muy desenfocado pasa; para ir a lo seguro, usa la ruta pro con K1."
     },
     {
       "nivel": "Decide",
@@ -118,7 +162,7 @@
     {
       "nivel": "Nota",
       "titulo": "El reloj marca 03:14",
-      "detalle": "Se ve en la ref. 01 y en todo lo que salga de ella. Mantén esa hora en las escenas 2, 3 y 5, o usa la idea del «tiempo perdido» de la biblia visual."
+      "detalle": "Se ve en la ref. 01 original, pero el recorte vertical lo deja fuera. Si quieres ese detalle (o la idea del «tiempo perdido» de la biblia visual), agrégalo en la edición."
     }
   ],
   "negativos": {
@@ -154,7 +198,7 @@
       "base": ["ref01", "ref05"],
       "usa_en": "2B (fin) · 2D (inicio)",
       "como": "Edición con dos referencias: la ref. 01 como imagen base y la ref. 05 para las figuras.",
-      "prompt": "Keep the dark bedroom from the first reference image exactly as it is: same camera angle from the bed, same wardrobe, half-open door, dresser with mirror, wall shelves, window with the streetlight and the red digital clock. Add the three tall, thin figures from the second reference image, standing in the far corner between the half-open door and the dresser and silently facing the bed: long bodies of tattered black cloth, long black hair and smooth white porcelain masks with hollow black eyes. They are partly swallowed by the shadows. Cold blue moonlight, deep black shadows, photorealistic horror film still, heavy film grain, 16:9.",
+      "prompt": "Keep the dark bedroom from the first reference image exactly as it is: same vertical framing from the bed, same ceiling fan, half-open door with clothes hanging on it and dresser with mirror. Add the three tall, thin figures from the second reference image, standing in the corner between the half-open door and the dresser and silently facing the bed: long bodies of tattered black cloth, long black hair and smooth white porcelain masks with hollow black eyes. Their tall bodies fill the frame almost from floor to ceiling and they are partly swallowed by the shadows. Cold blue moonlight, deep black shadows, photorealistic horror film still, heavy film grain, vertical 9:16 composition.",
       "notas": "Este cuadro y la ref. 01 deben tener el mismo encuadre: son el inicio y el fin de 2B."
     },
     {
@@ -163,7 +207,7 @@
       "base": ["el-alex", "K0"],
       "usa_en": "2C · 3B",
       "como": "Imagen con el Element o la referencia de personaje de Alex.",
-      "prompt": "Close-up of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, lying on his back in bed with his head on a dark gray pillow, wearing a plain gray t-shirt. His eyes are wide open in terror, his body is frozen and there is a thin layer of sweat on his forehead. Lit only by cold blue moonlight from a window, deep black shadows. Photorealistic horror film still, 35mm, shallow depth of field, film grain, 16:9."
+      "prompt": "Close-up of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, lying on his back in bed with his head on a dark gray pillow, wearing a plain gray t-shirt. His eyes are wide open in terror, his body is frozen and there is a thin layer of sweat on his forehead. Lit only by cold blue moonlight from a window, deep black shadows. Photorealistic horror film still, 35mm, shallow depth of field, film grain, vertical 9:16 composition."
     },
     {
       "id": "K4",
@@ -171,7 +215,7 @@
       "base": ["ref01", "ref05"],
       "usa_en": "3A · 5C",
       "como": "Imagen con dos referencias: la ref. 01 (ventilador y ambiente) y la ref. 05 (figuras).",
-      "prompt": "First-person point of view lying on the back in bed, looking straight up at a dark bedroom ceiling with a dark wooden ceiling fan with white glass shades, like the fan in the first reference. Three smooth white porcelain masks with hollow black eyes, like the figures in the second reference, lean over the viewer from above, very close to the camera, filling most of the frame. Their long black hair hangs down toward the lens and their dark bodies merge with the darkness. Cold blue moonlight, deep black shadows, photorealistic horror film still, wide-angle lens, heavy film grain, 16:9."
+      "prompt": "First-person point of view lying on the back in bed, looking straight up at a dark bedroom ceiling with a dark wooden ceiling fan with white glass shades, like the fan in the first reference. Three smooth white porcelain masks with hollow black eyes, like the figures in the second reference, lean over the viewer from above, very close to the camera, filling most of the frame. Their long black hair hangs down toward the lens and their dark bodies merge with the darkness. Cold blue moonlight, deep black shadows, photorealistic horror film still, wide-angle lens, heavy film grain, vertical 9:16 composition."
     },
     {
       "id": "K5",
@@ -179,7 +223,7 @@
       "base": ["el-alex", "ref05"],
       "usa_en": "3C · 5D",
       "como": "Imagen con referencia de piel (Alex) y de las figuras (ref. 05).",
-      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, resting palm up on a dark gray bed sheet at night, the sleeve of a gray t-shirt visible at the edge of the frame. From the darkness at the top of the frame, a long, thin, black shadowy hand with unnaturally long fingers reaches toward the inside of the forearm, almost touching it. Cold blue moonlight, deep black shadows, photorealistic horror film still, macro lens, heavy film grain, 16:9.",
+      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, resting palm up on a dark gray bed sheet at night, the sleeve of a gray t-shirt visible at the edge of the frame. From the darkness at the top of the frame, a long, thin, black shadowy hand with unnaturally long fingers reaches toward the inside of the forearm, almost touching it. Cold blue moonlight, deep black shadows, photorealistic horror film still, macro lens, heavy film grain, vertical 9:16 composition.",
       "notas": "Revisa que sea el brazo IZQUIERDO. Si sale el derecho, voltea la imagen horizontalmente."
     },
     {
@@ -188,15 +232,15 @@
       "base": ["el-alex", "ref01"],
       "usa_en": "5E",
       "como": "Imagen con el Element de Alex y la ref. 01 como referencia de la habitación.",
-      "prompt": "Medium side shot of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, lying on his back in a dark wooden sleigh bed with dark gray bedding, in the same dark bedroom as the second reference. His eyes are closed, he looks restless and there is sweat on his face. Cold blue moonlight from the window, ceiling fan above, dark wooden furniture. Photorealistic horror film still, 35mm, film grain, 16:9."
+      "prompt": "Vertical medium shot from the side at mattress level of the young man from the reference, a 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, lying on his back in bed with dark gray bedding, his head and shoulders near the bottom of the frame and dark empty space above him, in the same dark bedroom as the second reference. His eyes are closed, he looks restless and there is sweat on his face. Cold blue moonlight from the window, ceiling fan above, dark wooden furniture. Photorealistic horror film still, 35mm, film grain, vertical 9:16 composition."
     },
     {
       "id": "K7",
       "titulo": "El comedor en la mañana",
-      "base": ["ref04", "el-alex"],
+      "base": ["ref06", "el-alex"],
       "usa_en": "6A · referencia de luz para K8 y K9",
-      "como": "Edición de la ref. 04 (mismo comedor) con el Element de Alex.",
-      "prompt": "The same Mexican dining room as the reference image, with the same textured walls, framed family photos, green arch and plants, but now in the morning with soft natural daylight coming through a window. The table is clean and all the other chairs are empty. The young man from the reference, now wearing a plain gray t-shirt, sits alone at the center of the table, pale and exhausted, in front of a clay plate of red chilaquiles with cream, crumbled fresh cheese and sliced onion, next to a cup of coffee. Neutral, slightly desaturated colors, quiet atmosphere, photorealistic 35mm film still, 16:9."
+      "como": "Edición con dos referencias: la ref. 06 (el comedor de tu toma 1A) y el recorte de Alex.",
+      "prompt": "The same Mexican dining room as the first reference image, with the same terracotta wall covered in framed family photos and the same wooden table with a floral tablecloth, but now in the morning with soft natural daylight coming through a window. The table is clean and all the other chairs are empty. The young man from the second reference image, now wearing a plain gray t-shirt, sits alone at the table, pale and exhausted, in front of a clay plate of red chilaquiles with cream, crumbled fresh cheese and sliced onion, next to a cup of coffee. Neutral, slightly desaturated colors, quiet atmosphere, photorealistic 35mm film still, vertical 9:16 composition."
     },
     {
       "id": "K8",
@@ -204,7 +248,7 @@
       "base": ["K7", "el-alex"],
       "usa_en": "6B",
       "como": "Imagen con el Element de Alex; usa K7 como referencia de luz y fondo.",
-      "prompt": "Close-up of the young man from the reference, a pale, exhausted 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, sitting at a wooden dining table in soft morning daylight. He stares blankly into nothing, with dark circles under his eyes. A textured wall with framed family photos is blurred in the background. Photorealistic, 35mm, shallow depth of field, film grain, 16:9."
+      "prompt": "Close-up of the young man from the reference, a pale, exhausted 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a plain gray t-shirt, sitting at a wooden dining table in soft morning daylight. He stares blankly into nothing, with dark circles under his eyes. A textured wall with framed family photos is blurred in the background. Photorealistic, 35mm, shallow depth of field, film grain, vertical 9:16 composition."
     },
     {
       "id": "K9",
@@ -212,26 +256,38 @@
       "base": ["el-alex", "K7"],
       "usa_en": "6C",
       "como": "Imagen con referencia de piel (Alex) y K7 para la luz de la mañana.",
-      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, held up in soft morning daylight with the inside of the forearm facing the camera. A long, straight, fresh surgical incision runs along the forearm, slightly reddened and swollen, closed with neat, perfectly spaced black surgical stitches. Clinical and precise, no blood. A plate of chilaquiles on a wooden table is blurred in the background. Photorealistic, 50mm macro, shallow depth of field, realistic skin texture, 16:9.",
+      "prompt": "Close-up of a young Mexican man's left forearm with brown skin, held up in soft morning daylight with the inside of the forearm facing the camera. A long, straight, fresh surgical incision runs along the forearm, slightly reddened and swollen, closed with neat, perfectly spaced black surgical stitches. Clinical and precise, no blood. A plate of chilaquiles on a wooden table is blurred in the background. Photorealistic, 50mm macro, shallow depth of field, realistic skin texture, vertical 9:16 composition.",
       "notas": "Deja «clinical» y «no blood» para no activar el filtro de contenido. Brazo IZQUIERDO."
     },
     {
       "id": "K10",
       "titulo": "Alex en la cena (plano medio corto)",
       "base": ["ref04"],
-      "usa_en": "1C",
+      "usa_en": "1C, solo si regeneras 1A con la ref. 04",
       "como": "Edición o reencuadre de la ref. 04.",
-      "prompt": "Medium close-up of the young man in the white and gray striped polo shirt from the reference image, sitting at the family dinner table at night, head down, looking at the phone in his hands, his tired face lit by the cold glow of the screen and turned slightly toward the camera. Behind him the family dinner is blurred into warm bokeh. Warm tungsten light from a hanging lamp, photorealistic 35mm film still, shallow depth of field, film grain, 16:9."
+      "prompt": "Medium close-up of the young man in the white and gray striped polo shirt from the reference image, sitting at the family dinner table at night, head down, looking at the phone in his hands, his tired face lit by the cold glow of the screen and turned slightly toward the camera. Behind him the family dinner is blurred into warm bokeh. Warm tungsten light from a hanging lamp, photorealistic 35mm film still, shallow depth of field, film grain, vertical 9:16 composition.",
+      "opcional": true,
+      "notas": "Ya no hace falta: 1C empieza en el último cuadro de tu toma 1A (ref. 07)."
     }
   ],
   "montaje_extras": [
-    {"despues_de": "1C", "id": "Negro", "titulo": "Corte a negro en silencio", "uso": 1},
-    {"despues_de": "6C", "id": "Título", "titulo": "«LA INCISIÓN» sobre negro", "uso": 4}
+    {
+      "despues_de": "1C",
+      "id": "Negro",
+      "titulo": "Corte a negro en silencio",
+      "uso": 1
+    },
+    {
+      "despues_de": "6C",
+      "id": "Título",
+      "titulo": "«LA INCISIÓN» sobre negro",
+      "uso": 4
+    }
   ],
   "omni": {
     "flujo": [
-      "Abre la app de Gemini o Google Flow y elige Gemini Omni, en formato 16:9.",
-      "En la app de Gemini abre un chat nuevo, elige formato 16:9, adjunta los recortes de elements/ y pega el prompt maestro. En Flow no hace falta.",
+      "Abre la app de Gemini o Google Flow y elige Gemini Omni, en formato vertical 9:16.",
+      "En la app de Gemini abre un chat nuevo, elige formato vertical 9:16, adjunta los recortes de elements/ y pega el prompt maestro. En Flow no hace falta.",
       "Genera los keyframes K0–K10 con Gemini (imágenes), adjuntando las referencias en el orden de cada prompt, y descárgalos.",
       "Genera los planos en orden: adjunta las imágenes de «Adjunta», en ese orden, y pega el prompt de Omni.",
       "Si una toma sale casi bien, pide un arreglo rápido en lugar de regenerarla.",
@@ -244,7 +300,7 @@
       ],
       [
         "Formato",
-        "16:9. Elígelo en la configuración de la app o de Flow antes de generar: si solo lo pides en el prompt, puede salir vertical (9:16)."
+        "9:16 vertical para TikTok. Elígelo en la configuración de la app o de Flow antes de generar: si solo lo pides en el prompt, puede salir en otro formato."
       ],
       [
         "Duración",
@@ -254,10 +310,7 @@
         "Primer cuadro",
         "Adjunta la imagen que indica «Adjunta»: el prompt le dice a Omni que es el cuadro inicial exacto. Si la app de Gemini no la respeta (cambia la familia o el cuarto), usa Flow: «Frames to Video» → «+ Add start frame»."
       ],
-      [
-        "Último cuadro",
-        "Solo en 2B (ref. 01 → K2). En Flow: «+ Add end frame»."
-      ],
+      ["Último cuadro", "Solo en 2B (ref. 01 → K2). En Flow: «+ Add end frame»."],
       [
         "Personajes",
         "Los recortes de Alex y de la figura van solo con el prompt maestro. No los adjuntes en cada plano: Omni los convierte en un plano extra al inicio. Adjunta solo los cuadros que indica «Adjunta»."
@@ -266,20 +319,17 @@
         "Audio",
         "Omni genera el sonido junto con la imagen. Cada prompt ya trae su audio y los diálogos en español, sin música: la música va en la edición."
       ],
-      [
-        "Arreglos",
-        "Si una toma sale casi bien, no la regeneres: pide un solo cambio por mensaje."
-      ],
+      ["Arreglos", "Si una toma sale casi bien, no la regeneres: pide un solo cambio por mensaje."],
       [
         "Límites",
         "Tu plan tiene un límite diario de videos. Con 20 planos y reintentos puede tomarte más de un día."
       ]
     ],
-    "prompt_maestro": "Vamos a producir, plano por plano, un cortometraje de terror de 1:50 llamado «La Incisión». Formato 16:9, look cinematográfico fotorrealista: lente de 35 mm, poca profundidad de campo y grano de película.\n\nHistoria: Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su antebrazo izquierdo una incisión con suturas perfectas: no fue un sueño.\n\nPersonajes:\n- Alex: 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y ojeras. En la cena usa una polo blanca con rayas grises; de noche y en el desayuno, una playera gris lisa. La primera imagen adjunta es su rostro.\n- Su familia: mamá (unos 50 años, blusa estampada), papá (unos 55, bigote, camisa a cuadros) y hermana (unos 19, playera rosa).\n- Las tres figuras: altísimas y delgadas, de tela negra desgarrada, cabello negro largo y máscaras blancas de porcelana con cuencas negras. Nunca caminan: se deslizan. Nunca hacen ruido. La segunda imagen adjunta es una de ellas.\n\nReglas para cada video:\n1. Te mandaré cada plano con su ID (1A, 1B…), su duración y su prompt en inglés. Genera solo ese plano y espera el siguiente.\n2. La imagen que adjunte en cada plano es su cuadro inicial exacto: empieza ahí, en un solo plano continuo, sin cortes y con las mismas personas y el mismo lugar.\n3. Sigue el prompt al pie de la letra: una sola acción por plano y cámara fija cuando lo pida.\n4. Sin subtítulos ni texto en pantalla. Diálogos en español con acento mexicano y labios sincronizados. Sin música.\n5. Mantén a Alex, la familia y las figuras idénticos en todos los planos.\n6. Si te pido un cambio, cambia solo eso y deja todo lo demás igual.\n\nSi entendiste, responde solo «Listo».",
+    "prompt_maestro": "Vamos a producir, plano por plano, un cortometraje de terror de 1:50 llamado «La Incisión». Formato vertical 9:16 para TikTok, look cinematográfico fotorrealista: lente de 35 mm, poca profundidad de campo y grano de película.\n\nHistoria: Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su antebrazo izquierdo una incisión con suturas perfectas: no fue un sueño.\n\nPersonajes:\n- Alex: 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y ojeras. En la cena usa una polo blanca con rayas grises; de noche y en el desayuno, una playera gris lisa. La primera imagen adjunta es su rostro.\n- Su familia: mamá (unos 45 años, cabello largo oscuro, blusa de flores), papá (unos 50, camisa azul claro) y hermana (unos 17, cabello largo oscuro).\n- Las tres figuras: altísimas y delgadas, de tela negra desgarrada, cabello negro largo y máscaras blancas de porcelana con cuencas negras. Nunca caminan: se deslizan. Nunca hacen ruido. La segunda imagen adjunta es una de ellas.\n\nReglas para cada video:\n1. Te mandaré cada plano con su ID (1A, 1B…), su duración y su prompt en inglés. Genera solo ese plano y espera el siguiente.\n2. La imagen que adjunte en cada plano es su cuadro inicial exacto: empieza ahí, en un solo plano continuo, sin cortes y con las mismas personas y el mismo lugar.\n3. Sigue el prompt al pie de la letra: una sola acción por plano y cámara fija cuando lo pida.\n4. Sin subtítulos ni texto en pantalla. Diálogos en español con acento mexicano y labios sincronizados. Sin música.\n5. Mantén a Alex, la familia y las figuras idénticos en todos los planos.\n6. Si te pido un cambio, cambia solo eso y deja todo lo demás igual.\n\nSi entendiste, responde solo «Listo».",
     "arreglos": [
       [
-        "Salió vertical",
-        "No se arregla con un mensaje: cambia el formato a 16:9 en la configuración y genera de nuevo."
+        "Salió horizontal",
+        "No se arregla con un mensaje: cambia el formato a 9:16 en la configuración y genera de nuevo."
       ],
       [
         "Hizo cortes o empezó con otro plano",
@@ -289,46 +339,19 @@
         "Cambió la familia o el cuarto",
         "Usa exactamente las personas y el cuarto de la imagen adjunta, sin cambiar a nadie."
       ],
-      [
-        "Se movió la cámara",
-        "Deja todo igual, pero la cámara no debe moverse en absoluto."
-      ],
-      [
-        "El movimiento es muy rápido",
-        "Deja todo igual y haz el movimiento el doble de lento."
-      ],
-      [
-        "Salió texto o subtítulos",
-        "Deja todo igual y quita todo el texto y los subtítulos."
-      ],
+      ["Se movió la cámara", "Deja todo igual, pero la cámara no debe moverse en absoluto."],
+      ["El movimiento es muy rápido", "Deja todo igual y haz el movimiento el doble de lento."],
+      ["Salió texto o subtítulos", "Deja todo igual y quita todo el texto y los subtítulos."],
       [
         "Cambió la cara de Alex",
         "Deja todo igual, pero la cara de Alex debe ser idéntica a la imagen de referencia."
       ],
-      [
-        "Quedó muy iluminado",
-        "Deja todo igual, pero más oscuro: solo luz de luna azul y fría por la ventana."
-      ],
-      [
-        "Las figuras caminan",
-        "Deja todo igual, pero las figuras no mueven las piernas: se deslizan flotando."
-      ],
-      [
-        "Salió el brazo derecho",
-        "Deja todo igual, pero tiene que ser el antebrazo izquierdo."
-      ],
-      [
-        "Metió música",
-        "Deja todo igual y quita la música; deja solo el sonido ambiente."
-      ],
-      [
-        "La voz no suena mexicana",
-        "Deja todo igual y que la voz tenga un acento mexicano natural."
-      ],
-      [
-        "Repitió el diálogo",
-        "Deja todo igual y que diga la línea una sola vez."
-      ]
+      ["Quedó muy iluminado", "Deja todo igual, pero más oscuro: solo luz de luna azul y fría por la ventana."],
+      ["Las figuras caminan", "Deja todo igual, pero las figuras no mueven las piernas: se deslizan flotando."],
+      ["Salió el brazo derecho", "Deja todo igual, pero tiene que ser el antebrazo izquierdo."],
+      ["Metió música", "Deja todo igual y quita la música; deja solo el sonido ambiente."],
+      ["La voz no suena mexicana", "Deja todo igual y que la voz tenga un acento mexicano natural."],
+      ["Repitió el diálogo", "Deja todo igual y que diga la línea una sola vez."]
     ]
   },
   "escenas": [
@@ -346,7 +369,7 @@
           "id": "1A",
           "titulo": "La cena",
           "genera": 10,
-          "uso": 9,
+          "uso": 8,
           "inicio": "ref04",
           "elements": ["Alex"],
           "camara": "Dolly-in lento que deriva hacia Alex; el foco pasa de la familia a él.",
@@ -355,7 +378,8 @@
           "negativo": "base",
           "audio_omni": "Audio: lively family chatter in Mexican Spanish and clinking cutlery; as the camera reaches the young man, the voices become muffled, as if heard underwater, under a low hum. No music.",
           "audio": "Audio: lively family chatter in Mexican Spanish, clinking cutlery and plates, a radio playing softly in the kitchen. The voices become muffled as the camera gets closer to the young man.",
-          "notas": "En la ref. 04 el celular está sobre la mesa y el guion dice «debajo». No cambia la historia; si te importa, corrígelo en el keyframe."
+          "notas": "En la ref. 04 el celular está sobre la mesa y el guion dice «debajo». No cambia la historia; si te importa, corrígelo en el keyframe.",
+          "notas_omni": "Ya la tienes: es tu toma de Gemini recortada desde el segundo 1.4 (tomas/1A.mp4, 8.6 s). Regénerala solo si quieres volver a la familia de tu imagen 4."
         },
         {
           "id": "1B",
@@ -378,14 +402,14 @@
           "titulo": "«Sí, ma. Todo bien.»",
           "genera": 10,
           "uso": 6,
-          "inicio": "K10",
+          "inicio": "ref07",
           "elements": ["Alex"],
           "camara": "Plano medio corto, fijo.",
           "accion": "Alex bloquea el celular, levanta la vista y finge media sonrisa: «Sí, ma. Todo bien.» La sonrisa se le borra en cuanto dejan de mirarlo.",
           "prompt": "Medium close-up of Alex, a tired 22-year-old Mexican man with brown skin, short black hair and a thin mustache, wearing a white and gray striped polo shirt, sitting at a family dinner table at night. He quickly locks his phone and the screen goes dark. He looks up toward his mother off-screen, forces a small, unconvincing half-smile and says quietly: \"Sí, ma. Todo bien.\" A moment later the smile fades and his eyes drop again, empty and exhausted. Warm tungsten light, the family dinner blurred in the background. Photorealistic, 35mm film look, shallow depth of field, natural film grain.",
           "negativo": "base",
           "audio_omni": "Audio: his voice is tired and flat, in Mexican Spanish, and he says the line only once. Muffled family chatter continues in the background. No music.",
-          "notas_omni": "Omni sincroniza los labios con la voz. Si no suena mexicana o repite la línea, usa los arreglos rápidos.",
+          "notas_omni": "Empieza en el último cuadro de tu toma 1A (ref. 07), así el corte entre 1A y 1C no se nota. Omni sincroniza los labios; si la voz no suena mexicana o repite la línea, usa los arreglos rápidos.",
           "audio": "Audio: Alex speaks in Mexican Spanish with a tired, flat voice. Muffled family chatter continues in the background.",
           "notas": "Si no usas audio nativo, genera sin sonido y aplica después el Lip Sync de Kling con la voz grabada."
         }
@@ -410,7 +434,7 @@
           "elements": [],
           "camara": "POV desde la almohada, fijo.",
           "accion": "Penumbra y silencio. Las sombras de los rincones se estiran de forma antinatural. Alex parpadea, pesado.",
-          "prompt": "Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. The streetlight outside the window flickers faintly. No people in the room. Cold blue moonlight through the window, deep black shadows, the red digital clock as the only warm light. Photorealistic horror film look, low-key lighting, heavy film grain.",
+          "prompt": "Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. Faint light from the window flickers on the walls. No people in the room. Cold blue moonlight, deep black shadows. Photorealistic horror film look, low-key lighting, heavy film grain.",
           "negativo": "noche",
           "audio_omni": "Audio: heavy silence, slow calm breathing close to the camera, the soft hum of the ceiling fan, a distant dog barking once and the house creaking. No music.",
           "notas": "El parpadeo pesado de Alex se hace en la edición (párpados negros que bajan y suben), no en el generador."
@@ -536,7 +560,7 @@
           "elements": [],
           "camara": "Push-in lento, en cámara lenta.",
           "accion": "Tras un destello de luz, la familia de su infancia ríe en un parque soleado, en cámara lenta. Paz absoluta.",
-          "prompt": "Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs and gently rocks the little girl in the yellow dress in her arms, the mother hugs them and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.",
+          "prompt": "Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs, the mother hugs her and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.",
           "negativo": "recuerdo",
           "audio_omni": "Audio: the ringing disappears; warm, echoing laughter of children and adults, birds singing, a gentle breeze and a woman softly humming a lullaby.",
           "notas": "Entra con un flash blanco de 4 a 6 cuadros. Si el movimiento sale exagerado, añade «subtle movement» al prompt."
@@ -619,7 +643,7 @@
           "elements": ["Alex"],
           "camara": "Plano medio lateral, fijo.",
           "accion": "Alex se incorpora de golpe, empapado en sudor frío, jadeando.",
-          "prompt": "Medium shot of Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lying on his back in bed in a dark bedroom. Suddenly he sits bolt upright, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.",
+          "prompt": "Vertical medium shot from the side at mattress level: Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lies on his back in bed with his head near the bottom of the frame. Suddenly he sits bolt upright into the frame, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.",
           "negativo": "noche",
           "audio_omni": "Audio: a huge, desperate gasp for air, then heavy, ragged breathing and the creak of the bed. No music.",
           "notas": "Si tarda en incorporarse, acelera el clip en la edición."
@@ -659,7 +683,7 @@
           "elements": ["Alex"],
           "camara": "Plano general, push-in muy lento.",
           "accion": "Luz de mañana. Alex desayuna chilaquiles solo, pálido, con la mirada perdida.",
-          "prompt": "Wide shot of a Mexican family dining room in the morning, soft natural daylight coming through a window. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.",
+          "prompt": "Vertical wide shot of the family dining room in the morning, soft natural daylight coming through a window, framed family photos on the terracotta wall. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.",
           "negativo": "base",
           "audio_omni": "Audio: a calm morning: birds outside, a distant street vendor calling out, the soft scrape of a fork on a clay plate and a quiet refrigerator hum. No music.",
           "notas": "Si cambia la comida, añade «the plate of chilaquiles stays the same»."
@@ -693,5 +717,7 @@
         }
       ]
     }
-  ]
+  ],
+  "proporcion": "9:16",
+  "resolucion": [1080, 1920]
 }

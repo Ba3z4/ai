@@ -1,6 +1,6 @@
 # La Incisión
 
-Corto de terror de 1:50 para producir en Kling AI a partir de un guion de 6 escenas y 5 imágenes de referencia.
+Corto de terror vertical (9:16) de 1:49 para TikTok, producido con Gemini Omni o Kling AI a partir de un guion de 6 escenas y 5 imágenes de referencia.
 
 > Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su brazo una incisión con suturas perfectas: no fue un sueño.
 
@@ -15,8 +15,8 @@ Corto de terror de 1:50 para producir en Kling AI a partir de un guion de 6 esce
 | [gemini-omni.md](gemini-omni.md) | Los mismos 20 planos adaptados a Gemini Omni (app de Gemini o Google Flow), con prompt maestro y arreglos rápidos |
 | [postproduccion.md](postproduccion.md) | Transiciones, sonido, voces, música, color, título y exportación |
 | [storyboard.html](storyboard.html) | Todo lo anterior en una página visual con botones para copiar. Ábrela en el navegador |
-| [referencias/](referencias/) | Tus 5 imágenes de referencia, numeradas |
-| [elements/](elements/) | Recortes listos para crear los Elements «Alex» y «Figura» en Kling |
+| [referencias/](referencias/) | Tus 5 imágenes de referencia, numeradas. En `vertical/` están recortadas a 9:16 para usarlas como primer cuadro, más dos cuadros de tu toma 1A |
+| [elements/](elements/) | Recortes de referencia de Alex (sacado de tu toma 1A) y de la figura enmascarada |
 | [plan.json](plan.json) | Los datos de planos y keyframes de los que salen el shotlist, los keyframes y el storyboard |
 | [guia-para-claude-en-tu-pc.md](guia-para-claude-en-tu-pc.md) | Instrucciones para que Claude Desktop (con Computer use) produzca todo en Kling desde tu PC |
 | [herramientas/armar_corte.py](herramientas/armar_corte.py) | Arma el corte bruto con las tomas de `tomas/` (necesita Python 3 y ffmpeg) |

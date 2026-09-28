@@ -2,7 +2,7 @@
 """Arma el corte bruto de La Incisión con las tomas elegidas de Kling.
 
 Busca en tomas/ un archivo por plano (1A.mp4, 1B.mp4…), recorta cada uno a la duración
-que marca plan.json, inserta el negro y el título, y escribe corte-bruto.mp4 (1920×1080, 24 fps).
+que marca plan.json, inserta el negro y el título, y escribe corte-bruto.mp4 con la resolución de plan.json (1080×1920 para TikTok), a 24 fps.
 Los planos que falten salen como una tarjeta gris con su ID, así que sirve también para revisar
 el ritmo antes de tener todas las tomas. Conserva el audio de los clips que lo traigan.
 
@@ -26,7 +26,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generar import RAIZ, cargar, secuencia  # noqa: E402
 
-ANCHO, ALTO, FPS = 1920, 1080, 24
+FPS = 24
+ANCHO, ALTO = cargar().get("resolucion", [1920, 1080])
 EXTENSIONES = (".mp4", ".mov", ".webm", ".mkv")
 FUENTES = (
     "C:/Windows/Fonts/georgiab.ttf",

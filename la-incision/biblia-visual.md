@@ -14,8 +14,8 @@ Referencias de ambiente:
 
 ## Formato
 
-- 16:9, 24 fps, 1080p (4K en las tomas finales si tu plan lo permite).
-- Montaje de 1:50 (tiempos exactos en [shotlist-kling.md](shotlist-kling.md#linea-de-tiempo)).
+- Vertical 9:16 para TikTok, 1080×1920, 24 fps. Los primeros cuadros verticales están en `referencias/vertical/`.
+- Montaje de 1:49 (tiempos exactos en [shotlist-kling.md](shotlist-kling.md#linea-de-tiempo)).
 - Look base: fotorrealista y cinematográfico, lente de 35 mm, poca profundidad de campo, grano de película.
 
 ### Si por «3D» buscas un look animado
@@ -44,16 +44,18 @@ Los códigos de color de cada escena están en el shotlist y en el storyboard.
 ### Alex
 
 - 22 años, mexicano, piel morena, cabello negro corto con los lados degradados, bigote delgado y barba de pocos días, ojeras, complexión delgada.
-- Vestuario: en la escena 1, polo blanca con rayas grises y cuello oscuro (ref. 04). De la escena 2 a la 6, playera gris lisa de manga corta.
+- Vestuario: en la escena 1, polo con rayas grises y blancas (tu toma 1A). De la escena 2 a la 6, playera gris lisa de manga corta.
 - Brazo izquierdo sin marcas hasta la escena 6.
-- Element «Alex»: [elements/alex-rostro.jpg](elements/alex-rostro.jpg) + la hoja de personaje K0. La ref. 04 solo lo muestra de perfil, así que K0 es la que le da a Kling su cara de frente.
+- Referencia de Alex: [elements/alex-toma1A.jpg](elements/alex-toma1A.jpg), sacada del último cuadro de tu toma 1A, + la hoja de personaje K0.
 - Descripción fija para los prompts: *a tired 22-year-old Mexican man with brown skin, short black hair and a thin mustache*.
 
-### La familia (ref. 04)
+### La familia (tu toma 1A, ref. 06)
 
-- Mamá (unos 50): cabello recogido, blusa estampada en tonos café. Es la que habla.
-- Papá (unos 55): bigote, camisa a cuadros.
-- Hermana (unos 19): cabello largo oscuro, playera rosa.
+Gemini cambió a la familia de tu imagen 4, y como la toma quedó bien, esta es la familia del corto:
+
+- Mamá (unos 45): cabello largo oscuro, blusa de flores. Es la que habla.
+- Papá (unos 50): cabello corto, camisa azul claro.
+- Hermana (unos 17): cabello largo oscuro.
 
 ### El recuerdo (ref. 02)
 
@@ -69,7 +71,7 @@ Es la infancia de Alex: la abuela, con blusa de flores, carga a la hermana (vest
 
 ## Locaciones
 
-- **Comedor** (ref. 04): paredes texturizadas en ocre y terracota, arco verde, repisa con fotos familiares, mesa de madera, canasta de tortillas, jarra de agua de limón y refrescos de vidrio. En la escena 6 es el mismo lugar con luz de mañana y las sillas vacías.
+- **Comedor** (tu toma 1A, ref. 06): pared terracota llena de fotos familiares enmarcadas, mesa de madera con mantel de flores, canasta de tortillas y lámpara de mesa. En la escena 6 es el mismo lugar con luz de mañana y las sillas vacías.
 - **Habitación de Alex** (ref. 01): cama de madera tipo trineo con cobijas grises, ventilador de techo oscuro con pantallas blancas, ropero a la izquierda, puerta entreabierta con ropa colgada, cómoda con espejo, repisas con libros, silla con ropa, ventana a la derecha con farola, buró con lámpara y reloj digital rojo.
 - **Parque** (ref. 02): encinos, pasto, mantas de picnic y sol a contraluz.
 

@@ -4,8 +4,8 @@
 
 Alex, de 22 años, cena con su familia pero tiene la cabeza en una pelea con su novia. Esa noche, paralizado en su cama, tres figuras con máscaras blancas lo rodean. A la mañana siguiente descubre en su brazo una incisión con suturas perfectas: no fue un sueño.
 
-**Formato:** 16:9 · 24 fps · 1080p (4K en tomas finales si tu plan lo permite)  
-**Planos:** 20 (1 opcional) · **Montaje:** 1:50 · **Generación:** 160 s por pasada completa
+**Formato:** 9:16 vertical para TikTok · 1080×1920 · 24 fps  
+**Planos:** 20 (1 opcional) · **Montaje:** 1:49 · **Generación:** 160 s por pasada completa
 
 Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). La versión visual, con botones para copiar, es [storyboard.html](storyboard.html) (ábrela en el navegador). Los mismos planos adaptados a Gemini Omni están en [gemini-omni.md](gemini-omni.md).
 
@@ -13,8 +13,8 @@ Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). 
 
 ### Flujo
 
-1. Sube las 5 referencias a Kling y crea los Elements «Alex» y «Figura» con los recortes de la carpeta elements/.
-2. Genera los keyframes K0–K10 (imágenes 16:9) y revisa la lista de continuidad.
+1. Sube las referencias verticales (referencias/vertical/) a Kling y crea los Elements «Alex» y «Figura» con los recortes de la carpeta elements/.
+2. Genera los keyframes K0–K10 (imágenes verticales 9:16) y revisa la lista de continuidad.
 3. Genera los planos escena por escena: primero un borrador en modo rápido y luego la toma final.
 4. Elige la mejor toma de cada plano y guárdala con su ID (por ejemplo 3A_v2.mp4).
 5. Graba o genera las voces y junta los efectos de sonido de cada escena.
@@ -25,7 +25,7 @@ Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). 
 | Ajuste | Valor |
 |---|---|
 | Modelo | Kling 3.0 o la versión más reciente de tu plan. Borradores en modo rápido (Turbo o Estándar); tomas finales en Pro o alta calidad. |
-| Proporción | 16:9. Tus referencias ya vienen en horizontal. |
+| Proporción | 9:16 vertical para TikTok. Usa como primer cuadro las versiones verticales de referencias/vertical/. |
 | Modo | Imagen a video con fotograma inicial en todos los planos. Fotograma final solo en 2B. |
 | Duración | La que marca «Genera» (5 o 10 s). Kling 3.0 llega a 15 s, pero los clips cortos se deforman menos. |
 | Elements | «Alex» y «Figura», en los planos que los indican, si tu versión permite combinarlos con el fotograma inicial. Si no, manda el fotograma inicial. |
@@ -39,30 +39,33 @@ Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). 
 
 | Element | Imagen | Cómo se arma | Úsalo en |
 |---|---|---|---|
-| **Alex** | <img src="elements/alex-rostro.jpg" width="110" alt="Alex"> | Recorte del rostro de Alex (ref. 04) + la hoja de personaje K0. La ref. solo lo muestra de perfil; K0 le da a Kling su cara de frente. | 1A, 1C, 2C, 3B, 5E, 6A, 6B y los insertos del brazo (3C, 5D, 6C) para mantener el tono de piel. |
+| **Alex** | <img src="elements/alex-toma1A.jpg" width="110" alt="Alex"> | Recorte del rostro de Alex en el último cuadro de tu toma 1A + la hoja de personaje K0. Es la cara que ya quedó en el corto. | 1A, 1C, 2C, 3B, 5E, 6A, 6B y los insertos del brazo (3C, 5D, 6C) para mantener el tono de piel. |
 | **Figura** | <img src="elements/figura-enmascarada.jpg" width="110" alt="Figura"> | Recorte de la figura central de la ref. 05: máscara, cabello y tela negra desgarrada. | 2B, 2D, 3A, 5B y 5C. |
 
 ### Referencias
 
 | Ref. | Imagen | Qué es | Se usa en |
 |---|---|---|---|
-| 01 | <img src="referencias/01-habitacion-noche.jpg" width="200" alt="Habitación de Alex, noche"> | **Habitación de Alex, noche.** POV desde la cama: ventilador de techo, ropero, puerta entreabierta, cómoda con espejo, ventana con farola y reloj rojo en 03:14. | 2A, 2B (inicio), 5F · base de K2, K4 y K6 |
-| 02 | <img src="referencias/02-recuerdo-parque.jpg" width="200" alt="El recuerdo en el parque"> | **El recuerdo en el parque.** La abuela, papá y mamá jóvenes, la niña de vestido amarillo y el niño en hombros (Alex de niño), en hora dorada. | 4A |
-| 03 | <img src="referencias/03-pov-chat.jpg" width="200" alt="POV del chat con Mariana"> | **POV del chat con Mariana.** Las manos de Alex con el celular en la cena y la pelea con Mariana en pantalla. | 1B · base de K1 |
-| 04 | <img src="referencias/04-comedor-cena.jpg" width="200" alt="La cena familiar"> | **La cena familiar.** Mamá, papá, hermana y Alex (polo a rayas) en el comedor. En su celular se lee «Todo está bien». | 1A · base de K0, K7 y K10 |
-| 05 | <img src="referencias/05-figuras-enmascaradas.jpg" width="200" alt="Las tres figuras"> | **Las tres figuras.** Figuras altas de tela negra y cabello largo con máscaras blancas. La habitación no es la de la ref. 01 (ver continuidad). | 5B · Element «Figura» · base de K2, K4 y K5 |
+| 01 | <img src="referencias/vertical/01-habitacion-noche.jpg" width="110" alt="Habitación de Alex, noche"> | **Habitación de Alex, noche.** POV desde la cama: ventilador de techo, puerta entreabierta con ropa colgada y cómoda con espejo. El recorte vertical deja fuera la ventana y el reloj. | 2A, 2B (inicio), 5F · base de K2, K4 y K6 |
+| 02 | <img src="referencias/vertical/02-recuerdo-parque.jpg" width="110" alt="El recuerdo en el parque"> | **El recuerdo en el parque.** La abuela, mamá y papá jóvenes, con Alex de niño en los hombros de su papá, en hora dorada. | 4A |
+| 03 | <img src="referencias/vertical/03-pov-chat.jpg" width="110" alt="POV del chat con Mariana"> | **POV del chat con Mariana.** Las manos de Alex con el celular en la cena y la pelea con Mariana en pantalla. | 1B · base de K1 |
+| 04 | <img src="referencias/vertical/04-comedor-cena.jpg" width="110" alt="La cena familiar"> | **La cena familiar.** Mamá, papá, hermana y Alex (polo a rayas) en el comedor. En su celular se lee «Todo está bien». | 1A (solo si la regeneras) · base de K0 y K10 |
+| 05 | <img src="referencias/vertical/05-figuras-enmascaradas.jpg" width="110" alt="Las tres figuras"> | **Las tres figuras.** Figuras altas de tela negra y cabello largo con máscaras blancas. La habitación no es la de la ref. 01 (ver continuidad). | 5B · Element «Figura» · base de K2, K4 y K5 |
+| 06 | <img src="referencias/vertical/06-toma1A-comedor.jpg" width="110" alt="Toma 1A: el comedor y la familia"> | **Toma 1A: el comedor y la familia.** Cuadro del segundo 2.5 de tu toma 1A de Gemini Omni. Desde ahora, esta es la familia y este es el comedor del corto. | Referencia de familia y comedor · base de K7 |
+| 07 | <img src="referencias/vertical/07-toma1A-final.jpg" width="110" alt="Toma 1A: último cuadro"> | **Toma 1A: último cuadro.** El último cuadro de tu toma 1A: Alex en primer plano. Es el primer cuadro de 1C, para que el corte no se note. | 1C (inicio) |
 
 ### Continuidad: revisa esto antes de generar
 
+- **Nota · La familia ahora es la de tu toma 1A.** Gemini cambió a la familia y el comedor de tu imagen 4. Como la toma quedó bien, esa es la familia del corto: 1C empieza en su último cuadro (ref. 07) y la escena 6 usa su comedor (ref. 06). Si prefieres la familia original, regenera 1A con la ref. 04 vertical.
 - **Corrige · La ref. 05 es otra habitación.** Tiene papel tapiz, dos ventanas y la cómoda a la izquierda; no coincide con la ref. 01. Usa la 05 solo para las figuras y genera K2 y K4 sobre la habitación de la ref. 01.
-- **Corrige · La ref. 03 no coincide con la ref. 04.** Al fondo hay otra familia (dos señores mayores y más gente), el celular tiene funda dorada y la pantalla mezcla la muesca de iPhone con botones de Android. Con el fondo muy desenfocado pasa; para ir a lo seguro, usa la ruta pro con K1.
+- **Corrige · La ref. 03 no coincide con tu toma 1A.** Al fondo hay otra familia, el celular tiene funda dorada y la pantalla mezcla la muesca de iPhone con botones de Android. Con el fondo muy desenfocado pasa; para ir a lo seguro, usa la ruta pro con K1.
 - **Decide · Máscaras con o sin facciones.** El guion dice «lisa, sin facciones»; en la ref. 05 tienen cuencas negras y rasgos suaves. Los prompts usan «smooth white porcelain masks with hollow black eyes». Para seguir el guion al pie de la letra, cambia esa frase por «completely featureless white masks, no eyes, no mouth» en todos los prompts.
 - **Revisa · Brazo izquierdo.** Los generadores suelen invertir izquierda y derecha. En K5, K9, 3C, 5D y 6C confirma que sea el izquierdo; si no, voltea la imagen horizontalmente antes de animarla.
 - **Revisa · Vestuario de Alex.** Polo blanca con rayas grises solo en la escena 1. Playera gris lisa de manga corta en la noche y en el desayuno, para que el antebrazo se vea en la escena 6.
 - **Nota · Anillo en la ref. 03.** Las manos llevan un anillo que se lee como de matrimonio, y Alex tiene 22 años y novia. Quítalo en K1 o ignóralo.
 - **Nota · Celular sobre la mesa.** El guion dice «debajo de la mesa», pero en las refs 03 y 04 está sobre la mesa. No cambia la historia.
 - **Nota · El recuerdo es el pasado.** En la ref. 02 los papás son más jóvenes (el papá sin bigote) y aparece la abuela: léelo como la infancia de Alex, con él de niño en los hombros de su papá. El papá usa una polo a rayas, como Alex en la cena.
-- **Nota · El reloj marca 03:14.** Se ve en la ref. 01 y en todo lo que salga de ella. Mantén esa hora en las escenas 2, 3 y 5, o usa la idea del «tiempo perdido» de la biblia visual.
+- **Nota · El reloj marca 03:14.** Se ve en la ref. 01 original, pero el recorte vertical lo deja fuera. Si quieres ese detalle (o la idea del «tiempo perdido» de la biblia visual), agrégalo en la edición.
 
 <a id="linea-de-tiempo"></a>
 
@@ -70,28 +73,28 @@ Los prompts de las imágenes que faltan están en [keyframes.md](keyframes.md). 
 
 | Entra | Sale | Dura | Plano | Escena |
 |---|---|---|---|---|
-| 0:00 | 0:09 | 9 s | [**1A** · La cena](#1a) | 1 |
-| 0:09 | 0:17 | 8 s | [**1B** · POV: el chat](#1b) | 1 |
-| 0:17 | 0:23 | 6 s | [**1C** · «Sí, ma. Todo bien.»](#1c) | 1 |
-| 0:23 | 0:24 | 1 s | _Negro: Corte a negro en silencio_ | 1 |
-| 0:24 | 0:32 | 8 s | [**2A** · La habitación en penumbra](#2a) | 2 |
-| 0:32 | 0:39 | 7 s | [**2B** · Aparecen las tres sombras](#2b) | 2 |
-| 0:39 | 0:42 | 3 s | [**2C** · El cuerpo no responde](#2c) | 2 |
-| 0:42 | 0:50 | 8 s | [**2D** · Se deslizan hacia él](#2d) | 2 |
-| 0:50 | 0:56 | 6 s | [**3A** · Las máscaras encima](#3a) | 3 |
-| 0:56 | 1:00 | 4 s | [**3B** · El grito sin voz](#3b) | 3 |
-| 1:00 | 1:05 | 5 s | [**3C** · La extremidad oscura](#3c) | 3 |
-| 1:05 | 1:13 | 8 s | [**4A** · El parque](#4a) | 4 |
-| 1:13 | 1:16 | 3 s | [**5A** · El recuerdo se rompe](#5a) | 5 |
-| 1:16 | 1:17 | 1 s | [**5B** · Flash: la máscara ladea la cabeza](#5b) | 5 |
-| 1:17 | 1:18 | 1 s | [**5C** · Flash: el techo girando](#5c) | 5 |
-| 1:18 | 1:19 | 1 s | [**5D** · Flash: recupera el brazo](#5d) | 5 |
-| 1:19 | 1:23 | 4 s | [**5E** · Despierta de golpe](#5e) | 5 |
-| 1:23 | 1:29 | 6 s | [**5F** · El cuarto vacío](#5f) | 5 |
-| 1:29 | 1:37 | 8 s | [**6A** · Desayuno en silencio](#6a) | 6 |
-| 1:37 | 1:41 | 4 s | [**6B** · El ardor](#6b) | 6 |
-| 1:41 | 1:46 | 5 s | [**6C** · No fue un sueño](#6c) | 6 |
-| 1:46 | 1:50 | 4 s | _Título: «LA INCISIÓN» sobre negro_ | 6 |
+| 0:00 | 0:08 | 8 s | [**1A** · La cena](#1a) | 1 |
+| 0:08 | 0:16 | 8 s | [**1B** · POV: el chat](#1b) | 1 |
+| 0:16 | 0:22 | 6 s | [**1C** · «Sí, ma. Todo bien.»](#1c) | 1 |
+| 0:22 | 0:23 | 1 s | _Negro: Corte a negro en silencio_ | 1 |
+| 0:23 | 0:31 | 8 s | [**2A** · La habitación en penumbra](#2a) | 2 |
+| 0:31 | 0:38 | 7 s | [**2B** · Aparecen las tres sombras](#2b) | 2 |
+| 0:38 | 0:41 | 3 s | [**2C** · El cuerpo no responde](#2c) | 2 |
+| 0:41 | 0:49 | 8 s | [**2D** · Se deslizan hacia él](#2d) | 2 |
+| 0:49 | 0:55 | 6 s | [**3A** · Las máscaras encima](#3a) | 3 |
+| 0:55 | 0:59 | 4 s | [**3B** · El grito sin voz](#3b) | 3 |
+| 0:59 | 1:04 | 5 s | [**3C** · La extremidad oscura](#3c) | 3 |
+| 1:04 | 1:12 | 8 s | [**4A** · El parque](#4a) | 4 |
+| 1:12 | 1:15 | 3 s | [**5A** · El recuerdo se rompe](#5a) | 5 |
+| 1:15 | 1:16 | 1 s | [**5B** · Flash: la máscara ladea la cabeza](#5b) | 5 |
+| 1:16 | 1:17 | 1 s | [**5C** · Flash: el techo girando](#5c) | 5 |
+| 1:17 | 1:18 | 1 s | [**5D** · Flash: recupera el brazo](#5d) | 5 |
+| 1:18 | 1:22 | 4 s | [**5E** · Despierta de golpe](#5e) | 5 |
+| 1:22 | 1:28 | 6 s | [**5F** · El cuarto vacío](#5f) | 5 |
+| 1:28 | 1:36 | 8 s | [**6A** · Desayuno en silencio](#6a) | 6 |
+| 1:36 | 1:40 | 4 s | [**6B** · El ardor](#6b) | 6 |
+| 1:40 | 1:45 | 5 s | [**6C** · No fue un sueño](#6c) | 6 |
+| 1:45 | 1:49 | 4 s | _Título: «LA INCISIÓN» sobre negro_ | 6 |
 
 ## Escena 1 · La cena
 
@@ -107,11 +110,11 @@ La familia cena y platica animada. Alex está ahí, pero su cabeza está en la p
 
 ### 1A · La cena
 
-<img src="referencias/04-comedor-cena.jpg" width="360" alt="Ref. 04">
+<img src="referencias/vertical/04-comedor-cena.jpg" width="200" alt="Ref. 04">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
-| 10 s | 9 s | Ref. 04 | — | Alex |
+| 10 s | 8 s | Ref. 04 | — | Alex |
 
 **Cámara:** Dolly-in lento que deriva hacia Alex; el foco pasa de la familia a él.  
 **Qué pasa:** La familia platica y se pasa los platos; Alex, inmóvil, mira el celular. La cámara se acerca despacio y el foco pasa de la familia a su cara.
@@ -140,7 +143,7 @@ Audio: lively family chatter in Mexican Spanish, clinking cutlery and plates, a 
 
 ### 1B · POV: el chat
 
-<img src="referencias/03-pov-chat.jpg" width="360" alt="Ref. 03">
+<img src="referencias/vertical/03-pov-chat.jpg" width="200" alt="Ref. 03">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -173,9 +176,11 @@ Audio: family chatter and cutlery heard muffled, as if underwater, under a low h
 
 ### 1C · «Sí, ma. Todo bien.»
 
+<img src="referencias/vertical/07-toma1A-final.jpg" width="200" alt="Ref. 07">
+
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
-| 10 s | 6 s | [K10 · Alex en la cena (plano medio corto)](keyframes.md#k10) | — | Alex |
+| 10 s | 6 s | Ref. 07 | — | Alex |
 
 **Cámara:** Plano medio corto, fijo.  
 **Qué pasa:** Alex bloquea el celular, levanta la vista y finge media sonrisa: «Sí, ma. Todo bien.» La sonrisa se le borra en cuanto dejan de mirarlo.
@@ -214,7 +219,7 @@ Corte directo a la oscuridad. Alex, agotado, está por dormirse cuando tres figu
 
 ### 2A · La habitación en penumbra
 
-<img src="referencias/01-habitacion-noche.jpg" width="360" alt="Ref. 01">
+<img src="referencias/vertical/01-habitacion-noche.jpg" width="200" alt="Ref. 01">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -226,7 +231,7 @@ Corte directo a la oscuridad. Alex, agotado, está por dormirse cuando tres figu
 **Prompt**
 
 ```text
-Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. The streetlight outside the window flickers faintly. No people in the room. Cold blue moonlight through the window, deep black shadows, the red digital clock as the only warm light. Photorealistic horror film look, low-key lighting, heavy film grain.
+Static first-person POV from a bed in a dark bedroom at night, as if lying on the pillow and looking into the room. The camera does not move. Everything is silent and still. The ceiling fan turns very slowly and the curtain moves slightly. The shadows in the corners of the room slowly stretch and creep up the walls in an unnatural way, as if they were alive. Faint light from the window flickers on the walls. No people in the room. Cold blue moonlight, deep black shadows. Photorealistic horror film look, low-key lighting, heavy film grain.
 ```
 
 **Negative prompt**
@@ -241,7 +246,7 @@ blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs,
 
 ### 2B · Aparecen las tres sombras
 
-<img src="referencias/01-habitacion-noche.jpg" width="360" alt="Ref. 01">
+<img src="referencias/vertical/01-habitacion-noche.jpg" width="200" alt="Ref. 01">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -413,7 +418,7 @@ Como defensa, la mente de Alex se refugia en un recuerdo: su familia, cuando él
 
 ### 4A · El parque
 
-<img src="referencias/02-recuerdo-parque.jpg" width="360" alt="Ref. 02">
+<img src="referencias/vertical/02-recuerdo-parque.jpg" width="200" alt="Ref. 02">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -425,7 +430,7 @@ Como defensa, la mente de Alex se refugia en un recuerdo: su familia, cuando él
 **Prompt**
 
 ```text
-Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs and gently rocks the little girl in the yellow dress in her arms, the mother hugs them and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.
+Dreamlike slow-motion memory of a happy Mexican family in a sunny park at golden hour. The grandmother laughs, the mother hugs her and smiles, and the father laughs as he bounces the little boy on his shoulders while the boy throws his head back laughing. Warm sunlight flares through the oak trees and the leaves sway softly in the breeze. The camera slowly pushes in. Soft glow, bloom and halation, bright overexposed highlights, warm golden colors, peaceful and loving atmosphere, photorealistic, 35mm film look.
 ```
 
 **Negative prompt**
@@ -475,7 +480,7 @@ blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs,
 
 ### 5B · Flash: la máscara ladea la cabeza
 
-<img src="referencias/05-figuras-enmascaradas.jpg" width="360" alt="Ref. 05">
+<img src="referencias/vertical/05-figuras-enmascaradas.jpg" width="200" alt="Ref. 05">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -562,7 +567,7 @@ blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs,
 **Prompt**
 
 ```text
-Medium shot of Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lying on his back in bed in a dark bedroom. Suddenly he sits bolt upright, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.
+Vertical medium shot from the side at mattress level: Alex, a 22-year-old Mexican man with brown skin and short black hair, wearing a gray t-shirt, lies on his back in bed with his head near the bottom of the frame. Suddenly he sits bolt upright into the frame, gasping desperately for air, his face and t-shirt drenched in cold sweat and his chest heaving. He looks around the room in panic. Cold blue moonlight from the window, deep shadows, photorealistic horror film look, heavy film grain.
 ```
 
 **Negative prompt**
@@ -577,7 +582,7 @@ blurry, low quality, distorted face, deformed hands, extra fingers, extra limbs,
 
 ### 5F · El cuarto vacío
 
-<img src="referencias/01-habitacion-noche.jpg" width="360" alt="Ref. 01">
+<img src="referencias/vertical/01-habitacion-noche.jpg" width="200" alt="Ref. 01">
 
 | Genera | Usa | Fotograma inicial | Fotograma final | Elements |
 |---|---|---|---|---|
@@ -624,7 +629,7 @@ Todo parece normal otra vez. Alex desayuna solo, pálido. Un ardor lo hace mirar
 **Prompt**
 
 ```text
-Wide shot of a Mexican family dining room in the morning, soft natural daylight coming through a window. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.
+Vertical wide shot of the family dining room in the morning, soft natural daylight coming through a window, framed family photos on the terracotta wall. The house is calm and quiet. Alex, a pale 22-year-old Mexican man in a gray t-shirt, sits alone at the wooden table in front of a plate of red chilaquiles and a cup of coffee. He mechanically pushes the food around with his fork without eating, then stops and stares at the empty space in front of him, lost. The camera slowly pushes in toward him. Neutral, slightly desaturated colors, still and quiet atmosphere, photorealistic, 35mm film look, natural film grain.
 ```
 
 **Negative prompt**

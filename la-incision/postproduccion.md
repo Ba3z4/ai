@@ -5,7 +5,7 @@ Cómo armar el corto con las tomas de Kling. El orden y la duración exacta de c
 ## Programa y proyecto
 
 - CapCut (gratis y sencillo) o DaVinci Resolve (gratis, con más control de color y audio).
-- Proyecto de 1920×1080 a 24 fps. Si vas a entregar en 4K, crea el proyecto en 3840×2160 desde el inicio.
+- Proyecto vertical de 1080×1920 a 24 fps (TikTok). Las tomas de Gemini Omni salen en 720×1280; el editor las escala sin problema.
 
 ## Preparar el material
 
@@ -68,12 +68,20 @@ Casi nada. Un drone grave que crece de 2B a 3C y desaparece en el recuerdo; en l
 - La mañana (escena 6): baja la saturación entre 15 y 20 % y enfría un poco la piel de Alex.
 - Opcional: franjas negras 2.39:1 para un look de cine.
 
+## TikTok
+
+- **Gancho en el primer segundo.** TikTok decide en 1 o 2 segundos si la gente se queda. Considera abrir con 1.5 s de 3A (las máscaras encima de su cara) y un texto como «Esto me pasó anoche», y luego cortar a la cena. Es solo edición: reusa el clip 3A.
+- **Zona segura.** La interfaz de TikTok tapa la parte de abajo (descripción y música) y la columna derecha (botones). Deja la acción importante y los subtítulos en el centro; no pongas nada clave en el 20 % inferior ni pegado al borde derecho.
+- **Subtítulos.** Mucha gente ve sin sonido. Agrega subtítulos a los dos diálogos (CapCut los genera solo) dentro de la zona segura.
+- **Portada.** Elige como portada un cuadro de 3A o de 6C (las máscaras o las suturas), no la cena.
+- **Música.** Si usas un sonido de la biblioteca de TikTok, pon el volumen bajo para que no tape el diseño sonoro.
+
 ## Título
 
 «LA INCISIÓN» en blanco sobre negro, con una tipografía serif delgada y bastante espacio entre letras. Idea: una línea roja fina cruza el título de izquierda a derecha, como un bisturí, y deja pequeñas marcas de sutura. Dura 4 s y entra con un golpe grave. Si lo publicas en redes, puedes repetir el título al principio, justo después de 1C.
 
 ## Exportación
 
-- Master: 1920×1080 (o 3840×2160), 24 fps, H.264 o H.265, entre 20 y 40 Mbps.
-- Vertical 9:16 para Reels o TikTok: reencuadra plano por plano centrando la acción. Los POV y los insertos (máscaras, brazo) funcionan bien en vertical; el comedor es lo que más sufre. Si el vertical es el formato principal, genera los keyframes también en 9:16.
+- Para TikTok: 1080×1920, 24 o 30 fps, H.264, entre 10 y 20 Mbps.
+- Si luego quieres una versión horizontal para YouTube, tendrás que generar los planos de nuevo en 16:9: un recorte de 9:16 a 16:9 pierde casi toda la imagen.
 - Subtítulos: solo hay dos líneas de diálogo. Agrégalos en español (y en inglés si lo vas a mover fuera de México).

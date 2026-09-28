@@ -15,17 +15,17 @@ Instrucciones para una sesión de Claude que corre en la PC de la persona (Claud
 - Copia los prompts tal cual de `plan.json` (o de `shotlist-kling.md` y `keyframes.md`). Si cambias uno, anota el cambio y el motivo en `tomas/registro.md`.
 - No generes texto en pantalla con Kling: el chat y el título se ponen en la edición.
 - Borradores en modo rápido; la toma final en calidad Pro solo cuando el borrador funcione.
-- Todo en 16:9.
+- Todo en vertical 9:16 (es para TikTok).
 
 ## 1. Elements
 
-1. Genera **K0** (hoja de personaje) con `elements/alex-rostro.jpg` como referencia (prompt en `keyframes.md`).
-2. Crea el Element **«Alex»** con `elements/alex-rostro.jpg` + K0.
+1. Genera **K0** (hoja de personaje) con `elements/alex-toma1A.jpg` como referencia (prompt en `keyframes.md`).
+2. Crea el Element **«Alex»** con `elements/alex-toma1A.jpg` + K0.
 3. Crea el Element **«Figura»** con `elements/figura-enmascarada.jpg`.
 
 ## 2. Keyframes
 
-Genera K1–K10 en este orden: K10, K2, K4, K3, K5, K6, K7, K8, K9 (K1 solo si se elige la ruta pro de 1B). K7 va antes que K8 y K9 porque les sirve de referencia de luz.
+Genera K1–K9 en este orden: K2, K4, K3, K5, K6, K7, K8, K9 (K1 solo si se elige la ruta pro de 1B). K10 ya no hace falta: 1C empieza en el último cuadro de la toma 1A (`referencias/vertical/07-toma1A-final.jpg`). K7 va antes que K8 y K9 porque les sirve de referencia de luz.
 
 - Guarda cada una como `keyframes/K2.png`, `keyframes/K4.png`…
 - Revisa la lista de continuidad de `shotlist-kling.md`: K2 con el mismo encuadre que `referencias/01-habitacion-noche.jpg`, y brazo **izquierdo** en K5 y K9 (si sale el derecho, voltea la imagen).
@@ -33,7 +33,7 @@ Genera K1–K10 en este orden: K10, K2, K4, K3, K5, K6, K7, K8, K9 (K1 solo si s
 
 ## 3. Planos
 
-Sigue el orden de la línea de tiempo de `shotlist-kling.md` (1A → 6C). Para cada plano:
+Sigue el orden de la línea de tiempo de `shotlist-kling.md` (1A → 6C). La toma 1A ya existe: es el video de Gemini que tiene la persona, recortado desde el segundo 1.4; guárdalo como `tomas/1A.mp4`. Los primeros cuadros van en su versión vertical (`referencias/vertical/`). Para cada plano:
 
 1. Imagen a video con el fotograma inicial indicado (y el final en 2B). «Último cuadro de 4A» se exporta del clip 4A ya elegido.
 2. Duración = «Genera». Añade los Elements indicados si la versión lo permite con fotograma inicial.
