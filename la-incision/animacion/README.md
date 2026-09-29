@@ -53,6 +53,7 @@ Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/b
 | [post.py](post.py) | Color por escena, la cinta VHS en la tele de tubo y los rótulos |
 | [sonido.py](sonido.py) | Toda la pista de sonido, sintetizada |
 | [render_pintado.py](render_pintado.py) | La versión pintada con el guion original |
+| [render_realista.py](render_realista.py) | La versión pintada con personajes realistas, sacados de tus imágenes de referencia |
 | [pasos.py](pasos.py) | «Cómo abrir a un humano»: el guion en pasos, el narrador y las ilustraciones |
 | [render_pasos.py](render_pasos.py) | Voz del narrador, línea de tiempo, música y render de esa versión |
 | [pintura.py](pintura.py) | El acabado de pintura (Kuwahara, póster, lienzo) y la franja con la palabra |
@@ -66,6 +67,16 @@ La historia tal cual el guion, plano por plano (la cena, el chat, «Sí, ma. Tod
 python3 animacion/render_pintado.py            # → la-incision-pintada.mp4 y su versión ligera
 python3 animacion/render_pintado.py --fotos    # hoja de contactos
 python3 animacion/render_pintado.py --planos 1B  # vuelve a pintar solo ese plano y rearma el video
+```
+
+## Versión realista (guion original)
+
+La misma historia y el mismo arte pintado, pero los personajes son realistas: salen de tus imágenes de referencia en lugar de dibujarse. Alex y su familia son los de tu toma 1A de Gemini (el plano 1A usa `tomas/1A.mp4` en movimiento si está), el chat es el de la referencia 3, las tres figuras son las de la referencia 5, la habitación la 1 y el parque la 2. Para actuar, cada foto se mueve con cámara lenta y deformaciones suaves: Alex levanta la mirada, sonríe forzado, mueve los labios con su frase, mueve los ojos, grita sin voz, se incorpora jadeando y baja la vista hacia su brazo. Lo que no tiene foto (la sábana arrugada con luz de luna, la garra, el sudor y la incisión con sus once puntadas) se pinta encima; el antebrazo es el de la toma 1A, recortado con su silueta. Luego todo pasa por el mismo acabado de pintura y la franja con los diálogos.
+
+```sh
+python3 animacion/render_realista.py            # → la-incision-realista.mp4 y su versión ligera
+python3 animacion/render_realista.py --fotos    # hoja de contactos
+python3 animacion/render_realista.py --planos 6C  # vuelve a pintar solo ese plano y rearma el video
 ```
 
 ## Otra versión: «Cómo abrir a un humano»
