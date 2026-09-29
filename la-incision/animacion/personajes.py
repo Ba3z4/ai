@@ -262,10 +262,11 @@ def alex_frente(lz, x, y, s, t=0.0, mira=(0, 0), parpado=0.25, boca="neutra", ha
 
 
 def alex_perfil(lz, x, y, s, t=0.0, parpado=0.3, boca=0.0, mira_abajo=0.6, luz=(-12, -4),
-                luz_cara=None, sudor=0.0, piel=None, ropa=True, jadeo=0.0, palidez=0.0, contraluz=None):
+                luz_cara=None, sudor=0.0, piel=None, ropa=True, jadeo=0.0, palidez=0.0, contraluz=None, inclina=0.0):
     """Alex de perfil mirando a la izquierda. Origen: centro de la cabeza. Cabeza ~420 de alto.
 
     luz_cara: (color, alfa) de una luz que le pega desde abajo (el celular).
+    inclina: cuánto agacha la cabeza (radianes).
     """
     piel = piel or mezcla(PIEL_ALEX, hexa("#a39a8e"), palidez * 0.55)
     piel_sombra = mezcla(oscuro(piel, 0.62), hexa("#3a2c3c"), 0.25)
@@ -281,6 +282,10 @@ def alex_perfil(lz, x, y, s, t=0.0, parpado=0.3, boca=0.0, mira_abajo=0.6, luz=(
         capucha = [(60, 120), (170, 110), (240, 180), (250, 260), (170, 250), (90, 210)]
         lz.forma(np.array(capucha, float), oscuro(sud, 0.8), sombra=oscuro(sud, 0.5), luz=(-10, -8))
         lz.pincel([(-40, 240), (-50, 330), (-44, 420)], 5, hexa("#c9c3b5"))
+    if inclina:
+        lz.ctx.translate(30, 170)
+        lz.ctx.rotate(-inclina)
+        lz.ctx.translate(-30, -170)
     # Cuello.
     lz.forma(np.array([(-40, 100), (70, 80), (110, 210), (-30, 250)], float), piel, sombra=piel_sombra, luz=(-8, 30))
     perfil = [(60, -205), (-10, -196), (-58, -162), (-78, -118), (-84, -90), (-78, -70), (-92, -44), (-112, -14),
@@ -319,7 +324,7 @@ def alex_perfil(lz, x, y, s, t=0.0, parpado=0.3, boca=0.0, mira_abajo=0.6, luz=(
         lz.forma(np.array([(-102, 50), (-80, 48 - abre * 4), (-74, 60 + abre * 16), (-98, 64 + abre * 20)], float),
                  hexa("#140708"), grosor=3.5)
     else:
-        lz.pincel([(-98, 55), (-84, 57), (-70, 53)], 4)
+        lz.pincel([(-98, 54), (-86, 57), (-72, 61)], 4)
     lz.pincel([(-118, 12), (-110, 4), (-100, 10)], 3, piel_sombra)
     # Pelo.
     pelo = [(-40, -170), (-70, -200), (-40, -236), (10, -250), (60, -252), (110, -236), (152, -196), (170, -130),

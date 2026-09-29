@@ -7,6 +7,7 @@ Uso (desde la carpeta la-incision):
     python3 animacion/render.py --planos 3A 3B   # solo esos planos (quedan en animacion/build/)
     python3 animacion/render.py --fotos          # hoja de contactos con un cuadro de cada plano
     python3 animacion/render.py --solo-audio     # vuelve a mezclar el sonido sobre los planos ya hechos
+    python3 animacion/render.py --portada        # portada para TikTok → portada-tiktok.png
 
 Necesita Python 3 con numpy, scipy, pycairo y Pillow (pip install numpy scipy pycairo pillow) y ffmpeg.
 Las duraciones salen de plan.json; antes del plano 1A va un gancho de 1.5 s para TikTok.
@@ -147,6 +148,16 @@ def hoja_de_contactos(linea, ancho, salida, momentos=(0.5,)):
     return salida
 
 
+def portada(ancho, salida):
+    """Portada para TikTok: las máscaras encima de su cara con el título."""
+    plano = PLANOS["3A"](6, ancho)
+    lz = Lienzo(ancho, semilla=7)
+    img = cuadro_de(plano, lz, 4.6, 55, 1300)
+    img = post.poner_texto(img, ["LA INCISIÓN"], FUENTE_TITULO, 160, 1480, color="#E6E0D2", borde=6, ancho_max=0.95)
+    Image.fromarray(post.a_bytes(img)).save(salida)
+    return salida
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ancho", type=int, default=1080, help="ancho del video (1080 para el final)")
@@ -154,6 +165,7 @@ def main():
     parser.add_argument("--fotos", action="store_true", help="hoja de contactos en vez de video")
     parser.add_argument("--momentos", type=float, nargs="*", default=[0.5], help="momentos (0..1) para --fotos")
     parser.add_argument("--solo-audio", action="store_true", help="solo rehace el sonido y el montaje")
+    parser.add_argument("--portada", action="store_true", help="solo la portada para TikTok (PNG)")
     parser.add_argument("--procesos", type=int, default=os.cpu_count() or 2)
     parser.add_argument("--salida", type=Path, default=RAIZ / "la-incision-animada.mp4")
     args = parser.parse_args()
@@ -165,6 +177,9 @@ def main():
             sys.exit(f"No conozco estos planos: {', '.join(faltan)}")
     elegidos = [x for x in linea if not args.planos or x[0] in args.planos]
     BUILD.mkdir(exist_ok=True)
+    if args.portada:
+        print(f"Portada → {portada(args.ancho, RAIZ / 'portada-tiktok.png')}")
+        return
     if args.fotos:
         salida = BUILD / "contactos.png"
         print(f"Hoja de contactos → {salida}")
@@ -199,11 +214,11 @@ def main():
     comando = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista),
                "-i", str(audio)]
     if args.ancho != 1080:
-        comando += ["-vf", "scale=1080:1920:flags=lanczos", "-c:v", "libx264", "-crf", "18", "-preset", "medium",
-                    "-pix_fmt", "yuv420p"]
-    else:
-        comando += ["-c:v", "copy"]
-    comando += ["-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(args.salida)]
+        comando += ["-vf", "scale=1080:1920:flags=lanczos"]
+    # El ruido de cinta pesa mucho: se limita el bitrate para que el archivo se pueda subir a TikTok (~100 MB).
+    comando += ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-maxrate", "7M", "-bufsize", "14M",
+                "-pix_fmt", "yuv420p", "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-shortest",
+                "-movflags", "+faststart", str(args.salida)]
     subprocess.run(comando, check=True)
     print(f"Listo: {args.salida}")
 

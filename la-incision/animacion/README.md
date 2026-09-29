@@ -20,9 +20,10 @@ python3 animacion/render.py --ancho 540     # borrador rápido a media resoluci�
 python3 animacion/render.py --fotos         # hoja de contactos con un cuadro de cada plano
 python3 animacion/render.py --planos 3A 3B  # solo esos planos (para probar cambios)
 python3 animacion/render.py --solo-audio    # rehace el sonido sin volver a dibujar
+python3 animacion/render.py --portada       # portada para TikTok → portada-tiktok.png
 ```
 
-Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/build/`. Las duraciones salen de `plan.json`, así que si cambias el `uso` de un plano, la animación se ajusta. Antes del plano 1A va un gancho de 1.5 s con las máscaras para enganchar en TikTok.
+Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/build/`. Con 4 núcleos el corto completo tarda unos 10 minutos. El video final se limita a unos 7 Mbps (unos 100 MB) para que se pueda subir a TikTok desde el celular. Las duraciones salen de `plan.json`, así que si cambias el `uso` de un plano, la animación se ajusta. Antes del plano 1A va un gancho de 1.5 s con las máscaras para enganchar en TikTok.
 
 ## Archivos
 

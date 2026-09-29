@@ -142,8 +142,8 @@ class P1A(Plano):
         lz.viñeta(0.5 + 0.35 * foco, cx=W / 2, cy=H / 2 + 200, r0=380, r1=1250)
         parpado = 1.0 if 3.25 < tq < 3.45 else 0.5
         _celular_mano(lz, 640, 1740, 0.9, t)
-        alex_perfil(lz, 832, 1330, 0.95, t=tq, parpado=parpado, mira_abajo=1.0, luz=(-10, -6),
-                    luz_cara=((0.25, 0.5, 0.85), 0.6))
+        alex_perfil(lz, 832, 1330, 0.95, t=tq, parpado=max(parpado, 0.6), mira_abajo=1.0, luz=(-10, -6),
+                    luz_cara=((0.25, 0.5, 0.85), 0.6), inclina=0.2)
         lz.viñeta(0.35, r0=500, r1=1300)
         return {"osd": ("PLAY", 1.0 if t < 2.6 and (t < 2.0 or int(t * 4) % 2 == 0) else 0.0),
                 "falla": 0.6 * (1 - tramo(t, 0.0, 0.35))}
