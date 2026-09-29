@@ -52,10 +52,21 @@ Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/b
 | [dibujo.py](dibujo.py) | El lienzo: figuras con sombra de cel, tinta que tiembla, pinceles, luces y cámara |
 | [post.py](post.py) | Color por escena, la cinta VHS en la tele de tubo y los rótulos |
 | [sonido.py](sonido.py) | Toda la pista de sonido, sintetizada |
+| [render_pintado.py](render_pintado.py) | La versión pintada con el guion original |
 | [pasos.py](pasos.py) | «Cómo abrir a un humano»: el guion en pasos, el narrador y las ilustraciones |
 | [render_pasos.py](render_pasos.py) | Voz del narrador, línea de tiempo, música y render de esa versión |
 | [pintura.py](pintura.py) | El acabado de pintura (Kuwahara, póster, lienzo) y la franja con la palabra |
 | [fuentes/](fuentes/) | VT323 (letreros de videocasetera) y Cinzel (la palabra del narrador), las dos con licencia OFL |
+
+## Versión pintada (guion original)
+
+La historia tal cual el guion, plano por plano (la cena, el chat, «Sí, ma. Todo bien.», las tres sombras, la parálisis, el recuerdo, el despertar y la incisión), con el arte de ilustración oscura pintada: sin contornos, cada forma con volumen (luz de un lado y sombra del otro), pinceladas planas (filtro Kuwahara), colores de póster, lienzo y claroscuro. Como en la referencia, cruza el cuadro una franja negra donde aparecen, palabra por palabra y en letra romana, los diálogos. El sonido es el de la historia original, sin efectos de cinta.
+
+```sh
+python3 animacion/render_pintado.py            # → la-incision-pintada.mp4 y su versión ligera
+python3 animacion/render_pintado.py --fotos    # hoja de contactos
+python3 animacion/render_pintado.py --planos 1B  # vuelve a pintar solo ese plano y rearma el video
+```
 
 ## Otra versión: «Cómo abrir a un humano»
 

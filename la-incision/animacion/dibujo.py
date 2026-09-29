@@ -79,6 +79,8 @@ def catmull(pts, cerrada=True, tension=1.0, pasos=8):
 class Lienzo:
     """Envuelve un contexto de cairo con las reglas de dibujo del corto."""
 
+    sin_tinta = False  # modo pintura: sin contornos negros y con volumen en cada forma
+
     def __init__(self, ancho=1080, semilla=0, margen=0):
         self.esc = ancho / W
         self.margen = margen
@@ -94,7 +96,6 @@ class Lienzo:
         self.hervor = 1.3      # temblor de la tinta, en px del lienzo virtual
         self.grosor_min = 2.2  # la tinta nunca es más delgada que esto (px virtuales)
         self.tinta = TINTA
-        self.sin_tinta = False  # modo pintura: sin contornos negros
         self.base = cairo.Matrix(self.esc, 0, 0, self.esc, margen * self.esc, margen * self.esc)
 
     # --- cuadro y cámara -------------------------------------------------------------------
@@ -294,6 +295,8 @@ class Lienzo:
             c.paint()
         if relleno:
             relleno()
+        if self.sin_tinta:
+            self._volumen(p, luz)
         if alfa < 1:
             c.pop_group_to_source()
             c.paint_with_alpha(alfa)
@@ -301,6 +304,24 @@ class Lienzo:
         if tinta:
             self._trazar(camino, grosor, alfa=alfa)
         return camino
+
+    def _volumen(self, p, luz):
+        """Modelado pintado: la forma se aclara del lado de la luz y se hunde del lado contrario."""
+        x0, y0 = p.min(axis=0)
+        x1, y1 = p.max(axis=0)
+        r = max(x1 - x0, y1 - y0) / 2
+        if r < 6:
+            return
+        lx, ly = luz if (luz[0] or luz[1]) else (-0.6, -1.0)
+        n = math.hypot(lx, ly) or 1.0
+        lx, ly = lx / n, ly / n
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        g = cairo.LinearGradient(cx + lx * r, cy + ly * r, cx - lx * r, cy - ly * r)
+        g.add_color_stop_rgba(0, 1, 0.97, 0.9, 0.16)
+        g.add_color_stop_rgba(0.45, 1, 1, 1, 0.0)
+        g.add_color_stop_rgba(1, 0.02, 0.0, 0.05, 0.38)
+        self.ctx.set_source(g)
+        self.ctx.paint()
 
     def linea(self, pts, grosor=5.0, color=None, cerrada=False, suave=True, alfa=1.0, hervor=None):
         """Línea de tinta de grosor constante."""

@@ -597,8 +597,12 @@ def temblor_de_cinta(x, profundidad=1.0):
 
 # --- la mezcla por escena -----------------------------------------------------------------------
 
-def generar(linea, ruta):
-    """linea: [(id, inicio, duración)]. Escribe un WAV estéreo de 16 bits."""
+def generar(linea, ruta, cinta=True):
+    """linea: [(id, inicio, duración)]. Escribe un WAV estéreo de 16 bits.
+
+    cinta=False quita todo lo de la videocasetera (siseo, zumbido, clunks, estática, temblor de cinta)
+    para la versión pintada.
+    """
     total = max(i + d for _, i, d in linea)
     P = Pista(total)
     rng = np.random.default_rng(2026)
@@ -607,8 +611,9 @@ def generar(linea, ruta):
     def en(ident, t=0.0):
         return T[ident][0] + t
 
-    hiss = pb(pa(ruido(muestras(total), rng), 3000), 12000) * 0.004
-    P.poner(hiss, 0)
+    if cinta:
+        hiss = pb(pa(ruido(muestras(total), rng), 3000), 12000) * 0.004
+        P.poner(hiss, 0)
 
     # Gancho.
     if "Gancho" in T:
@@ -629,7 +634,8 @@ def generar(linea, ruta):
 
     # Escena 1: la cena.
     ini, dur = T["1A"]
-    P.poner(clunk(rng), ini, 0.6)
+    if cinta:
+        P.poner(clunk(rng), ini, 0.6)
     fin_cena = T["1C"][0] + T["1C"][1]
     largo = fin_cena - ini
     ambiente = zumbido(largo) * 0.05 + tono_cuarto(largo, rng) * 0.25
@@ -801,13 +807,15 @@ def generar(linea, ruta):
     # Título.
     it, dt = T["Título"]
     P.poner(golpe(rng, 1.2, 3.0), it + 0.35, 0.7)
-    P.poner(falla(0.25, rng), it + 0.33, 0.2)
+    if cinta:
+        P.poner(falla(0.25, rng), it + 0.33, 0.2)
     for k in range(12):
         P.poner(clic(rng, 2400, 0.03, 200), it + 0.75 + k * 0.095, 0.08)
     P.poner(drone(dt - 0.5, rng, 32.7, 260) * env_ar(muestras(dt - 0.5), 0.3, 1.2), it + 0.35, 0.18)
-    P.poner(falla(0.15, rng), it + 2.95, 0.15)
-    P.poner(clunk(rng), it + 3.3, 0.5)
-    P.poner(estatica(0.45, rng), it + 3.55, 0.3)
+    if cinta:
+        P.poner(falla(0.15, rng), it + 2.95, 0.15)
+        P.poner(clunk(rng), it + 3.3, 0.5)
+        P.poner(estatica(0.45, rng), it + 3.55, 0.3)
 
     # Silencios: el negro después de 1C y el corte seco al final de 6C.
     x = P.x
@@ -815,15 +823,19 @@ def generar(linea, ruta):
     for inicio, fin in ((T["Negro"][0] + 0.02, T["Negro"][0] + T["Negro"][1]), (fin6, corte_final)):
         a, b = muestras(inicio), muestras(fin)
         x[a:b] *= 0.05
-    # En el negro solo queda el pitido de la hora (03:17 A.M.).
-    pitido = seno(1000, muestras(0.12)) * env_ar(muestras(0.12), 0.005, 0.01)
-    P.poner(pitido, T["Negro"][0] + 0.06, 0.12)
-    # Zumbido de la tele y siseo constantes: la cinta nunca está en silencio del todo.
-    P.poner(zumbido(total, 60) * 0.004 + pb(pa(ruido(muestras(total), rng), 2500), 9000) * 0.003, 0)
+    if cinta:
+        # En el negro solo queda el pitido de la hora (03:17 A.M.).
+        pitido = seno(1000, muestras(0.12)) * env_ar(muestras(0.12), 0.005, 0.01)
+        P.poner(pitido, T["Negro"][0] + 0.06, 0.12)
+        # Zumbido de la tele y siseo constantes: la cinta nunca está en silencio del todo.
+        P.poner(zumbido(total, 60) * 0.004 + pb(pa(ruido(muestras(total), rng), 2500), 9000) * 0.003, 0)
 
-    # Maestro: temblor de cinta, ancho de banda de VHS, compresión suave y pico a -1 dB.
-    x = temblor_de_cinta(P.x)
-    x = pb(pa(x, 28), 11000, 4)
+    # Maestro: (temblor de cinta y ancho de banda de VHS), compresión suave y pico a -1 dB.
+    if cinta:
+        x = temblor_de_cinta(P.x)
+        x = pb(pa(x, 28), 11000, 4)
+    else:
+        x = pa(P.x, 28)
     rms = np.sqrt(np.mean(x ** 2)) + 1e-9
     x = x * (0.11 / rms)
     x = np.tanh(x * 1.3) / 1.3

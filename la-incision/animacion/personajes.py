@@ -170,7 +170,8 @@ def _ojo(lz, cx, cy, lado, parpado, mira, piel, ojera, abierto=1.0, grande=1.0):
     if parpado >= 0.98:
         lz.pincel([(cx - ancho, cy + 2), (cx, cy + 6), (cx + ancho, cy + 2)], 5)
         return
-    lz.forma(blanco, hexa("#e9e2d2"), grosor=3.5)
+    esclera = mezcla(hexa("#e9e2d2"), piel, 0.45) if lz.sin_tinta else hexa("#e9e2d2")
+    lz.forma(blanco, esclera, grosor=3.5)
     lz.recorte(blanco)
     ix, iy = cx + mira[0] * ancho * 0.55, cy + mira[1] * alto * 0.5
     lz.forma(elipse(ix, iy, 9.5 * grande, 10.5 * grande, 12), hexa("#3b2416"), grosor=2)

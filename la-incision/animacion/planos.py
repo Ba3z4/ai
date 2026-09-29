@@ -20,6 +20,7 @@ from personajes import PIEL_ALEX, SUDADERA, alex_frente, alex_perfil, figura, ma
 
 FPS = 24
 LUNA = hexa("#9fc0e6")
+SUBLIMINALES = True  # cuadros subliminales de la versión de terror analógico (la versión pintada los apaga)
 
 
 def latido(t, bpm):
@@ -195,7 +196,7 @@ class P1C(Plano):
         self.fondo = Fondo(fondo, self.ancho, semilla=14, desenfoque=12)
 
     def dibujar(self, lz, t, tq):
-        if 5.3 <= t < 5.39:
+        if SUBLIMINALES and 5.3 <= t < 5.39:
             return _subliminal_mascara(lz, tq)
         lz.camara(1.0 + 0.05 * t / self.dur, 540, 980)
         self.fondo.pintar(lz)
@@ -670,7 +671,7 @@ class P5F(Plano):
         lz.camara(1.03 + 0.2 * k, 540 - 190 * k, 960 - 60 * k)
         self.fondo.pintar(lz)
         ventilador(lz, t * 0.4)
-        if 3.9 <= t < 3.99:
+        if SUBLIMINALES and 3.9 <= t < 3.99:
             for i, ((x, y, s), _) in enumerate(FIGURAS):
                 figura(lz, x, y, s, t=tq, semilla=i, mascara_brillo=1.0)
         for px, py, fase in self.polvo:
@@ -699,7 +700,7 @@ class P6A(Plano):
         self.mesa = Fondo(mesa_frente, self.ancho, semilla=62, transparente=True)
 
     def dibujar(self, lz, t, tq):
-        if 6.2 <= t < 6.25:
+        if SUBLIMINALES and 6.2 <= t < 6.25:
             lz.camara()
             lz.velo((0, 0, 0), 1.0)
             return {"tarjetas": [tarjeta(["NO FUE UN SUEÑO"], tam=150, y=940)], "falla": 0.5}

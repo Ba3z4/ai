@@ -85,7 +85,8 @@ def _ojos_familia(lz, quien, ancho, piel, mira, parpado, risa, mujer):
         ojo = [(cx - 22, cy), (cx - 8, cy - alto), (cx + 10, cy - alto), (cx + 22, cy), (cx + 8, cy + alto * 0.7),
                (cx - 8, cy + alto * 0.7)]
         if alto > 2:
-            lz.forma(np.array(ojo, float), hexa("#ece6d8"), grosor=3)
+            esclera = mezcla(hexa("#ece6d8"), piel, 0.45) if lz.sin_tinta else hexa("#ece6d8")
+            lz.forma(np.array(ojo, float), esclera, grosor=3)
             lz.recorte(np.array(ojo, float))
             ix = cx + mira[0] * 9
             lz.forma(elipse(ix, cy + mira[1] * 3, 9, 10, 10), hexa("#2c190f"), tinta=False)
