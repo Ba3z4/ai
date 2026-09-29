@@ -205,11 +205,12 @@ def portada(ancho, salida):
 
 
 def ligero(ffmpeg, lista, audio, salida, duracion, megas=28):
-    """Versión de menos de 30 MB (720×1280, dos pasadas) para mandarla por chat o WhatsApp."""
+    """Versión de menos de 30 MB en 1080×1920 (dos pasadas, cuidando las escenas oscuras) para mandarla por chat."""
     kbps = int(megas * 8192 / duracion) - 128
     base = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista)]
-    video = ["-vf", "scale=720:1280:flags=bicubic", "-c:v", "libx264", "-preset", "medium", "-b:v", f"{kbps}k",
-             "-pix_fmt", "yuv420p", "-r", str(FPS), "-passlogfile", str(BUILD / "ligero")]
+    video = ["-vf", "scale=1080:1920:flags=lanczos", "-c:v", "libx264", "-preset", "slower", "-b:v", f"{kbps}k",
+             "-x264-params", "aq-mode=3:aq-strength=0.9", "-pix_fmt", "yuv420p", "-r", str(FPS),
+             "-passlogfile", str(BUILD / "ligero")]
     subprocess.run(base + video + ["-pass", "1", "-an", "-f", "mp4", os.devnull], check=True)
     subprocess.run(base + ["-i", str(audio)] + video + ["-pass", "2", "-c:a", "aac", "-b:a", "128k", "-shortest",
                                                          "-movflags", "+faststart", str(salida)], check=True)

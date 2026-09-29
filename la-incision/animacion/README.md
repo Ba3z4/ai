@@ -34,10 +34,10 @@ python3 animacion/render.py --fotos         # hoja de contactos con un cuadro de
 python3 animacion/render.py --planos 3A 3B  # solo esos planos (para probar cambios)
 python3 animacion/render.py --solo-audio    # rehace el sonido sin volver a dibujar
 python3 animacion/render.py --portada       # portada para TikTok → portada-tiktok.png
-python3 animacion/render.py --ligero        # versión de menos de 30 MB (720p) con lo ya renderizado
+python3 animacion/render.py --ligero        # versión de menos de 30 MB (1080×1920) con lo ya renderizado
 ```
 
-Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/build/`. Con 4 núcleos el corto completo tarda unos 10 minutos. El video final se limita a unos 7 Mbps (unos 100 MB) para que se pueda subir a TikTok desde el celular, y junto a él sale `la-incision-animada-ligera.mp4`, de menos de 30 MB, para mandarlo por chat. Las duraciones de los planos salen de `plan.json`, así que si cambias el `uso` de un plano, la animación se ajusta.
+Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/build/`. Con 4 núcleos el corto completo tarda unos 10 minutos. El video final se limita a unos 7 Mbps (unos 100 MB) para que se pueda subir a TikTok desde el celular, y junto a él sale `la-incision-animada-ligera.mp4`, también en 1080×1920 pero de menos de 30 MB, para mandarlo por chat. Las duraciones de los planos salen de `plan.json`, así que si cambias el `uso` de un plano, la animación se ajusta.
 
 ## Archivos
 
