@@ -94,6 +94,7 @@ class Lienzo:
         self.hervor = 1.3      # temblor de la tinta, en px del lienzo virtual
         self.grosor_min = 2.2  # la tinta nunca es más delgada que esto (px virtuales)
         self.tinta = TINTA
+        self.sin_tinta = False  # modo pintura: sin contornos negros
         self.base = cairo.Matrix(self.esc, 0, 0, self.esc, margen * self.esc, margen * self.esc)
 
     # --- cuadro y cámara -------------------------------------------------------------------
@@ -267,6 +268,8 @@ class Lienzo:
         """
         p = self._hervir(pts, hervor)
         c = self.ctx
+        if self.sin_tinta:
+            tinta = False
         camino = self._camino(p, True, suave, tension)
         c.save()
         c.new_path()

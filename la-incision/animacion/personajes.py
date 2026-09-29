@@ -88,8 +88,12 @@ def figura(lz, x, y, s, t=0.0, inclina=0.0, semilla=0, alfa=1.0, contraluz=1.0, 
     lz.restaurar()
 
 
-def _cabeza(lz, t, semilla, luz, cuerpo, filo, mascara_brillo):
-    """Melena lacia, máscara y huecos de los ojos. Origen: la base del cuello."""
+def _cabeza(lz, t, semilla, luz, cuerpo, filo, mascara_brillo, boca=0.0, pupilas=0.0, grietas=False):
+    """Melena lacia, máscara y huecos de los ojos. Origen: la base del cuello.
+
+    boca 0..1 abre una grieta con dientes en la máscara (el narrador habla); pupilas 0..1 enciende
+    dos puntitos de luz en el fondo de los ojos.
+    """
     pelo = [(-70, -150), (-30, -205), (30, -205), (70, -150), (84, -40), (92, 80), (100, 190)]
     pelo += _harapos(100, -100, 190, 7, 70, semilla + 5, t, ondula=0.5)
     pelo += [(-100, 190), (-92, 80), (-84, -40)]
@@ -107,9 +111,36 @@ def _cabeza(lz, t, semilla, luz, cuerpo, filo, mascara_brillo):
         ojo = [(lado * 9, -97), (lado * 22, -106), (lado * 39, -101), (lado * 46, -88), (lado * 31, -83), (lado * 15, -86)]
         lz.forma(np.array(ojo, float), hexa("#000000"), grosor=2.5)
     lz.pincel([(-2, -80), (0, -56)], 2.5, oscuro(MASCARA_SOMBRA, 0.9), alfa=0.35)
+    if pupilas > 0:
+        for lado in (-1, 1):
+            lz.resplandor(lado * 27 + math.sin(t * 0.7) * 2, -94, 9, (1, 1, 1), 0.9 * pupilas)
+            lz.forma(elipse(lado * 27 + math.sin(t * 0.7) * 2, -94, 2.2, 2.2, 8), (1, 1, 1), tinta=False,
+                     alfa=pupilas, hervor=0)
+    if grietas:
+        for g in ([(-40, -150), (-28, -128), (-34, -112), (-22, -96)], [(30, -40), (18, -20), (26, 0), (14, 20)],
+                  [(46, -120), (36, -104), (40, -88)]):
+            lz.pincel(g, 2.2, oscuro(MASCARA_SOMBRA, 0.55), alfa=0.8)
+    if boca > 0.02:
+        ancho, alto = 30 + 8 * boca, 4 + 30 * boca
+        cy = -8
+        borde = []
+        for i in range(9):
+            x = -ancho + 2 * ancho * i / 8
+            borde.append((x, cy - alto * 0.35 * (1 - (x / ancho) ** 2) + (3 if i % 2 else -3)))
+        for i in range(9):
+            x = ancho - 2 * ancho * i / 8
+            borde.append((x, cy + alto * (1 - (x / ancho) ** 2) + (4 if i % 2 else -2)))
+        lz.forma(np.array(borde, float), hexa("#050305"), grosor=2.5)
+        if boca > 0.25:
+            for i in range(6):
+                x = -ancho * 0.7 + i * ancho * 0.28
+                arriba = cy - alto * 0.3 * (1 - (x / ancho) ** 2)
+                lz.forma(np.array([(x - 4, arriba), (x + 4, arriba), (x, arriba + 9 * boca)], float),
+                         hexa("#d9d3c2"), tinta=False, suave=False, hervor=0)
 
 
-def mascara_cerca(lz, x, y, s, t=0.0, inclina=0.0, semilla=0, contraluz=1.0, mascara_brillo=1.0, hombros=True):
+def mascara_cerca(lz, x, y, s, t=0.0, inclina=0.0, semilla=0, contraluz=1.0, mascara_brillo=1.0, hombros=True,
+                  boca=0.0, pupilas=0.0, grietas=False):
     """Cabeza de una figura muy de cerca (encima de la cara de Alex). Origen: centro de la máscara."""
     cuerpo = hexa("#05060a")
     filo = mezcla(cuerpo, hexa("#6d8aa8"), 0.6 * contraluz)
@@ -120,7 +151,7 @@ def mascara_cerca(lz, x, y, s, t=0.0, inclina=0.0, semilla=0, contraluz=1.0, mas
         lz.forma(np.array([(-260, 520), (-200, 250), (-80, 170), (80, 170), (200, 250), (260, 520), (300, 900),
                            (-300, 900)], float), cuerpo, **luz, grosor=4.5)
     lz.mover(0, 80, 1)
-    _cabeza(lz, t, semilla, luz, cuerpo, filo, mascara_brillo)
+    _cabeza(lz, t, semilla, luz, cuerpo, filo, mascara_brillo, boca, pupilas, grietas)
     lz.restaurar()
 
 

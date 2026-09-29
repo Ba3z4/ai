@@ -314,7 +314,21 @@ def manos_celular(lz, x, y, s, rot=0.0, pulgar=0.0, piel=None, luz_pantalla=1.0)
 
 # --- el antebrazo y la incisión ---------------------------------------------------------------
 
-def _herida(lz, visible, t, semilla=3):
+def _corte(lz, abre):
+    """El corte todavía abierto, sin puntos: una línea roja que avanza y gotea."""
+    if abre <= 0:
+        return
+    u = np.linspace(0, abre, max(2, int(24 * abre)))
+    linea = np.stack([110 + 330 * u, 4 + 6 * np.sin(u * math.pi * 1.3)], axis=1)
+    lz.pincel(linea, 10, hexa("#5a080e"), punta=0.1)
+    lz.pincel(linea + (0, -1), 4, hexa("#c0242f"), punta=0.1)
+    for k in range(int(abre * 5)):
+        px, py = linea[min(len(linea) - 1, int(len(linea) * (k + 0.5) / 5))]
+        lz.forma(np.array([(px - 4, py + 6), (px + 4, py + 6), (px + 2, py + 26 + k * 3), (px - 2, py + 26 + k * 3)], float),
+                 hexa("#8e1119"), tinta=False, hervor=0)
+
+
+def _herida(lz, visible, t, semilla=3, puntadas=11):
     """Incisión con suturas a lo largo del antebrazo (coordenadas del antebrazo)."""
     if visible <= 0:
         return
@@ -331,7 +345,7 @@ def _herida(lz, visible, t, semilla=3):
     brillo = 0.5 + 0.5 * math.sin(t * 2.2)
     lz.pincel(linea[4:18] + (0, -9), 2, hexa("#ffd8d0"), alfa=0.35 * alfa * brillo)
     rng = np.random.default_rng(semilla)
-    for k in range(11):
+    for k in range(min(11, int(puntadas))):
         i = int(1 + k * 2.1)
         px, py = linea[min(i, len(linea) - 1)]
         inclina = rng.uniform(-6, 6)
@@ -344,7 +358,7 @@ def _herida(lz, visible, t, semilla=3):
 
 
 def antebrazo(lz, x, y, s, ang=0.0, t=0.0, herida=0.0, vista=1.0, dedos=0.35, puno=0.0, piel=None,
-              luz=(0, -10), contraluz=None, manga=SUDADERA, tiembla=0.0):
+              luz=(0, -10), contraluz=None, manga=SUDADERA, tiembla=0.0, corte=0.0, puntadas=11):
     """Antebrazo izquierdo de Alex con la palma hacia arriba. Origen: el codo; la muñeca queda en x=520.
 
     vista 0..1 aplasta el brazo (0: de canto, 1: se ve la cara interna). puno 0..1 cierra la mano.
@@ -394,7 +408,8 @@ def antebrazo(lz, x, y, s, ang=0.0, t=0.0, herida=0.0, vista=1.0, dedos=0.35, pu
              luz=luz, brillo=brillo, contraluz=filo, grosor=4, suave=False)
     lz.pincel([(560, -20), (620, -10), (660, 20)], 3.5, ps)
     lz.pincel([(560, 30), (630, 26)], 3, ps)
-    _herida(lz, herida, t)
+    _corte(lz, corte if herida <= 0 else 0)
+    _herida(lz, herida, t, puntadas=puntadas)
     lz.restaurar()
 
 

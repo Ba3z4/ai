@@ -52,7 +52,32 @@ Los planos se dibujan en paralelo (uno por núcleo) y se guardan en `animacion/b
 | [dibujo.py](dibujo.py) | El lienzo: figuras con sombra de cel, tinta que tiembla, pinceles, luces y cámara |
 | [post.py](post.py) | Color por escena, la cinta VHS en la tele de tubo y los rótulos |
 | [sonido.py](sonido.py) | Toda la pista de sonido, sintetizada |
-| [fuentes/](fuentes/) | VT323, la letra de videocasetera (licencia OFL) |
+| [pasos.py](pasos.py) | «Cómo abrir a un humano»: el guion en pasos, el narrador y las ilustraciones |
+| [render_pasos.py](render_pasos.py) | Voz del narrador, línea de tiempo, música y render de esa versión |
+| [pintura.py](pintura.py) | El acabado de pintura (Kuwahara, póster, lienzo) y la franja con la palabra |
+| [fuentes/](fuentes/) | VT323 (letreros de videocasetera) y Cinzel (la palabra del narrador), las dos con licencia OFL |
+
+## Otra versión: «Cómo abrir a un humano»
+
+La misma historia contada al estilo de los videos de «cómo encerrar a un ángel». Una de las figuras enmascaradas, frente al cosmos, dicta ocho pasos con voz grave, palabra por palabra, y entre paso y paso aparecen ilustraciones de lo que le hicieron a Alex:
+
+1. Elige a uno que ya no escuche (la cena).
+2. Espera a que su casa duerma (03:17).
+3. Entra por el rincón más oscuro.
+4. Quítale la voz, que grite hacia adentro.
+5. Dale un recuerdo feliz para que no mire.
+6. Ábrelo. Toma lo que viniste a buscar.
+7. Cóselo con cuidado.
+8. Devuélvelo a su mesa. Déjalo creer que fue un sueño.
+
+Cierra con «Volveremos» y un glitch. El arte es de ilustración oscura pintada: sin contornos, con pinceladas planas (filtro Kuwahara), colores tipo póster, claroscuro y luces de color. La palabra que dice el narrador aparece en una franja negra con letra romana (Cinzel), y la máscara abre una boca cuando habla. La voz marca el ritmo: cada ilustración dura lo que tardan sus palabras. Debajo van un colchón de acordes en re menor con coro, un golpe en cada «PASO» y pocos efectos.
+
+```sh
+python3 animacion/render_pasos.py           # → la-incision-como-abrir-un-humano.mp4 y su versión ligera
+python3 animacion/render_pasos.py --fotos   # hoja de contactos con una ilustración de cada tramo
+```
+
+El guion está en `GUION` dentro de [pasos.py](pasos.py): si cambias una palabra, la voz, los tiempos y las ilustraciones se ajustan solos.
 
 ## Las voces
 
