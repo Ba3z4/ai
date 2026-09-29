@@ -195,6 +195,8 @@ class P1C(Plano):
         self.fondo = Fondo(fondo, self.ancho, semilla=14, desenfoque=12)
 
     def dibujar(self, lz, t, tq):
+        if 5.3 <= t < 5.39:
+            return _subliminal_mascara(lz, tq)
         lz.camara(1.0 + 0.05 * t / self.dur, 540, 980)
         self.fondo.pintar(lz)
         lz.viñeta(0.45, r0=300, r1=1200)
@@ -224,11 +226,59 @@ class P1C(Plano):
         return {"subtitulos": subs}
 
 
+def _subliminal_mascara(lz, tq):
+    """Dos cuadros de una máscara a toda pantalla, casi imperceptibles."""
+    lz.camara()
+    lz.velo((0, 0, 0), 1.0)
+    mascara_cerca(lz, 540, 900, 3.1, t=tq, inclina=0.35, semilla=0)
+    return {"falla": 0.6, "negativo": True}
+
+
+def tarjeta(lineas, tam=120, y=960, color="#E8E8E8", alfa=1.0, fuente="vhs", caja=False, ancho_max=0.84):
+    return dict(lineas=lineas, tam=tam, y=y, color=color, alfa=alfa, fuente=fuente, caja=caja, ancho_max=ancho_max)
+
+
+class Barras(Plano):
+    """Barras de color y tono de prueba: empieza la cinta recuperada."""
+    grado = "neutro"
+    ARRIBA = ("#c0c0c0", "#c0c000", "#00c0c0", "#00c000", "#c000c0", "#c00000", "#0000c0")
+    MEDIO = ("#0000c0", "#131313", "#c000c0", "#131313", "#00c0c0", "#131313", "#c0c0c0")
+    ABAJO = (("#00214c", 1.25), ("#ffffff", 1.25), ("#32006a", 1.25), ("#131313", 1.25), ("#090909", 0.33),
+             ("#131313", 0.34), ("#1d1d1d", 0.33), ("#131313", 1.0))
+
+    def dibujar(self, lz, t, tq):
+        lz.camara()
+        c = lz.ctx
+        ancho = W / 7
+        for i, col in enumerate(self.ARRIBA):
+            c.rectangle(i * ancho, 0, ancho + 1, H * 0.66)
+            c.set_source_rgb(*hexa(col))
+            c.fill()
+        for i, col in enumerate(self.MEDIO):
+            c.rectangle(i * ancho, H * 0.66, ancho + 1, H * 0.08)
+            c.set_source_rgb(*hexa(col))
+            c.fill()
+        x = 0.0
+        for col, partes in self.ABAJO:
+            c.rectangle(x, H * 0.74, partes * ancho + 1, H * 0.26)
+            c.set_source_rgb(*hexa(col))
+            c.fill()
+            x += partes * ancho
+        return {"osd": ("PLAY", 1.0), "falla": 0.5 * (t < 0.15),
+                "tarjetas": [tarjeta(["CINTA 07", "CASO A.R. · 28-29 SEP"], tam=66, y=1180, color="#FFFFFF",
+                                     caja=True)]}
+
+
 class Negro(Plano):
+    """El salto a la madrugada: solo la hora sobre negro."""
     grado = "neutro"
 
     def dibujar(self, lz, t, tq):
-        return {}
+        lz.camara()
+        lz.velo((0, 0, 0), 1.0)
+        cursor = " _" if int(t * 4) % 2 == 0 else "  "
+        return {"tarjetas": [tarjeta(["03:17 A.M." + cursor], tam=130, y=940, alfa=tramo(t, 0.05, 0.12))],
+                "falla": 0.3 * (t < 0.1)}
 
 
 # --- escena 2: las tres sombras ------------------------------------------------------------------
@@ -445,7 +495,9 @@ class P4A(Plano):
             by = 330 + k * 40 + math.sin(t * 2 + k) * 8
             lz.pincel([(bx - 18, by - 8), (bx, by), (bx + 18, by - 8)], 4, hexa("#2a2a3a"))
         blanco = 1 - tramo(t, 0.0, 1.3)
-        return {"blanco": blanco, "fecha": ("JUN. 14 2011", tramo(t, 0.9, 1.4) * (1 - tramo(t, 7.6, 7.9)))}
+        return {"blanco": blanco,
+                "tarjetas": [tarjeta(["JUN. 14 2011"], tam=74, y=300, color="#F2A33A",
+                                     alfa=tramo(t, 0.9, 1.4) * (1 - tramo(t, 7.6, 7.9)), ancho_max=0.5)]}
 
 
 # --- escena 5: el despertar ----------------------------------------------------------------------
@@ -618,6 +670,9 @@ class P5F(Plano):
         lz.camara(1.03 + 0.2 * k, 540 - 190 * k, 960 - 60 * k)
         self.fondo.pintar(lz)
         ventilador(lz, t * 0.4)
+        if 3.9 <= t < 3.99:
+            for i, ((x, y, s), _) in enumerate(FIGURAS):
+                figura(lz, x, y, s, t=tq, semilla=i, mascara_brillo=1.0)
         for px, py, fase in self.polvo:
             x = 420 + px * 420 + math.sin(t * 0.3 + fase * 6) * 30
             y = 860 + py * 800 - t * 12 * (0.5 + fase)
@@ -644,6 +699,10 @@ class P6A(Plano):
         self.mesa = Fondo(mesa_frente, self.ancho, semilla=62, transparente=True)
 
     def dibujar(self, lz, t, tq):
+        if 6.2 <= t < 6.25:
+            lz.camara()
+            lz.velo((0, 0, 0), 1.0)
+            return {"tarjetas": [tarjeta(["NO FUE UN SUEÑO"], tam=150, y=940)], "falla": 0.5}
         k = suave(t / self.dur)
         lz.camara(1.0 + 0.1 * k, 540, 1000 + 40 * k)
         self.fondo.pintar(lz)
@@ -706,29 +765,72 @@ class P6C(Plano):
         return {"negro": tramo(t, self.dur - 0.12, self.dur - 0.04)}
 
 
+# Aviso a la población: (segundo en que aparece, texto en pantalla, texto que lee la voz).
+AVISO = [
+    (1.7, "Si despierta con una incisión que no recuerda:", "Si despierta con una incisión que no recuerda,"),
+    (4.8, "NO retire los puntos.", "no retire los puntos."),
+    (6.4, "NO duerma boca arriba.", "No duerma boca arriba."),
+    (8.1, "Ellos regresan por lo que dejaron.", "Ellos regresan por lo que dejaron."),
+]
+AVISO_Y = (700, 930, 1060, 1230)
+
+
+class Aviso(Plano):
+    """Aviso de emergencia que interrumpe la cinta, con la voz de la transmisión."""
+    grado = "neutro"
+
+    def dibujar(self, lz, t, tq):
+        lz.camara()
+        lz.velo(hexa("#040816"), 1.0)
+        lz.grupo()
+        antebrazo(lz, -40, 1500, 1.3, ang=-0.5, t=tq, herida=1.0, dedos=0.5, manga=None)
+        lz.soltar(0.1)
+        lz.pantalla()
+        tono = t < 1.5
+        rojo = hexa("#b3121b") if (not tono or int(t * 6) % 2 == 0) else hexa("#4a0a0d")
+        lz.ctx.rectangle(0, 300, W, 150)
+        lz.ctx.set_source_rgb(*rojo)
+        lz.ctx.fill()
+        lz.ctx.rectangle(0, 1400, W, 10)
+        lz.ctx.set_source_rgb(*hexa("#b3121b"))
+        lz.ctx.fill()
+        tarjetas = [tarjeta(["AVISO A LA POBLACIÓN"], tam=84, y=375, color="#FFFFFF")]
+        for (inicio, texto, _), y in zip(AVISO, AVISO_Y):
+            alfa = tramo(t, inicio, inicio + 0.08)
+            if alfa > 0:
+                color = "#FF4A4A" if texto.startswith("Ellos") else "#F2F2F2"
+                tarjetas.append(tarjeta([texto], tam=68, y=y, color=color, alfa=alfa))
+        return {"tarjetas": tarjetas, "falla": 0.5 * (t < 0.12) + 0.3 * (9.6 < t < 9.75)}
+
+
 class Titulo(Plano):
     grado = "neutro"
 
     def dibujar(self, lz, t, tq):
         lz.camara()
         lz.velo((0, 0, 0), 1.0)
-        aparece = tramo(t, 0.35, 0.8)
-        cose = tramo(t, 0.7, 1.9)
+        aparece = tramo(t, 0.35, 0.8) * (1 - tramo(t, 3.0, 3.3))
+        cose = tramo(t, 0.7, 1.9) * (1 - tramo(t, 3.0, 3.3))
         if cose > 0:
             x0, x1, y = 250, 830, 1045
             xf = x0 + (x1 - x0) * cose
             lz.pincel([(x0, y), ((x0 + xf) / 2, y + 4), (xf, y)], 7, hexa("#8e1a22"))
-            n = int(12 * cose)
-            for i in range(n):
+            for i in range(int(12 * cose)):
                 px = x0 + 25 + i * 48
                 lz.pincel([(px - 8, y - 20), (px + 8, y + 20)], 4.5, hexa("#d8d2c4"))
-        return {"titulo": aparece * (1 - tramo(t, 3.45, 3.95)), "falla": 0.5 * (tramo(t, 0.3, 0.4) * (1 - tramo(t, 0.5, 0.7)))
-                + 0.4 * (3.1 < t < 3.25), "negro": tramo(t, 3.5, 3.95)}
+        ef = {"tarjetas": [tarjeta(["LA INCISIÓN"], tam=190, y=930, color="#E6E0D2", alfa=aparece)],
+              "falla": 0.5 * (tramo(t, 0.3, 0.4) * (1 - tramo(t, 0.5, 0.7))) + 0.4 * (2.9 < t < 3.05)}
+        if t >= 3.3:
+            ef["osd"] = ("STOP", 1.0)
+            ef["nieve"] = tramo(t, 3.55, 3.7)
+        return ef
 
 
 PLANOS = {
     "Gancho": Gancho, "1A": P1A, "1B": P1B, "1C": P1C, "Negro": Negro, "2A": P2A, "2B": P2B, "2C": P2C, "2D": P2D,
     "3A": P3A, "3B": P3B, "3C": P3C, "4A": P4A, "5A": P5A, "5B": P5B, "5C": P5C, "5D": P5D, "5E": P5E, "5F": P5F,
-    "6A": P6A, "6B": P6B, "6C": P6C, "Título": Titulo,
+    "6A": P6A, "6B": P6B, "6C": P6C, "Título": Titulo, "Barras": Barras, "Aviso": Aviso,
 }
 GANCHO = 1.5
+BARRAS = 1.5
+AVISO_DUR = 10.5

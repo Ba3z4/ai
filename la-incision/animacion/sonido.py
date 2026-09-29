@@ -6,7 +6,11 @@ Todo va a 48 kHz en estéreo. `generar(linea, ruta)` escribe el WAV siguiendo la
 """
 
 import math
+import shutil
+import subprocess
+import tempfile
 import wave
+from pathlib import Path
 
 import numpy as np
 from scipy import signal
@@ -528,6 +532,69 @@ def rebobinado(dur, rng):
     return (seno(f, n) * 0.3 + banda(ruido(n, rng), 2000, 8000) * 0.4) * env_ar(n, 0.05, 0.05)
 
 
+# --- voces sintéticas (espeak-ng) -----------------------------------------------------------------
+#
+# En el terror analógico las voces de computadora son parte del estilo. Si espeak-ng no está
+# instalado, se usan las voces de caricatura de arriba.
+
+VOZ_MAMA = "es-419+f4"
+VOZ_ALEX = "mb-mx2"
+VOZ_AVISO = "mb-mx1"
+
+
+def tts(texto, voz, velocidad=160, tono=50, maximo=None):
+    """Lee `texto` con espeak-ng y devuelve la señal a 48 kHz, o None si no hay espeak-ng.
+    Si pasa de `maximo` segundos, la vuelve a leer más rápido."""
+    exe = shutil.which("espeak-ng") or shutil.which("espeak")
+    if not exe:
+        return None
+    for _ in range(4):
+        with tempfile.TemporaryDirectory() as tmp:
+            ruta = Path(tmp) / "voz.wav"
+            r = subprocess.run([exe, "-v", voz, "-s", str(int(velocidad)), "-p", str(tono), "-w", str(ruta), texto],
+                               capture_output=True)
+            if r.returncode != 0 or not ruta.is_file() or ruta.stat().st_size < 1000:
+                if voz.startswith("mb-"):
+                    voz = "es-419"
+                    continue
+                return None
+            with wave.open(str(ruta)) as w:
+                sr = w.getframerate()
+                x = np.frombuffer(w.readframes(w.getnframes()), "<i2").astype(np.float32) / 32768
+        activo = np.flatnonzero(np.abs(x) > 0.01)
+        if len(activo):
+            x = x[max(0, activo[0] - 200):activo[-1] + 400]
+        g = math.gcd(SR, sr)
+        x = signal.resample_poly(x, SR // g, sr // g).astype(np.float32)
+        if maximo is None or len(x) / SR <= maximo:
+            break
+        velocidad *= min(1.6, len(x) / SR / maximo * 1.05)
+    return x / (np.abs(x).max() + 1e-9)
+
+
+def al_aire(x, rng, bajos=300, altos=3400, sucio=1.6):
+    """Voz de transmisión: banda de teléfono y un poco de saturación."""
+    y = banda(x, bajos, altos)
+    return np.tanh(y * sucio) / math.tanh(sucio)
+
+
+def alerta(dur):
+    """Tono de atención de las alertas de emergencia (dos senos disonantes)."""
+    n = muestras(dur)
+    return ((seno(853, n) + seno(960, n)) * 0.5 * env_ar(n, 0.01, 0.02)).astype(np.float32)
+
+
+def temblor_de_cinta(x, profundidad=1.0):
+    """Wow y flutter: la velocidad de la cinta varía un poco y la afinación ondula."""
+    n = len(x)
+    t = np.arange(n, dtype=np.float64) / SR
+    desvio = (0.0022 * SR / (2 * math.pi * 0.45) * np.sin(2 * math.pi * 0.45 * t)
+              + 0.0005 * SR / (2 * math.pi * 6.3) * np.sin(2 * math.pi * 6.3 * t)) * profundidad
+    pos = np.clip(np.arange(n) + desvio, 0, n - 1)
+    base = np.arange(n)
+    return np.stack([np.interp(pos, base, x[:, c]) for c in range(x.shape[1])], axis=1).astype(np.float32)
+
+
 # --- la mezcla por escena -----------------------------------------------------------------------
 
 def generar(linea, ruta):
@@ -552,6 +619,13 @@ def generar(linea, ruta):
         P.poner(falla(0.3, rng), en("Gancho", 0.9), 0.3)
         P.poner(estatica(0.35, rng) * np.linspace(0, 1, muestras(0.35), dtype=np.float32), en("Gancho", 1.15), 0.35)
         P.poner(rebobinado(0.4, rng), en("Gancho", 1.1), 0.25)
+
+    # Barras de color: la videocasetera arranca y suena el tono de prueba.
+    if "Barras" in T:
+        ib, db = T["Barras"]
+        P.poner(clunk(rng), ib, 0.5)
+        n = muestras(db - 0.1)
+        P.poner(seno(1000, n) * env_ar(n, 0.01, 0.01), ib + 0.05, 0.1)
 
     # Escena 1: la cena.
     ini, dur = T["1A"]
@@ -581,20 +655,32 @@ def generar(linea, ruta):
     P.poner(drone(d1a - 2.5 + d1b, rng, 41.2, 220) * env_ar(muestras(d1a - 2.5 + d1b), 3.0, 0.4), ini + 2.5, 0.12)
     # 1B: la voz de mamá amortiguada, el mensaje y el «¿Alex?» que corta.
     i1b = T["1B"][0]
-    linea1 = voz("y en ton ces le di je a tu tí a que no í ba mos a po der ir el do min go".split(), 215, 11, ritmo=0.165)
-    P.poner(reverb(pb(linea1, 450, 4), 0.6, 0.2, rng), i1b + 0.8, 0.16)
+    linea1 = tts("y entonces le dije a tu tía que no íbamos a poder ir el domingo", VOZ_MAMA, 185, 55, maximo=3.9)
+    if linea1 is None:
+        linea1 = voz("y en ton ces le di je a tu tí a que no í ba mos a po der ir el do min go".split(), 215, 11,
+                     ritmo=0.165)
+    P.poner(reverb(pb(linea1, 450, 4), 0.6, 0.2, rng), i1b + 0.8, 0.2)
     P.poner(acufeno(1.8, 6900) * env_ar(muestras(1.8), 0.5, 0.6), i1b + 3.0, 0.01)
     burbuja = seno(np.linspace(880, 1320, muestras(0.09)), muestras(0.09)) * env_ar(muestras(0.09), 0.005, 0.05)
     P.poner(burbuja, i1b + 5.55, 0.12)
-    alex = voz(["¿A", "lex?"], 225, 12, ritmo=0.2, pregunta=True, brillo=1.3)
+    alex = tts("¿Alex?", VOZ_MAMA, 150, 60, maximo=0.8)
+    if alex is None:
+        alex = voz(["¿A", "lex?"], 225, 12, ritmo=0.2, pregunta=True, brillo=1.3)
+    alex = al_aire(alex, rng, 200, 4200, 1.2)
     P.poner(reverb(alex, 0.7, 0.18, rng), i1b + 5.25, 0.2)
-    linea2 = voz("me es tás es cu chan do mi jo".split(), 230, 13, ritmo=0.165, pregunta=True, brillo=1.3)
-    P.poner(reverb(linea2, 0.7, 0.18, rng), i1b + 6.05, 0.2)
+    linea2 = tts("¿Me estás escuchando, mijo?", VOZ_MAMA, 165, 60, maximo=1.8)
+    if linea2 is None:
+        linea2 = voz("me es tás es cu chan do mi jo".split(), 230, 13, ritmo=0.165, pregunta=True, brillo=1.3)
+    linea2 = al_aire(linea2, rng, 200, 4200, 1.2)
+    P.poner(reverb(linea2, 0.7, 0.18, rng), i1b + 6.05, 0.22)
     # 1C: bloquea el celular y contesta.
     i1c = T["1C"][0]
     P.poner(clic(rng, 1800, 0.05, 200), i1c + 0.9, 0.25)
-    respuesta = voz(["sí,|", "ma.|", "to", "do", "bien"], 112, 14, ritmo=0.2, brillo=0.9)
-    P.poner(reverb(respuesta, 0.7, 0.15, rng), i1c + 2.2, 0.22)
+    respuesta = tts("Sí, ma. Todo bien.", VOZ_ALEX, 140, 42, maximo=1.6)
+    if respuesta is None:
+        respuesta = voz(["sí,|", "ma.|", "to", "do", "bien"], 112, 14, ritmo=0.2, brillo=0.9)
+    respuesta = al_aire(respuesta, rng, 150, 4000, 1.2)
+    P.poner(reverb(respuesta, 0.7, 0.15, rng), i1c + 2.2, 0.24)
     platica2 = murmullo(2.0, 210, 21) * 0.5 + murmullo(2.0, 120, 22) * 0.4
     P.poner(reverb(pb(platica2, 700) * env_ar(muestras(2.0), 0.6, 0.3), 0.8, 0.2, rng), i1c + 4.1, 0.14)
     for k in range(4):
@@ -698,6 +784,20 @@ def generar(linea, ruta):
     P.poner(cluster(fin6 - i6c - 1.3, rng, 590) * np.linspace(1, 0.6, muestras(fin6 - i6c - 1.3), dtype=np.float32), i6c + 1.3, 0.2)
     P.poner(drone(fin6 - i6c, rng, 36.7, 500) * np.linspace(0.4, 1, muestras(fin6 - i6c), dtype=np.float32), i6c, 0.28)
 
+    # Aviso a la población: tono de alerta, voz de la transmisión y zumbido.
+    if "Aviso" in T:
+        from planos import AVISO
+        ia, da = T["Aviso"]
+        P.poner(alerta(1.4), ia + 0.05, 0.16)
+        cama = zumbido(da, 60) * 0.35 + drone(da, rng, 43.65, 300) * 0.5
+        P.poner(cama * env_ar(muestras(da), 0.3, 0.4), ia, 0.12)
+        siguientes = [a[0] for a in AVISO[1:]] + [da - 0.3]
+        for (inicio, _, dicho), fin in zip(AVISO, siguientes):
+            x = tts(dicho, VOZ_AVISO, 150, 28, maximo=fin - inicio - 0.15)
+            if x is None:
+                x = voz(dicho.lower().replace(",", "").replace(".", "").split(), 105, int(inicio * 10), ritmo=0.17)
+            P.poner(reverb(al_aire(x, rng), 0.5, 0.12, rng), ia + inicio, 0.3)
+
     # Título.
     it, dt = T["Título"]
     P.poner(golpe(rng, 1.2, 3.0), it + 0.35, 0.7)
@@ -705,16 +805,25 @@ def generar(linea, ruta):
     for k in range(12):
         P.poner(clic(rng, 2400, 0.03, 200), it + 0.75 + k * 0.095, 0.08)
     P.poner(drone(dt - 0.5, rng, 32.7, 260) * env_ar(muestras(dt - 0.5), 0.3, 1.2), it + 0.35, 0.18)
-    P.poner(falla(0.15, rng), it + 3.1, 0.15)
+    P.poner(falla(0.15, rng), it + 2.95, 0.15)
+    P.poner(clunk(rng), it + 3.3, 0.5)
+    P.poner(estatica(0.45, rng), it + 3.55, 0.3)
 
-    # Silencios: el negro después de 1C y el corte a negro antes del título.
+    # Silencios: el negro después de 1C y el corte seco al final de 6C.
     x = P.x
-    for inicio, fin in ((T["Negro"][0] + 0.02, T["Negro"][0] + T["Negro"][1]), (fin6, it + 0.33)):
+    corte_final = T["Aviso"][0] if "Aviso" in T else it + 0.33
+    for inicio, fin in ((T["Negro"][0] + 0.02, T["Negro"][0] + T["Negro"][1]), (fin6, corte_final)):
         a, b = muestras(inicio), muestras(fin)
         x[a:b] *= 0.05
+    # En el negro solo queda el pitido de la hora (03:17 A.M.).
+    pitido = seno(1000, muestras(0.12)) * env_ar(muestras(0.12), 0.005, 0.01)
+    P.poner(pitido, T["Negro"][0] + 0.06, 0.12)
+    # Zumbido de la tele y siseo constantes: la cinta nunca está en silencio del todo.
+    P.poner(zumbido(total, 60) * 0.004 + pb(pa(ruido(muestras(total), rng), 2500), 9000) * 0.003, 0)
 
-    # Maestro: sin graves inútiles, compresión suave y pico a -1 dB.
-    x = pa(x, 28)
+    # Maestro: temblor de cinta, ancho de banda de VHS, compresión suave y pico a -1 dB.
+    x = temblor_de_cinta(P.x)
+    x = pb(pa(x, 28), 11000, 4)
     rms = np.sqrt(np.mean(x ** 2)) + 1e-9
     x = x * (0.11 / rms)
     x = np.tanh(x * 1.3) / 1.3

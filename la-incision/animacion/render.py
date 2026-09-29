@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Renderiza La Incisión como caricatura tétrica de los 90 (vertical 9:16, 24 fps, con sonido).
+"""Renderiza La Incisión como cinta de terror analógico con dibujos de caricatura de los 90
+(vertical 9:16, 24 fps, con sonido).
 
 Uso (desde la carpeta la-incision):
-    python3 animacion/render.py                  # corto completo 1080×1920 → la-incision-animada.mp4
-    python3 animacion/render.py --ancho 540      # borrador rápido a media resolución
+    python3 animacion/render.py                  # corto completo → la-incision-animada.mp4 (1080×1920)
+    python3 animacion/render.py --ancho 360      # borrador rápido
     python3 animacion/render.py --planos 3A 3B   # solo esos planos (quedan en animacion/build/)
     python3 animacion/render.py --fotos          # hoja de contactos con un cuadro de cada plano
     python3 animacion/render.py --solo-audio     # vuelve a mezclar el sonido sobre los planos ya hechos
     python3 animacion/render.py --portada        # portada para TikTok → portada-tiktok.png
 
 Necesita Python 3 con numpy, scipy, pycairo y Pillow (pip install numpy scipy pycairo pillow) y ffmpeg.
-Las duraciones salen de plan.json; antes del plano 1A va un gancho de 1.5 s para TikTok.
+Las duraciones salen de plan.json. Además de los planos del guion, la cinta lleva un gancho de 1.5 s para
+TikTok, barras de color al empezar y un aviso de emergencia antes del título.
 """
 
 import argparse
@@ -28,25 +30,30 @@ RAIZ = AQUI.parent
 sys.path.insert(0, str(AQUI))
 sys.path.insert(0, str(RAIZ / "herramientas"))
 
+import numpy as np  # noqa: E402
 from PIL import Image, ImageDraw  # noqa: E402
 
 import post  # noqa: E402
 from dibujo import Lienzo  # noqa: E402
-from planos import FPS, GANCHO, PLANOS  # noqa: E402
+from planos import AVISO_DUR, BARRAS, FPS, GANCHO, PLANOS  # noqa: E402
 
 BUILD = AQUI / "build"
-FUENTE_TITULO = AQUI / "fuentes" / "Creepster-Regular.ttf"
 FUENTE_VHS = AQUI / "fuentes" / "VT323-Regular.ttf"
-FUENTES_SUBS = (
-    "C:/Windows/Fonts/arialbd.ttf",
-    "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-    "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+FUENTES_CC = (
+    "C:/Windows/Fonts/consolab.ttf",
+    "C:/Windows/Fonts/courbd.ttf",
+    "/System/Library/Fonts/Menlo.ttc",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf",
 )
 
 
-def fuente_subtitulos():
-    return next((Path(f) for f in FUENTES_SUBS if Path(f).is_file()), FUENTE_VHS)
+def fuente_cc():
+    """Letra monoespaciada para los closed captions (si no hay, la de la videocasetera)."""
+    return next((Path(f) for f in FUENTES_CC if Path(f).is_file()), FUENTE_VHS)
+
+
+FUENTES = {"vhs": FUENTE_VHS}
 
 
 def buscar_ffmpeg():
@@ -61,39 +68,75 @@ def buscar_ffmpeg():
 
 
 def linea_de_tiempo():
-    """[(id, inicio, duración)] con el gancho y los extras (negro y título) de plan.json."""
+    """[(id, inicio, duración)]: gancho, barras de color, los planos y extras de plan.json, el aviso y el título."""
     from generar import cargar, secuencia
     filas, _ = secuencia(cargar())
-    linea, t = [("Gancho", 0.0, GANCHO)], GANCHO
+    linea, t = [("Gancho", 0.0, GANCHO), ("Barras", GANCHO, BARRAS)], GANCHO + BARRAS
     for f in filas:
+        if f["id"] == "Título":
+            linea.append(("Aviso", t, AVISO_DUR))
+            t += AVISO_DUR
         linea.append((f["id"], t, float(f["uso"])))
         t += f["uso"]
     return linea
 
 
+# La hora de la cinta en cada escena: la madrugada se salta casi tres horas (tiempo perdido).
+RELOJ = {"1": ("28 SEP", "21:47:03"), "2": ("29 SEP", "03:17:22"), "3": ("29 SEP", "03:18:40"),
+         "5E": ("29 SEP", "05:58:14"), "6": ("29 SEP", "07:40:51")}
+_inicios = {}
+
+
+def reloj(ident, t_global):
+    """Texto y color del contador de la cinta, o None si en ese plano no se ve."""
+    if not ident[:1].isdigit() or ident.startswith("4"):
+        return None
+    cuadro = int(t_global * FPS)
+    rng = np.random.default_rng((5, cuadro // 3))
+    if ident in ("5A", "5B", "5C", "5D"):
+        basura = "".join(rng.choice(list("0123456789?#")) for _ in range(6))
+        return f"?? ??? {basura[:2]}:{basura[2:4]}:{basura[4:]}", (235, 60, 60)
+    clave = "5E" if ident in ("5E", "5F") else ident[0]
+    if not _inicios:
+        for i, ini, _ in linea_de_tiempo():
+            k = "5E" if i in ("5E", "5F") else i[:1]
+            _inicios[k] = min(_inicios.get(k, ini), ini)
+    fecha, hora = RELOJ[clave]
+    hh, mm, ss = map(int, hora.split(":"))
+    seg = hh * 3600 + mm * 60 + ss + int(t_global - _inicios[clave])
+    texto = f"{fecha} {seg // 3600 % 24:02d}:{seg // 60 % 60:02d}:{seg % 60:02d}"
+    if clave == "3" and rng.random() < 0.18:
+        pos = int(rng.integers(7, len(texto)))
+        texto = texto[:pos] + str(rng.choice(list("?#8"))) + texto[pos + 1:]
+    rojo = clave == "5E" and t_global - _inicios[clave] < 1.8
+    return texto, (235, 60, 60) if rojo else (235, 235, 235)
+
+
 def acabado(img, plano, ef, cuadro):
-    """Color, efectos de cinta y rótulos de un cuadro."""
+    """Color, rótulos grabados en la cinta, efectos de cinta y letreros de la videocasetera."""
     img = post.graduar(img, ef.get("grado", plano.grado))
     if ef.get("negativo"):
         img = 1 - img
     if ef.get("blanco", 0) > 0:
         b = ef["blanco"]
         img = img * (1 - b) + b
-    if ef.get("titulo", 0) > 0:
-        img = post.poner_texto(img, ["LA INCISIÓN"], FUENTE_TITULO, 150, 930, color="#E6E0D2", borde=3,
-                               alfa=ef["titulo"], ancho_max=0.95)
+    for tj in ef.get("tarjetas", []):
+        img = post.poner_texto(img, tj["lineas"], FUENTES[tj["fuente"]], tj["tam"], tj["y"], color=tj["color"],
+                               borde=0 if tj["caja"] else 3, alfa=tj["alfa"], ancho_max=tj["ancho_max"],
+                               caja=tj["caja"])
     img = post.nieve(img, cuadro, ef.get("nieve", 0))
     img = post.vhs(img, cuadro, fuerza=plano.vhs, falla=ef.get("falla", 0))
     if ef.get("negro", 0) > 0:
         img = img * (1 - ef["negro"])
     for lineas, alfa in ef.get("subtitulos", []):
-        img = post.poner_texto(img, lineas, fuente_subtitulos(), 50, 1400, alfa=alfa, ancho_max=0.8)
+        img = post.poner_texto(img, [x.upper() for x in lineas], fuente_cc(), 44, 1400, color="#FFFFFF", alfa=alfa,
+                               ancho_max=0.82, caja=True, interlineado=1.3)
     if ef.get("osd"):
         texto, alfa = ef["osd"]
-        img = post.poner_osd(img, texto, FUENTE_VHS, alfa=alfa)
-    if ef.get("fecha"):
-        texto, alfa = ef["fecha"]
-        img = post.poner_texto(img, [texto], FUENTE_VHS, 70, 300, color="#F2A33A", borde=3, alfa=alfa, x_centro=0.3)
+        img = post.poner_osd(img, texto, FUENTE_VHS, alfa=alfa, simbolo="stop" if texto == "STOP" else "play")
+    hora = reloj(getattr(plano, "id", ""), cuadro / FPS)
+    if hora:
+        img = post.poner_osd(img, hora[0], FUENTE_VHS, simbolo=None, y=250, color=hora[1], tam=62)
     return img
 
 
@@ -109,6 +152,7 @@ def render_plano(args):
     ident, inicio, dur, ancho, salida, ffmpeg = args
     t0 = time.time()
     plano = PLANOS[ident](dur, ancho)
+    plano.id = ident
     lz = Lienzo(ancho, semilla=sum(map(ord, ident)))
     n = int(round(dur * FPS))
     primero = int(round(inicio * FPS))
@@ -129,6 +173,7 @@ def hoja_de_contactos(linea, ancho, salida, momentos=(0.5,)):
     miniaturas = []
     for ident, inicio, dur in linea:
         plano = PLANOS[ident](dur, ancho)
+        plano.id = ident
         lz = Lienzo(ancho, semilla=sum(map(ord, ident)))
         for m in momentos:
             t = min(dur * m, dur - 1 / FPS)
@@ -153,14 +198,15 @@ def portada(ancho, salida):
     plano = PLANOS["3A"](6, ancho)
     lz = Lienzo(ancho, semilla=7)
     img = cuadro_de(plano, lz, 4.6, 55, 1300)
-    img = post.poner_texto(img, ["LA INCISIÓN"], FUENTE_TITULO, 160, 1480, color="#E6E0D2", borde=6, ancho_max=0.95)
+    img = post.poner_texto(img, ["LA INCISIÓN"], FUENTE_VHS, 200, 1480, color="#E6E0D2", borde=6, ancho_max=0.95)
     Image.fromarray(post.a_bytes(img)).save(salida)
     return salida
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--ancho", type=int, default=1080, help="ancho del video (1080 para el final)")
+    parser.add_argument("--ancho", type=int, default=720,
+                        help="ancho al que se dibuja (720 por defecto: se ve más a cinta; el video final sale a 1080)")
     parser.add_argument("--planos", nargs="*", help="solo estos planos")
     parser.add_argument("--fotos", action="store_true", help="hoja de contactos en vez de video")
     parser.add_argument("--momentos", type=float, nargs="*", default=[0.5], help="momentos (0..1) para --fotos")
@@ -214,7 +260,7 @@ def main():
     comando = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista),
                "-i", str(audio)]
     if args.ancho != 1080:
-        comando += ["-vf", "scale=1080:1920:flags=lanczos"]
+        comando += ["-vf", "scale=1080:1920:flags=bicubic"]
     # El ruido de cinta pesa mucho: se limita el bitrate para que el archivo se pueda subir a TikTok (~100 MB).
     comando += ["-c:v", "libx264", "-preset", "slow", "-crf", "20", "-maxrate", "7M", "-bufsize", "14M",
                 "-pix_fmt", "yuv420p", "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-shortest",
