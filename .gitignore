@@ -6,3 +6,6 @@ __pycache__/
 *.mov
 *.webm
 *.mkv
+
+# Render de la versión animada
+la-incision/animacion/build/

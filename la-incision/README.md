@@ -20,6 +20,7 @@ Corto de terror vertical (9:16) de 1:49 para TikTok, producido con Gemini Omni o
 | [plan.json](plan.json) | Los datos de planos y keyframes de los que salen el shotlist, los keyframes y el storyboard |
 | [guia-para-claude-en-tu-pc.md](guia-para-claude-en-tu-pc.md) | Instrucciones para que Claude Desktop (con Computer use) produzca todo en Kling desde tu PC |
 | [herramientas/armar_corte.py](herramientas/armar_corte.py) | Arma el corte bruto con las tomas de `tomas/` (necesita Python 3 y ffmpeg) |
+| [animacion/](animacion/) | **El corto ya hecho como caricatura tétrica de los 90**, dibujado y sonorizado con código. `python3 animacion/render.py` lo renderiza completo |
 
 ## Flujo de trabajo
 
