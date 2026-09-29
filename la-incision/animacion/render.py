@@ -9,6 +9,7 @@ Uso (desde la carpeta la-incision):
     python3 animacion/render.py --fotos          # hoja de contactos con un cuadro de cada plano
     python3 animacion/render.py --solo-audio     # vuelve a mezclar el sonido sobre los planos ya hechos
     python3 animacion/render.py --portada        # portada para TikTok → portada-tiktok.png
+    python3 animacion/render.py --ligero         # versión de menos de 30 MB con los planos ya hechos
 
 Necesita Python 3 con numpy, scipy, pycairo y Pillow (pip install numpy scipy pycairo pillow) y ffmpeg.
 Las duraciones salen de plan.json. Además de los planos del guion, la cinta lleva un gancho de 1.5 s para
@@ -203,6 +204,18 @@ def portada(ancho, salida):
     return salida
 
 
+def ligero(ffmpeg, lista, audio, salida, duracion, megas=28):
+    """Versión de menos de 30 MB (720×1280, dos pasadas) para mandarla por chat o WhatsApp."""
+    kbps = int(megas * 8192 / duracion) - 128
+    base = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista)]
+    video = ["-vf", "scale=720:1280:flags=bicubic", "-c:v", "libx264", "-preset", "medium", "-b:v", f"{kbps}k",
+             "-pix_fmt", "yuv420p", "-r", str(FPS), "-passlogfile", str(BUILD / "ligero")]
+    subprocess.run(base + video + ["-pass", "1", "-an", "-f", "mp4", os.devnull], check=True)
+    subprocess.run(base + ["-i", str(audio)] + video + ["-pass", "2", "-c:a", "aac", "-b:a", "128k", "-shortest",
+                                                         "-movflags", "+faststart", str(salida)], check=True)
+    return salida
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ancho", type=int, default=720,
@@ -212,6 +225,8 @@ def main():
     parser.add_argument("--momentos", type=float, nargs="*", default=[0.5], help="momentos (0..1) para --fotos")
     parser.add_argument("--solo-audio", action="store_true", help="solo rehace el sonido y el montaje")
     parser.add_argument("--portada", action="store_true", help="solo la portada para TikTok (PNG)")
+    parser.add_argument("--ligero", action="store_true",
+                        help="solo la versión de menos de 30 MB a partir de los planos y el sonido ya hechos")
     parser.add_argument("--procesos", type=int, default=os.cpu_count() or 2)
     parser.add_argument("--salida", type=Path, default=RAIZ / "la-incision-animada.mp4")
     args = parser.parse_args()
@@ -236,7 +251,7 @@ def main():
     carpeta = BUILD / f"planos-{args.ancho}"
     carpeta.mkdir(exist_ok=True)
     archivo = {ident: carpeta / f"{i:02d}-{ident.replace('í', 'i')}.mp4" for i, (ident, _, _) in enumerate(linea)}
-    if not args.solo_audio:
+    if not args.solo_audio and not args.ligero:
         trabajos = [(ident, ini, dur, args.ancho, archivo[ident], ffmpeg) for ident, ini, dur in elegidos]
         trabajos.sort(key=lambda x: -x[2])
         t0 = time.time()
@@ -253,10 +268,17 @@ def main():
         sys.exit(f"Faltan planos por renderizar: {', '.join(faltan)}")
     import sonido
     audio = BUILD / "sonido.wav"
-    print("Sintetizando el sonido…", flush=True)
-    sonido.generar(linea, audio)
     lista = BUILD / "lista.txt"
     lista.write_text("".join(f"file '{archivo[ident].as_posix()}'\n" for ident, _, _ in linea), encoding="utf-8")
+    duracion = sum(d for _, _, d in linea)
+    salida_ligera = args.salida.with_name(args.salida.stem + "-ligera.mp4")
+    if args.ligero:
+        if not audio.is_file():
+            sonido.generar(linea, audio)
+        print(f"Listo: {ligero(ffmpeg, lista, audio, salida_ligera, duracion)}")
+        return
+    print("Sintetizando el sonido…", flush=True)
+    sonido.generar(linea, audio)
     comando = [ffmpeg, "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista),
                "-i", str(audio)]
     if args.ancho != 1080:
@@ -267,6 +289,7 @@ def main():
                 "-movflags", "+faststart", str(args.salida)]
     subprocess.run(comando, check=True)
     print(f"Listo: {args.salida}")
+    print(f"Versión ligera: {ligero(ffmpeg, lista, audio, salida_ligera, duracion)}")
 
 
 if __name__ == "__main__":
