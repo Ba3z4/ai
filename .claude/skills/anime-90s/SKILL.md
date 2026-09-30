@@ -7,6 +7,8 @@ description: Reglas de estilo para hacer animación (con código) que se vea y s
 
 Todo se genera con código: nada de herramientas externas de IA ni de fotos de referencia. Esta skill dice **cómo debe verse, moverse y sonar**, y cómo revisarlo. Los datos vienen de las fuentes de [references.md](references.md); lo marcado como *oficio* es práctica común del medio, no una cita.
 
+**Es anime japonés** (TV/OVA de los 90), no caricatura occidental: diseño de personajes, fondos, cámara, montaje y sonido siguen sus convenciones. La historia y el diálogo se quedan tal cual el guion (mexicana, en español); lo japonés es la manera de dibujarla, animarla, editarla y musicalizarla.
+
 ## 1. Cómo se hacía (y por qué se ve así)
 
 - Los fondos se pintaban a mano con **gouache / poster color** sobre papel, uno por escena. Los personajes iban en **acetatos (cels)**: línea entintada y color plano pintado detrás.
