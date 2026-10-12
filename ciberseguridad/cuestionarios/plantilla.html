@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuestionarios de ciberseguridad</title>
+<style>
+:root{--bg:#f6f7f9;--fg:#15181d;--card:#fff;--mut:#5d6672;--ok:#137a3d;--okbg:#e2f5e9;--bad:#b3261e;--badbg:#fbe7e5;--acc:#2456d6;--bd:#d9dde3}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1216;--fg:#e8eaed;--card:#181c22;--mut:#9aa4b0;--ok:#5ad08a;--okbg:#12301f;--bad:#ff8a80;--badbg:#3a1a18;--acc:#7da3ff;--bd:#2c333c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.5 system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:1.3rem;margin:.4em 0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:12px 0}
+.mut{color:var(--mut);font-size:.9rem}
+button{font:inherit;color:inherit;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;width:100%;text-align:left;margin:6px 0;cursor:pointer}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc);text-align:center}
+button:disabled{cursor:default}
+button.ok{background:var(--okbg);border-color:var(--ok)}
+button.bad{background:var(--badbg);border-color:var(--bad)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd)}
+.fb.ok{background:var(--okbg);border-color:var(--ok)}
+.fb.bad{background:var(--badbg);border-color:var(--bad)}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc)}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const QUIZZES = /*DATA*/;
+const app = document.getElementById('app');
+const KEY = 'cs-quiz-v1';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+function el(h){ const t=document.createElement('template'); t.innerHTML=h.trim(); return t.content.firstChild; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function home(){
+  const s = load();
+  app.innerHTML = '<h1>Cuestionarios de ciberseguridad</h1><p class="mut">Responde, lee la explicación y repite lo que falles.</p>';
+  QUIZZES.forEach(q=>{
+    const h = (s[q.id]||{}).best;
+    const c = el(`<div class="card"><strong>${esc(q.titulo)}</strong>
+      <div class="mut">${q.preguntas.length} preguntas${h!=null?` · mejor resultado: ${h}%`:''}</div></div>`);
+    const b = el('<button class="p">Empezar</button>');
+    b.onclick = ()=>run(q, q.preguntas.map((_,i)=>i));
+    c.appendChild(b);
+    const fails = (s[q.id]||{}).fails||[];
+    if(fails.length){
+      const r = el(`<button class="p">Repasar fallos (${fails.length})</button>`);
+      r.onclick = ()=>run(q, fails);
+      c.appendChild(r);
+    }
+    app.appendChild(c);
+  });
+}
+
+function run(quiz, idxs){
+  const order = shuffle(idxs);
+  let n = 0, hits = 0; const missed = [];
+  function show(){
+    const qi = order[n], q = quiz.preguntas[qi];
+    const opts = shuffle(q.opciones.map((t,i)=>({t,i})));
+    app.innerHTML = '';
+    app.appendChild(el(`<div class="mut">${esc(quiz.titulo)} · ${n+1}/${order.length}</div>`));
+    app.appendChild(el(`<div class="bar"><i style="width:${n/order.length*100}%"></i></div>`));
+    const card = el(`<div class="card"><div class="mut">${esc(q.leccion)}</div><p><strong>${esc(q.pregunta)}</strong></p></div>`);
+    const fb = el('<div></div>');
+    opts.forEach(o=>{
+      const b = el(`<button>${esc(o.t)}</button>`);
+      b.onclick = ()=>{
+        const right = o.i === q.correcta;
+        if(right) hits++; else missed.push(qi);
+        [...card.querySelectorAll('button')].forEach((x,k)=>{
+          x.disabled = true;
+          if(opts[k].i === q.correcta) x.classList.add('ok');
+        });
+        if(!right) b.classList.add('bad');
+        fb.className = 'fb ' + (right?'ok':'bad');
+        fb.innerHTML = `<strong>${right?'¡Correcto!':'No es esa.'}</strong><br>` +
+          (right?'':`La respuesta correcta es: <em>${esc(q.opciones[q.correcta])}</em>.<br>`) + esc(q.explicacion);
+        const nx = el(`<button class="p">${n+1<order.length?'Siguiente':'Ver resultado'}</button>`);
+        nx.onclick = ()=>{ n++; n<order.length?show():end(); };
+        fb.appendChild(nx);
+      };
+      card.appendChild(b);
+    });
+    card.appendChild(fb);
+    app.appendChild(card);
+  }
+  function end(){
+    const pct = Math.round(hits/order.length*100);
+    const s = load(); const e = s[quiz.id]||{};
+    if(order.length===quiz.preguntas.length) e.best = Math.max(e.best||0, pct);
+    const prev = new Set(e.fails||[]);
+    order.forEach(i=>prev.delete(i)); missed.forEach(i=>prev.add(i));
+    e.fails = [...prev]; s[quiz.id]=e; save(s);
+    const msg = pct>=85?'Dominado. Puedes seguir adelante.':pct>=60?'Vas bien. Repasa los fallos y vuelve a intentar.':'Aún no. Vuelve a escuchar las lecciones marcadas y repite.';
+    app.innerHTML = `<h1>Resultado: ${hits}/${order.length} (${pct}%)</h1><p>${msg}</p>`;
+    if(missed.length){
+      const lecs = [...new Set(missed.map(i=>quiz.preguntas[i].leccion))].join(', ');
+      app.appendChild(el(`<div class="card"><strong>Repasa:</strong> ${esc(lecs)}</div>`));
+    }
+    const a = el('<button class="p">Repasar fallos</button>'); a.onclick=()=>run(quiz, missed.slice());
+    if(missed.length) app.appendChild(a);
+    const h = el('<button class="p">Volver al inicio</button>'); h.onclick=home; app.appendChild(h);
+  }
+  show();
+}
+home();
+</script>
+</body>
+</html>

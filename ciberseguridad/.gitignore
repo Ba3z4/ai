@@ -13,3 +13,6 @@ wordlists/
 *.key
 *.pem
 secrets/
+
+# Audio generado (pesa; se regenera con audio/generar-audio.sh)
+audio/mp3/

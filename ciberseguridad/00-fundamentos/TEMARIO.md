@@ -2,6 +2,7 @@
 
 **Ritmo sugerido:** 5 sesiones/semana de ~1–1,5 h (≈ 30–45 h en total). Si vas más lento, estira a 8 semanas; lo importante es la constancia.
 **Cada sesión:** `git pull` → estudiar → nota en `diario/` (`../nuevo-dia.sh`) → `git push`.
+**Formato para aprender en movimiento:** cada sesión tiene una lección en audio en [`../audio/`](../audio/README.md) y cada semana cierra con un cuestionario con retroalimentación en [`../cuestionarios/`](../cuestionarios/README.md) (abre `index.html`). Escucha mientras haces ejercicio u otras tareas; la parte de «Qué hacer» y los entregables se hacen sentado, después.
 **Regla de oro:** después de cada tema, explícalo con tus palabras en un archivo `notas-*.md` de esta carpeta. Si no puedes explicarlo, no lo has aprendido.
 
 ---
