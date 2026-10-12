@@ -1,17 +1,37 @@
-# Lecciones para escuchar
+# Lecciones para escuchar en el celular
 
-Textos escritos para **oírse**, no para leerse: frases cortas, sin tablas ni código, con un resumen "para recordar" al final. Duran 3–5 minutos de audio cada uno.
+Textos escritos para **oírse**: frases cortas, sin tablas ni código, con un resumen «para recordar» al final. Cada uno dura 3–5 minutos de audio.
 
-## Cómo escucharlas
+## Escuchar desde el celular
 
-**Opción 1 · Lector del móvil (sin instalar nada).** Abre el `.md` en GitHub desde el móvil y usa "Leer en voz alta" (Android: *Seleccionar para escuchar* / iPhone: *Contenido hablado → Hablar pantalla*). Funciona con pantalla apagada en la mayoría de equipos.
+Los MP3 viven en [`mp3/`](mp3/) dentro del repo. En el celular:
 
-**Opción 2 · MP3 (recomendado para ejercicio).** En tu PC:
+1. Abre la carpeta `ciberseguridad/audio/mp3/` en la app o web de GitHub.
+2. Toca el MP3: GitHub lo reproduce, o usa **Descargar** para guardarlo en el teléfono y oírlo con tu reproductor (así sigue sonando con la pantalla apagada y sin datos mientras haces ejercicio).
+3. Tip: descarga toda la semana antes de salir.
+
+### Semana 1
+| Sesión | Audio | Texto |
+|---|---|---|
+| 1 · Las piezas de una computadora | [mp3](mp3/semana-01-sesion-1.mp3) | [md](semana-01-sesion-1.md) |
+| 2 · Sistema operativo, kernel y procesos | [mp3](mp3/semana-01-sesion-2.mp3) | [md](semana-01-sesion-2.md) |
+| 3 · Archivos y almacenamiento | [mp3](mp3/semana-01-sesion-3.mp3) | [md](semana-01-sesion-3.md) |
+| 4 · La memoria de un programa | [mp3](mp3/semana-01-sesion-4.mp3) | [md](semana-01-sesion-4.md) |
+| 5 · Repaso en voz alta | [mp3](mp3/semana-01-sesion-5.mp3) | [md](semana-01-sesion-5.md) |
+
+## De dónde salen los MP3 (elige una)
+
+**A · Automático con GitHub.** Cada vez que se sube un `semana-*.md`, el workflow `.github/workflows/audio.yml` genera los MP3 y los guarda en `mp3/`. También puedes lanzarlo a mano: pestaña **Actions → Generar audio de las lecciones → Run workflow**. Tarda ~1 min; luego haz `git pull` en tus equipos.
+
+**B · Desde tu PC.**
 ```bash
 pip install edge-tts
-./generar-audio.sh            # crea mp3/semana-01-sesion-1.mp3 ...
+./generar-audio.sh                                   # crea mp3/*.mp3
+git add -A && git commit -m "Audio" && git push      # para que lleguen al celular
 ```
-Pasa los MP3 al móvil (cable, nube, o AirDrop). Los `.mp3` no se suben a git (están en `.gitignore`).
+La voz se cambia con `VOZ=es-ES-ElviraNeural ./generar-audio.sh` (otras: es-MX-JorgeNeural, es-AR-TomasNeural).
 
-## Orden
-Una sesión por día, según [`../00-fundamentos/TEMARIO.md`](../00-fundamentos/TEMARIO.md). Después de la sesión 5 de cada semana, haz el cuestionario.
+**Sin MP3 todavía:** abre el `.md` desde el celular y usa el lector del sistema (Android: *Seleccionar para escuchar*; iPhone: *Hablar pantalla*).
+
+## Flujo recomendado
+Celular: escuchas las sesiones (ejercicio, trayecto, tareas) → PC: haces el [cuestionario](../cuestionarios/README.md) de la semana y los ejercicios del [temario](../00-fundamentos/TEMARIO.md).
