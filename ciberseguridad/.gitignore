@@ -1,0 +1,15 @@
+# Imágenes de VM, capturas y material pesado
+*.ova
+*.ovf
+*.vmdk
+*.vdi
+*.iso
+*.qcow2
+*.pcap
+*.pcapng
+wordlists/
+# Secretos: nunca al repo
+.env
+*.key
+*.pem
+secrets/
