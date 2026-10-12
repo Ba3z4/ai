@@ -3,7 +3,7 @@
 Marca con `[x]` lo completado. Orden recomendado; no te saltes fundamentos.
 
 ## Fase 0 · Fundamentos (4–6 semanas) → `00-fundamentos/`
-- [ ] Cómo funciona una computadora: CPU, memoria, almacenamiento, procesos
+- [ ] (Detalle semana a semana en `00-fundamentos/TEMARIO.md`) Cómo funciona una computadora: CPU, memoria, almacenamiento, procesos
 - [ ] Sistemas numéricos (binario, hexadecimal) y codificaciones (ASCII, UTF-8, Base64)
 - [ ] Tríada CIA (confidencialidad, integridad, disponibilidad), riesgo, amenaza, vulnerabilidad
 - [ ] Terminología: malware, phishing, ransomware, exploit, CVE, CVSS
